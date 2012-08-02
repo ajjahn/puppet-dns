@@ -1,11 +1,11 @@
-class dns::service {
+class dns::server::service {
 
   service { "bind9":
     ensure => running,
     hasstatus => true,
     hasrestart => true,
     enable => true,
-    require => Class["dns::config"]
+    require => Class["dns::server::config"]
   }
 
 }
