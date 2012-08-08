@@ -41,7 +41,7 @@ define dns::zone ($soa = "${::fqdn}.",
   # Include Zone in named.conf.local
   concat::fragment{"named.conf.local.${name}.include":
      target  => "/etc/bind/named.conf.local",
-     order   => 1,
+     order   => 2,
      ensure => $ensure,
      content => template("${module_name}/zone.erb")
   }
