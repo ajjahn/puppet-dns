@@ -1,6 +1,6 @@
 define dns::record::mx ($zone, $data, $ttl = '', $preference = '0') {
 
-  $alias = "${name},CNAME,${zone}"
+  $alias = "${name},MX,${zone}"
 
   dns::record { $alias:
     zone => $zone,
