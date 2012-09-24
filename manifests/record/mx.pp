@@ -7,7 +7,7 @@ define dns::record::mx ($zone, $data, $ttl = '', $preference = '0') {
     host => $name,
     ttl => $ttl,
     record => 'MX',
-    preference => '0',
+    preference => $preference,
     data => "${data}.",
     order => 2
   }
