@@ -4,6 +4,8 @@ Module for provisioning DNS (bind9)
 
 Tested on Ubuntu 12.04, patches to support other operating systems are welcome.
 
+This module depends on concat (https://github.com/ripienaar/puppet-concat).
+
 ## Installation
 
 Clone this repo to your Puppet modules directory
