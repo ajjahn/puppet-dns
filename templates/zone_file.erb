@@ -5,7 +5,7 @@
 $ORIGIN	<%= zone %>.
 $TTL	<%= zone_ttl %>
 @	IN	SOA	<%= soa %>. <%= soa_email %>. (
-		<%= Time.now.to_i %>		; Serial
+		<%= zone_serial %>		; Serial
 		<%= zone_refresh %>		; Refresh
 		<%= zone_retry %>		; Retry
 		<%= zone_expire %>		; Expire

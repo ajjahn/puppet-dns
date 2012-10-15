@@ -1,5 +1,6 @@
 define dns::zone ($soa = "${::fqdn}.",
                   $soa_email = "root.${::fqdn}.",
+                  $serial = false,
                   $zone_ttl = '604800',
                   $zone_refresh = "604800",
                   $zone_retry = "86400",
@@ -10,6 +11,11 @@ define dns::zone ($soa = "${::fqdn}.",
                   $zone_type = 'master',
                   $zone_notify = false,
                   $ensure = present) {
+
+  $zone_serial = $serial ? {
+    false => inline_template('<%= Time.now.to_i %>'),
+    default => $serial
+  }
 
   $zone = $reverse ? {
     true => "${name}.in-addr.arpa",
