@@ -7,15 +7,6 @@ class dns::server::config {
     mode   => '0755',
   }
 
-  file { '/etc/bind/named.conf':
-    ensure  => present,
-    owner   => 'bind',
-    group   => 'bind',
-    mode    => '0644',
-    require => [File['/etc/bind'], Class['dns::server::install']],
-    notify  => Class['dns::server::service'],
-  }
-
   concat { '/etc/bind/named.conf.local':
     owner   => 'bind',
     group   => 'bind',
