@@ -24,11 +24,11 @@ class dns::server::config {
     notify  => Class['dns::server::service']
   }
 
-  concat::fragment{'named.conf.local.header':
+  concat::fragment { 'named.conf.local.header':
     ensure  => present,
     target  => '/etc/bind/named.conf.local',
     order   => 1,
-    content => '// File managed by Puppet.\n'
+    content => "// File managed by Puppet.\n";
   }
 
 }
