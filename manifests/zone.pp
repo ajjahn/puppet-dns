@@ -13,12 +13,12 @@ define dns::zone ($soa = "${::fqdn}.",
                   $ensure = present) {
 
   $zone_serial = $serial ? {
-    false => inline_template('<%= Time.now.to_i %>'),
+    false   => inline_template('<%= Time.now.to_i %>'),
     default => $serial
   }
 
   $zone = $reverse ? {
-    true => "${name}.in-addr.arpa",
+    true    => "${name}.in-addr.arpa",
     default => $name
   }
 
