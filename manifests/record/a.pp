@@ -5,7 +5,7 @@ define dns::record::a ($zone, $data, $ttl = '', $ptr = false) {
   dns::record { $alias:
     zone => $zone,
     host => $name,
-    ttl => $ttl,
+    ttl  => $ttl,
     data => $data
   }
 
