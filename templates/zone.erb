@@ -3,5 +3,12 @@ zone "<%= zone %>" {
 <% if zone_notify -%>
   notify <%= zone_notify %>;
 <% end -%>
+<% if also_notify -%>
+  also-notify {
+  <% also_notify.each do | notify_server | -%>
+    <%= notify_server %>;
+  <% end -%>
+  };
+<% end -%>
   file "<%= zone_file %>";
 };
