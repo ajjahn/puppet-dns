@@ -35,7 +35,7 @@ define dns::zone (
       concat { $zone_file:
         owner   => 'bind',
         group   => 'bind',
-        mode    => 0644,
+        mode    => '0644',
         require => [Class['concat::setup'], Class['dns::server']],
         notify  => Class['dns::server::service']
       }
