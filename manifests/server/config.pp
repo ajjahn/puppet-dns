@@ -25,9 +25,9 @@ class dns::server::config {
   }
 
   concat::fragment{'named.conf.local.header':
+    ensure  => present,
     target  => '/etc/bind/named.conf.local',
     order   => 1,
-    ensure  => present,
     content => '// File managed by Puppet.\n'
   }
 
