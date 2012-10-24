@@ -7,7 +7,7 @@ define dns::zone (
   $zone_retry = '86400',
   $zone_expire = '2419200',
   $zone_minimum = '604800',
-  $nameservers = ["${::fqdn}"],
+  $nameservers = [ $::fqdn ],
   $reverse = false,
   $zone_type = 'master',
   $zone_notify = false,
