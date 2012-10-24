@@ -1,10 +1,8 @@
-define dns::record::a ($zone, $data, $ttl = '', $ptr = false) {
+define dns::record::a ($host, $zone, $data, $ttl = '', $ptr = false) {
 
-  $alias = "${name},A,${zone}"
-
-  dns::record { $alias:
+  dns::record { "${host},A,${zone}":
     zone => $zone,
-    host => $name,
+    host => $host,
     ttl  => $ttl,
     data => $data
   }
@@ -14,9 +12,20 @@ define dns::record::a ($zone, $data, $ttl = '', $ptr = false) {
     $reverse_zone = inline_template('<%= ip.split(".")[0..-2].reverse.join(".") %>.IN-ADDR.ARPA')
     $octet = inline_template('<%= ip.split(".")[-1] %>')
 
-    dns::record::ptr { $octet:
-      zone => $reverse_zone,
-      data => "${name}.${zone}"
+    # Using format of "@.example.com" causes reverse dns to fail
+    if $host == '@' {
+      dns::record::ptr { "${name}.${zone},PTR,${octet}":
+        host => $octet,
+        zone => $reverse_zone,
+        data => "${zone}"
+      }
+    }
+    else {
+      dns::record::ptr { "${name}.${zone},PTR,${octet}":
+        host => $octet,
+        zone => $reverse_zone,
+        data => "${host}.${zone}"
+      }
     }
   }
 }
