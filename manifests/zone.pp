@@ -25,8 +25,10 @@ define dns::zone (
     default => $name
   }
 
+  $zone_file = "/etc/bind/db.${name}"
+
   if $ensure == absent {
-    file { "/etc/bind/db.${name}":
+    file { $zone_file:
       ensure => absent,
     }
     } else {

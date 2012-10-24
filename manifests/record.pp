@@ -9,10 +9,12 @@ define dns::record (
   $order = 9
 ) {
 
+  $zone_file = "/etc/bind/db.${zone}"
+
   concat::fragment{"db.${zone}.${name}.record":
-    target  => "/etc/bind/db.${zone}",
+    target  => $zone_file,
     order   => $order,
     content => template("${module_name}/zone_record.erb")
   }
-
 }
+
