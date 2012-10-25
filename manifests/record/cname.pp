@@ -1,4 +1,4 @@
-define dns::record::cname ($zone, $data, $ttl = '') {
+define dns::record::cname ($host, $zone, $data, $ttl = '') {
 
   $alias = "${name},CNAME,${zone}"
 

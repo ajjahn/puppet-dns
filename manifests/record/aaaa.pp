@@ -1,4 +1,4 @@
-define dns::record::aaaa ($zone, $data, $ttl = '') {
+define dns::record::aaaa ($host, $zone, $data, $ttl = '') {
 
   $alias = "${name},AAAA,${zone}"
 
