@@ -1,8 +1,10 @@
 define dns::record::cname ($host, $zone, $data, $ttl = '') {
 
-  dns::record { "${host},CNAME,${zone}":
+  $alias = "${name},CNAME,${zone}"
+
+  dns::record { $alias:
     zone   => $zone,
-    host   => $host,
+    host   => $name,
     ttl    => $ttl,
     record => 'CNAME',
     data   => "${data}."

@@ -2,7 +2,7 @@ define dns::record::a ($host, $zone, $data, $ttl = '', $ptr = false) {
 
   dns::record { "${host},A,${zone}":
     zone => $zone,
-    host => $host,
+    host => $name,
     ttl  => $ttl,
     data => $data
   }

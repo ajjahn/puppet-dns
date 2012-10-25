@@ -16,5 +16,5 @@ define dns::record (
     order   => $order,
     content => template("${module_name}/zone_record.erb")
   }
-}
 
+}
