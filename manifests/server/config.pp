@@ -28,7 +28,7 @@ class dns::server::config {
     ensure  => present,
     target  => '/etc/bind/named.conf.local',
     order   => 1,
-    content => '// File managed by Puppet.\n'
+    content => "// File managed by Puppet.\n"
   }
 
 }
