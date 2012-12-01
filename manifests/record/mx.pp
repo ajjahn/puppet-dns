@@ -1,4 +1,9 @@
-define dns::record::mx ($zone, $data, $ttl = '', $preference = '0', $host = $name) {
+define dns::record::mx (
+  $zone,
+  $data,
+  $ttl = '',
+  $preference = '0',
+  $host = $name ) {
 
   $alias = "${host},MX,${zone}"
 

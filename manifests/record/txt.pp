@@ -1,4 +1,8 @@
-define dns::record::txt ($zone, $data, $ttl = '', $host = $name) {
+define dns::record::txt (
+  $zone,
+  $data,
+  $ttl = '',
+  $host = $name) {
 
   $alias = "${host},TXT,${zone}"
 
