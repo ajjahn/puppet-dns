@@ -10,6 +10,7 @@ define dns::zone (
   $nameservers = [ $::fqdn ],
   $reverse = false,
   $zone_type = 'master',
+  $slave_masters = undef,
   $zone_notify = false,
   $ensure = present
 ) {

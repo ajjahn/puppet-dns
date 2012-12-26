@@ -4,4 +4,7 @@ zone "<%= zone %>" {
   notify <%= zone_notify %>;
 <% end -%>
   file "<%= zone_file %>";
+<% if zone_type == 'slave' -%>
+  masters { <%= slave_masters %>;};
+<% end -%>
 };
