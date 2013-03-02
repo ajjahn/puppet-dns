@@ -15,6 +15,8 @@ define dns::zone (
   $ensure = present
 ) {
 
+  include dns::server::params
+
   $zone_serial = $serial ? {
     false   => inline_template('<%= Time.now.to_i %>'),
     default => $serial
@@ -25,7 +27,7 @@ define dns::zone (
     default => $name
   }
 
-  $zone_file = "/etc/bind/db.${name}"
+  $zone_file = "${dns::server::params::dir}/db.${name}"
 
   if $ensure == absent {
     file { $zone_file:
@@ -34,8 +36,8 @@ define dns::zone (
     } else {
       # Zone Database
       concat { $zone_file:
-        owner   => 'bind',
-        group   => 'bind',
+        owner   => $dns::server::params::owner,
+        group   => $dns::server::params::group,
         mode    => '0644',
         require => [Class['concat::setup'], Class['dns::server']],
         notify  => Class['dns::server::service']
@@ -50,7 +52,7 @@ define dns::zone (
     # Include Zone in named.conf.local
     concat::fragment{"named.conf.local.${name}.include":
       ensure  => $ensure,
-      target  => '/etc/bind/named.conf.local',
+      target  => "${dns::server::params::dir}/named.conf.local",
       order   => 2,
       content => template("${module_name}/zone.erb")
     }

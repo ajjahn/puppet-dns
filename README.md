@@ -2,9 +2,16 @@
 
 Module for provisioning DNS (bind9)
 
-Tested on Ubuntu 12.04, patches to support other operating systems are welcome.
+## Requirements
 
-This module depends on concat (https://github.com/ripienaar/puppet-concat).
+* [concat module](https://github.com/ripienaar/puppet-concat)
+* [line module](https://github.com/ahaitoute/puppet-line)
+
+## Tested on...
+
+* CentOS 6
+* Ubuntu 12.04
+* Patches to support other operating systems are welcome.
 
 Note: This module has moved on PuppetForge to [http://forge.puppetlabs.com/ajjahn/dns](http://forge.puppetlabs.com/ajjahn/dns). All future releases can be found there.
 

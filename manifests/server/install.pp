@@ -1,6 +1,6 @@
-class dns::server::install {
+class dns::server::install inherits dns::server::params {
 
-  package { 'bind9':
+  package { $package:
     ensure => latest,
   }
 
