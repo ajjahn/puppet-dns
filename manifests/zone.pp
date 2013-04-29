@@ -11,6 +11,7 @@ define dns::zone (
   $reverse = false,
   $zone_type = 'master',
   $slave_masters = undef,
+  $forwarders = undef,
   $zone_notify = false,
   $ensure = present
 ) {

@@ -3,8 +3,17 @@ zone "<%= zone %>" {
 <% if zone_notify -%>
   notify <%= zone_notify %>;
 <% end -%>
+<% if zone_type != 'forward' -%>
   file "<%= zone_file %>";
+<% end %>
 <% if zone_type == 'slave' -%>
   masters { <%= slave_masters %>;};
+<% end -%>
+<% if zone_type == 'forward' -%>
+  forwarders { 
+  <% forwarders.each do |forwarder| %>
+  <%= forwarder %>;
+  <% end %>
+  };
 <% end -%>
 };
