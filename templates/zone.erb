@@ -11,9 +11,7 @@ zone "<%= zone %>" {
 <% end -%>
 <% if zone_type == 'forward' -%>
   forwarders { 
-  <% forwarders.each do |forwarder| %>
-  <%= forwarder %>;
-  <% end %>
+  <% forwarders.each do |forwarder| %><%= forwarder %>;<% end %>
   };
 <% end -%>
 };
