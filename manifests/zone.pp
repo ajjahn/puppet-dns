@@ -1,6 +1,6 @@
 define dns::zone (
-  $soa = "${::fqdn}.",
-  $soa_email = "root.${::fqdn}.",
+  $soa = "${::fqdn}",
+  $soa_email = "root.${::fqdn}",
   $serial = false,
   $zone_ttl = '604800',
   $zone_refresh = '604800',
