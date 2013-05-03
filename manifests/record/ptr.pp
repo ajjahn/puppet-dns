@@ -11,6 +11,6 @@ define dns::record::ptr (
     host   => $host,
     ttl    => $ttl,
     record => 'PTR',
-    data   => "${data}."
+    data   => $data
   }
 }

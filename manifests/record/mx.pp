@@ -13,7 +13,7 @@ define dns::record::mx (
     ttl        => $ttl,
     record     => 'MX',
     preference => $preference,
-    data       => "${data}.",
+    data       => $data,
     order      => 2
   }
 }
