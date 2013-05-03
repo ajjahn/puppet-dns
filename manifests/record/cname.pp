@@ -6,17 +6,11 @@ define dns::record::cname (
 
   $alias = "${host},CNAME,${zone}"
 
-  $qualified_data = $data ? {
-    '@'     => $data,
-    /\.$/   => $data,
-    default => "${data}."
-  }
-
   dns::record { $alias:
     zone   => $zone,
     host   => $host,
     ttl    => $ttl,
     record => 'CNAME',
-    data   => $qualified_data
+    data   => $data
   }
 }
