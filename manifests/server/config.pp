@@ -6,6 +6,12 @@ class dns::server::config {
     group  => 'bind',
     mode   => '0755',
   }
+  file { '/etc/bind/zones':
+    ensure => directory,
+    owner  => 'bind',
+    group  => 'bind',
+    mode   => '0755',
+  }
 
   file { '/etc/bind/named.conf':
     ensure  => present,
