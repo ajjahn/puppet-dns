@@ -1,10 +1,10 @@
-zone "<%= zone %>" {
-  type <%= zone_type %>;
-<% if zone_notify -%>
-  notify <%= zone_notify %>;
+zone "<%= @zone %>" {
+  type <%= @zone_type %>;
+<% if @zone_notify -%>
+  notify <%= @zone_notify %>;
 <% end -%>
-  file "<%= zone_file %>";
-<% if zone_type == 'slave' -%>
+  file "<%= @zone_file %>";
+<% if @zone_type == 'slave' -%>
   masters { <%= slave_masters %>;};
 <% end -%>
 };

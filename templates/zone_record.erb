@@ -1,8 +1,8 @@
 <% 
-delimiter = %w[TXT SPF].include?(record.upcase) ? '"' : ''
-data_a = data.is_a?(String) ? data.lines.to_a : data
+delimiter = %w[TXT SPF].include?(@record.upcase) ? '"' : ''
+data_a = @data.is_a?(String) ? @data.lines.to_a : @data
 
 data_a.each do |data_item| 
 -%>
-<%= host %>	<%= ttl %>	<%= dns_class %>	<%= record.upcase %><%= record.upcase == 'MX' ? " #{preference}" : '' %>	<%= delimiter %><%= data_item %><%= delimiter %>
+<%= @host %>	<%= @ttl %>	<%= @dns_class %>	<%= @record.upcase %><%= @record.upcase == 'MX' ? " #{preference}" : '' %>	<%= delimiter %><%= data_item %><%= delimiter %>
 <% end -%>
