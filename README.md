@@ -25,6 +25,11 @@ Tweak and add the following to your site manifest:
     node 'server.example.com' {
       include dns::server
 
+      # Forwarders
+      dns::server::options{ '/etc/bind/named.conf.options':
+        forwarders => [ '8.8.8.8', '8.8.4.4' ]
+      }
+
       # Forward Zone
       dns::zone { 'example.com':
         soa => "ns1.example.com",
