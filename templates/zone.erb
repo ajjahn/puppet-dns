@@ -5,6 +5,6 @@ zone "<%= @zone %>" {
 <% end -%>
   file "<%= @zone_file %>";
 <% if @zone_type == 'slave' -%>
-  masters { <%= slave_masters %>;};
+  masters { <%= @slave_masters %>;};
 <% end -%>
 };
