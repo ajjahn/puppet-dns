@@ -1,6 +1,6 @@
 define dns::key {
 
-  notify [ Exec["dnssec-keygen-${name}"]] 
+  notify { Exec["dnssec-keygen-${name}"]:} 
 
   file {"/tmp/${name}-secret.sh":
     ensure => file,
