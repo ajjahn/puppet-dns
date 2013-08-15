@@ -1,0 +1,18 @@
+;
+; BIND data file for <%= @zone %> zone.
+; File managed by puppet.
+;
+$ORIGIN <%= @zone %>.
+$TTL    <%= @zone_ttl %>
+@       IN      SOA     <%= @soa %>. <%= @soa_email %>. (
+                <%= Time.now.to_i %>            ; Serial
+                <%= @zone_refresh %>            ; Refresh
+                <%= @zone_retry %>              ; Retry
+                <%= @zone_expire %>             ; Expire
+                <%= @zone_minimum %>    )       ; Negative Cache TTL
+;
+<% @nameservers.each do |nameserver| -%>
+@               IN      NS      <%= nameserver %>.
+<% end -%>
+;
+$INCLUDE db.<%= @zone %>.data
