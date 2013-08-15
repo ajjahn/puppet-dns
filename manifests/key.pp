@@ -1,40 +1,56 @@
 define key {
 
-  package {'dnssec-tools':
-    ensure => installed,
-  }
+  notify => {"dnssec-keygen-${name}":
 
-  file {'/etc/bind/bind.keys.d':
-    ensure => directory,
-    require => Package['bind9'],
-    notify  => Exec['dnssec-keygen-dhcp-updater'],
-  }
-  file {'/etc/bind/bind.keys.d/get_secret.sh':
+  file {"/tmp/${name}-secret.sh":
     ensure => file,
     require => File["/etc/bind/bind.keys.d"],
-    content => '#!/bin/bash
-SECRET=`cat Kdhcp-updater.+157+*.key |tr -s " "|cut -d " " -f7`
-
-cat << EOF > /etc/bind/rndc.key
-key "keyname." {
-  algorithm hmac-md5;
-  secret "$SECRET";
-};
-EOF',
+    content => template('bind/secret')
   }
 
-
-
-  exec {'dnssec-keygen-dhcp-updater':
+  exec {"dnssec-keygen-${name}":
     command     => "/usr/sbin/dnssec-keygen -a HMAC-MD5 -r /dev/urandom -b 128 -n USER ${name}",
     cwd         => '/etc/bind/bind.keys.d',
     require     => [Package['dnssec-tools','bind9'],File['/etc/bind/bind.keys.d']],
     refreshonly => true,
+    notify => Exec["get-secret-from-${name}"]
   }
-  exec {'get-secret-from-dhcp-updater':
-    command => '/etc/bind/bind.keys.d/get_secret.sh',
+
+  exec {"get-secret-from-${name}":
+    command => "SECRET=`cat /etc/bind/bind.keys.d/K${name}.+*+*.key |tr -s " "|cut -d " " -f7` cat << EOF > echo 'secret "' $SECRET '"' > ${name}.secret",
     cwd         => '/etc/bind/bind.keys.d',
+    creates     => "/etc/bind/bind.keys.d/${name}.secret",
     require     => [Package['dnssec-tools','bind9'],File['/etc/bind/bind.keys.d']],
     refreshonly => true,
   }
 
+  concat { "/etc/bind/bind.key.d/$name.key":
+    owner   => 'bind',
+    group   => 'bind',
+    mode    => '0644',
+    require => Class['concat::setup'],
+    notify  => Class['dns::server::service']
+  }
+
+  concat::fragment { "$name.key-header":
+    ensure  => present,
+    target  => "/etc/bind/bind.key.d/$name.key",
+    order   => 1,
+    content => template('dns/key.erb')
+    require => Exec["dnssec-keygen-${name}"]
+  }
+  concat::fragment { "$name.key-secret":
+    ensure  => present,
+    target  => "/etc/bind/bind.key.d/$name.key",
+    order   => 2,
+    source  => "/etc/bind/bind.keys.d/${name}.secret",
+    require => Exec["dnssec-keygen-${name}"],File ["/etc/bind/bind.keys.d/${name}.secret"]
+  }
+  concat::fragment { "$name.key-footer":
+    ensure  => present,
+    target  => "/etc/bind/bind.key.d/$name.key",
+    order   => 3,
+    content => '}:', 
+    require => Exec["dnssec-keygen-${name}"]
+  }
+}
