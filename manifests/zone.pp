@@ -45,6 +45,7 @@ define dns::zone (
 
       exec { "soa-${zone}":
         command     => "echo \'$zone_soa\' > \'$zone_file\'",
+        path        => ["/bin", "/sbin", "/usr/bin", "/usr/sbin"],
         refreshonly => true,
         require     => Class['dns::server::install'],
         notify      => Class['dns::server::service'],
