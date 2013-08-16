@@ -15,4 +15,4 @@ $TTL    <%= @zone_ttl %>
 @               IN      NS      <%= nameserver %>.
 <% end -%>
 ;
-$INCLUDE db.<%= @zone %>.data
+$INCLUDE /etc/bind/db.<%= @zone %>.data
