@@ -49,7 +49,7 @@ define dns::zone (
         refreshonly => true,
         require     => Class['dns::server::install'],
         notify      => Class['dns::server::service'],
-        environment => ['TTL=$TTL', 'INCLUDE=$INCLUDE', 'ORIGIN=$ORIGIN'], # for correct work on Ubuntu 12.04 with provicer => shell
+        environment => ['TTL=$TTL', 'INCLUDE=$INCLUDE', 'ORIGIN=$ORIGIN'], # for correct work on Ubuntu 12.04 with provider => shell
         provider    => shell # for correct work on Debian Squeeze
 
       }
