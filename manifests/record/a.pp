@@ -15,9 +15,9 @@ define dns::record::a (
   }
 
   if $ptr {
-    $ip = inline_template('<%= data.kind_of?(Array) ? data.first : data %>')
-    $reverse_zone = inline_template('<%= ip.split(".")[0..-2].reverse.join(".") %>.IN-ADDR.ARPA')
-    $octet = inline_template('<%= ip.split(".")[-1] %>')
+    $ip = inline_template('<%= @data.kind_of?(Array) ? @data.first : @data %>')
+    $reverse_zone = inline_template('<%= @ip.split(".")[0..-2].reverse.join(".") %>.IN-ADDR.ARPA')
+    $octet = inline_template('<%= @ip.split(".")[-1] %>')
 
     dns::record::ptr { $octet:
       zone => $reverse_zone,
