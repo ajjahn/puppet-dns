@@ -1,6 +1,8 @@
 class dns::server::install {
 
-  package { 'bind9':
+  $necessary_packages = [ 'bind9', 'dnssec-tools']
+
+  package { $necessary_packages :
     ensure => latest,
   }
 
