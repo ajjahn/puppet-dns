@@ -1,2 +1,6 @@
 .DS_Store
 pkg/
+.*.sw?
+spec/fixtures
+Gemfile.lock
+.rspec_system
