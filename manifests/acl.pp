@@ -1,4 +1,4 @@
-s defined type allows you to declare a BIND ACL.
+# defined type allows you to declare a BIND ACL.
 #
 # Parameters:
 #
