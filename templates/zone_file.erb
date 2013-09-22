@@ -12,6 +12,6 @@ $TTL	<%= @zone_ttl %>
 		<%= @zone_minimum %>	)	; Negative Cache TTL
 ;
 <% @nameservers.each do |nameserver| -%>
-@		IN	NS	<%= @nameserver %>.
+@		IN	NS	<%= nameserver -%>.
 <% end -%>
 ;
