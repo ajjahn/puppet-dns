@@ -12,7 +12,7 @@ dns::zone { 'example.com':
   nameservers => [ 'ns1' ],
 }
 
-dns::zone { '56.168.192.in-addr.arpa':
+dns::zone { '56.168.192.IN-ADDR.ARPA':
   soa         => 'ns1.example.com',
   soa_email   => 'admin.example.com',
   nameservers => [ 'ns1' ],
