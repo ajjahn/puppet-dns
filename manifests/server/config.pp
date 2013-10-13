@@ -1,37 +1,36 @@
-class dns::server::config {
+class dns::server::config inherits dns::server::params {
 
-  file { '/etc/bind':
+  file { $cfg_dir:
     ensure => directory,
-    owner  => 'bind',
-    group  => 'bind',
+    owner  => $owner,
+    group  => $group,
     mode   => '0755',
   }
-  file { '/etc/bind/zones':
+  file { "${cfg_dir}/zones":
     ensure => directory,
-    owner  => 'bind',
-    group  => 'bind',
+    owner  => $owner,
+    group  => $group,
     mode   => '0755',
   }
-  file {'/etc/bind/bind.keys.d':
+  file { "${cfg_dir}/bind.keys.d/":
     ensure => directory,
-    owner  => 'bind',
-    group  => 'bind',
+    owner  => $owner,
+    group  => $group,
     mode   => '0755',
   }
 
-
-  file { '/etc/bind/named.conf':
+  file { "${cfg_dir}/named.conf":
     ensure  => present,
-    owner   => 'bind',
-    group   => 'bind',
+    owner   => $owner,
+    group   => $group,
     mode    => '0644',
     require => [File['/etc/bind'], Class['dns::server::install']],
     notify  => Class['dns::server::service'],
   }
 
-  concat { '/etc/bind/named.conf.local':
-    owner   => 'bind',
-    group   => 'bind',
+  concat { "${cfg_dir}/named.conf.local":
+    owner   => $owner,
+    group   => $group,
     mode    => '0644',
     require => Class['concat::setup'],
     notify  => Class['dns::server::service']
@@ -39,7 +38,7 @@ class dns::server::config {
 
   concat::fragment{'named.conf.local.header':
     ensure  => present,
-    target  => '/etc/bind/named.conf.local',
+    target  => "${cfg_dir}/named.conf.local",
     order   => 1,
     content => "// File managed by Puppet.\n"
   }
