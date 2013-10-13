@@ -10,6 +10,7 @@ dns::zone { 'example.com':
   soa         => 'ns1.example.com',
   soa_email   => 'admin.example.com',
   nameservers => [ 'ns1' ],
+  allow_transfer => [ '192.0.2.0', '2001:db8::/32' ]
 }
 
 dns::zone { '56.168.192.IN-ADDR.ARPA':
