@@ -2,16 +2,10 @@ require 'spec_helper'
 
 describe 'dns::zone' do
   let(:title) { 'test.com' }
-  let :facts do
-    {
-      :concat_basedir         => '/dne',
-    }
-  end
 
   context 'passing something other than an array' do
-    let :params do
-      { :allow_transfer => '127.0.0.1' }
-    end
+    let :facts  do { :concat_basedir => '/dne',  } end
+    let :params do { :allow_transfer => '127.0.0.1' } end
 
     it 'should fail input validation' do
       expect { subject }.to raise_error(Puppet::Error, /is not an Array/)
@@ -19,6 +13,7 @@ describe 'dns::zone' do
   end
 
   context 'passing an array to data' do
+    let :facts do { :concat_basedir => '/dne',  } end
     let :params do
       { :allow_transfer => [ '192.0.2.0', '2001:db8::/32' ] }
     end
