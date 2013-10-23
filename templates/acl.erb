@@ -1,0 +1,5 @@
+acl <%= @aclname %> {
+<% @data.each do |ip| -%>
+  <%= ip %>;
+<% end -%>
+};

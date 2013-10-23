@@ -1,22 +1,26 @@
 # Puppet DNS (BIND9) Module
 
+[![Build Status](https://travis-ci.org/solarkennedy/puppet-dns.png)](https://travis-ci.org/solarkennedy/puppet-dns)
+
 Module for provisioning DNS (bind9)
 
 Tested on Ubuntu 12.04, patches to support other operating systems are welcome.
 
-This module depends on concat (https://github.com/ripienaar/puppet-concat).
+This module depends on concat (https://github.com/puppetlabs/puppet-concat).
 
-Note: This module has moved on PuppetForge to [http://forge.puppetlabs.com/ajjahn/dns](http://forge.puppetlabs.com/ajjahn/dns). All future releases can be found there.
+Note: This module is a merge of the work from the following authors:
+* [ajiahn](https://github.com/ajjahn/puppet-dns) (Original Author)
+* [Danzilio](https://github.com/danzilio/puppet-dns/) (Big refactor and ACL support)
 
 ## Installation
 
 Clone this repo to your Puppet modules directory
 
-    git clone git://github.com/ajjahn/puppet-dns.git dns
+    git clone git://github.com/solarkennedy/puppet-dns.git dns
 
 or
 
-    puppet module install ajjahn/dns
+    puppet module install KyleAnderson/dns
 
 ## Usage
 

@@ -51,7 +51,7 @@ define dns::zone (
     concat::fragment{"named.conf.local.${name}.include":
       ensure  => $ensure,
       target  => '/etc/bind/named.conf.local',
-      order   => 2,
+      order   => 3,
       content => template("${module_name}/zone.erb")
     }
 

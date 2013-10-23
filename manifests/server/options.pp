@@ -15,10 +15,8 @@
 #    'forwarders' => [ '8.8.8.8', '8.8.4.4' ],
 #   }
 #
-define dns::server::options (
+define dns::server::options inherits dns::server::params (
   $forwarders = [],
-  $group = 'bind',
-  $owner = 'bind',
 ) {
 
   file { $title:
@@ -26,7 +24,7 @@ define dns::server::options (
     owner   => $owner,
     group   => $group,
     mode    => '0644',
-    require => [File['/etc/bind'], Class['dns::server::install']],
+    require => [File[${cfg_dir}], Class['dns::server::install']],
 	content => template("${module_name}/named.conf.options.erb"),
     notify  => Class['dns::server::service'],
   }
