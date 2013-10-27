@@ -1,6 +1,6 @@
 # Puppet DNS (BIND9) Module
 
-[![Build Status](https://travis-ci.org/solarkennedy/puppet-dns.png)](https://travis-ci.org/solarkennedy/puppet-dns)
+[![Build Status](https://travis-ci.org/ajjahn/puppet-dns.png)](https://travis-ci.org/ajjahn/puppet-dns)
 
 Module for provisioning DNS (bind9)
 
@@ -8,19 +8,15 @@ Tested on Ubuntu 12.04, patches to support other operating systems are welcome.
 
 This module depends on concat (https://github.com/puppetlabs/puppet-concat).
 
-Note: This module is a merge of the work from the following authors:
-* [ajiahn](https://github.com/ajjahn/puppet-dns) (Original Author)
-* [Danzilio](https://github.com/danzilio/puppet-dns/) (Big refactor and ACL support)
-
 ## Installation
 
 Clone this repo to your Puppet modules directory
 
-    git clone git://github.com/solarkennedy/puppet-dns.git dns
+    git clone git://github.com/ajjahn/puppet-dns.git dns
 
 or
 
-    puppet module install KyleAnderson/dns
+    puppet module install ajjahn/dns
 
 ## Usage
 
@@ -94,6 +90,13 @@ Tweak and add the following to your site manifest:
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Authors
+
+Note: This module is a merge of the work from the following authors:
+* [ajjahn](https://github.com/ajjahn/puppet-dns)
+* [Danzilio](https://github.com/danzilio)
+* [solarkennedy](https://github.com/solarkennedy)
 
 ## License
 
