@@ -32,15 +32,15 @@ Tweak and add the following to your site manifest:
 
       # Forward Zone
       dns::zone { 'example.com':
-        soa => "ns1.example.com",
-        soa_email => 'admin.example.com',
+        soa         => "ns1.example.com",
+        soa_email   => 'admin.example.com',
         nameservers => ["ns1"]
       }
 
       # Reverse Zone
       dns::zone { '1.168.192.IN-ADDR.ARPA':
-        soa => "ns1.example.com",
-        soa_email => 'admin.example.com',
+        soa         => "ns1.example.com",
+        soa_email   => 'admin.example.com',
         nameservers => ["ns1"]
       }
 
@@ -55,32 +55,47 @@ Tweak and add the following to your site manifest:
         'luey':
           zone => 'example.com',
           data => ["192.168.1.25"],
-          ptr => true; # Creates a matching reverse zone record.  Make sure you've added the proper reverse zone in the manifest.
+          ptr  => true; # Creates a matching reverse zone record.  Make sure you've added the proper reverse zone in the manifest.
       }
 
       # MX Records:
       dns::record::mx {
         'mx,0':
-          zone => 'example.com',
+          zone       => 'example.com',
           preference => 0,
-          data => 'ASPMX.L.GOOGLE.com';
+          data       => 'ASPMX.L.GOOGLE.com';
         'mx,10':
-          zone => 'example.com',
+          zone       => 'example.com',
           preference => 10,
-          data => 'ALT1.ASPMX.L.GOOGLE.com';
+          data       => 'ALT1.ASPMX.L.GOOGLE.com';
       }
 
       # CNAME Record:
-      dns::record::cname {'www':
+      dns::record::cname { 'www':
         zone => 'example.com',
         data => 'huey.example.com',
       }
 
       # TXT Record:
-      dns::record::txt {'www':
+      dns::record::txt { 'www':
         zone => 'example.com',
         data => 'Hello World',
       }
+    }
+
+### Exported resource patterns
+    node default {
+      # Other nodes export an A record for thier hostname
+      @@dns::record::a { $hostname: zone => $::domain, data => $::ipaddress, }
+    }
+    node 'ns1.xkyle.com' {
+      dns::zone { $::domain:
+        soa         => $::fqdn,
+        soa_email   => "admin.${::domain}",
+        nameservers => [ 'ns1' ],
+      }
+      # Collect all the records from other nodes
+      Dns::Record::A <<||>>
     }
 
 ## Contributing
