@@ -18,7 +18,7 @@
 define dns::server::options (
   $forwarders = [],
 ) {
-
+  include dns::server::params
   file { $title:
     ensure  => present,
     owner   => $owner,
