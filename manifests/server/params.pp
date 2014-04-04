@@ -1,11 +1,13 @@
 class dns::server::params {
   case $osfamily {
     'Debian': {
-       $cfg_dir = '/etc/bind'
-       $group   = 'bind'
-       $owner   = 'bind'
-       $package = 'bind9'
-       $service = 'bind9'
+       $cfg_dir            = '/etc/bind'
+       $cfg_file           = '/etc/bind/named.conf'
+       $data_dir           = '/etc/bind/zones'
+       $group              = 'bind'
+       $owner              = 'bind'
+       $package            = 'bind9'
+       $service            = 'bind9'
        $necessary_packages = [ 'bind9', 'dnssec-tools']
     }
     default: { 

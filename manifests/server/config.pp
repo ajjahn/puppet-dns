@@ -6,7 +6,7 @@ class dns::server::config inherits dns::server::params {
     group  => $group,
     mode   => '0755',
   }
-  file { "${cfg_dir}/zones":
+  file { $data_dir:
     ensure => directory,
     owner  => $owner,
     group  => $group,
@@ -19,12 +19,12 @@ class dns::server::config inherits dns::server::params {
     mode   => '0755',
   }
 
-  file { "${cfg_dir}/named.conf":
+  file { $cfg_file:
     ensure  => present,
     owner   => $owner,
     group   => $group,
     mode    => '0644',
-    require => [File['/etc/bind'], Class['dns::server::install']],
+    require => Class['dns::server::install'],
     notify  => Class['dns::server::service'],
   }
 

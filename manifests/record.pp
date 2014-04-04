@@ -8,8 +8,9 @@ define dns::record (
   $preference = false,
   $order = 9
 ) {
+  include dns::server::params
 
-  $zone_file = "/etc/bind/zones/db.${zone}"
+  $zone_file = "${dns::server::params::data_dir}/db.${zone}"
 
   concat::fragment{"db.${zone}.${name}.record":
     target  => $zone_file,
