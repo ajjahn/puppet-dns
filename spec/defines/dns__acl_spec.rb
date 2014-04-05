@@ -3,8 +3,9 @@ require 'spec_helper'
 describe 'dns::acl' do
   let(:title) { 'trusted' }
 
+  let(:facts) { { :concat_basedir => '/tmp' } }
+
   context 'passing a string to data' do
-    let :facts do { :concat_basedir => '/dne',  } end
     let :params do
       { :data => '192.168.0.0/24' }
     end
@@ -15,7 +16,6 @@ describe 'dns::acl' do
   end
 
   context 'passing an array to data' do
-    let :facts do { :concat_basedir => '/dne',  } end
     let :params do
       { :data => [ '192.168.0.0/24' ] }
     end

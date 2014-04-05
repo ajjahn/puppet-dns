@@ -15,18 +15,24 @@
 #    'forwarders' => [ '8.8.8.8', '8.8.4.4' ],
 #   }
 #
-define dns::server::options inherits dns::server::params (
+define dns::server::options(
   $forwarders = [],
 ) {
 
+  if ! defined(Class['::dns::server']) {
+    fail('You must include the ::dns::server base class before using any dns options defined resources')
+  }
+
+  validate_array($forwarders)
+
   file { $title:
     ensure  => present,
-    owner   => $owner,
-    group   => $group,
+    owner   => $::dns::server::params::owner,
+    group   => $::dns::server::params::group,
     mode    => '0644',
-    require => [File[${cfg_dir}], Class['dns::server::install']],
-	content => template("${module_name}/named.conf.options.erb"),
-    notify  => Class['dns::server::service'],
+    require => [File[$::dns::server::params::cfg_dir], Class['::dns::server::install']],
+    content => template("${module_name}/named.conf.options.erb"),
+    notify  => Class['::dns::server::service'],
   }
 
 }
