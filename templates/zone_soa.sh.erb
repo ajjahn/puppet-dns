@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# This is "template" for Puppet. It needs to make SOA header of DNS zone.
+#
+# Usage:
+# zone-soa.sh <zone_name> <soa> <soa_email> <zone_serial> <zone_ttl> <zone_refresh> <zone_retry> <zone_expire> <zone_minimum> <ns1> ... <nsN>
+
+ZONE_NAME=$1
+SOA=$2
+SOA_EMAIL=$3
+ZONE_SERIAL=$4
+ZONE_TTL=$5
+ZONE_REFRESH=$6
+ZONE_RETRY=$7
+ZONE_EXPIRE=$8
+ZONE_MINIMUM=$9
+
+cat > "<%= @cfg_dir %>/zones/db.${ZONE_NAME}" <<EOF
+;
+; BIND data file for $ZONE_NAME zone.
+; File managed by puppet.
+;
+\$ORIGIN ${ZONE_NAME}.
+\$TTL    $ZONE_TTL
+@       IN      SOA     ${SOA}. ${SOA_EMAIL}. (
+                $ZONE_SERIAL	; Serial
+                $ZONE_REFRESH	; Refresh
+                $ZONE_RETRY	; Retry
+                $ZONE_EXPIRE	; Expire
+                $ZONE_MINIMUM )	; Negative Cache TTL
+;
+EOF
+
+shift 9
+while [ "$#" -gt "0" ]; do
+  NAMESERVER=$1
+  echo "@	IN	NS	$NAMESERVER." >> "<%= @cfg_dir %>/zones/db.${ZONE_NAME}"
+  shift
+done
+
+cat >> "<%= @cfg_dir %>/zones/db.${ZONE_NAME}" <<EOF
+;
+\$INCLUDE /etc/bind/zones/db.${ZONE_NAME}.data
+EOF
