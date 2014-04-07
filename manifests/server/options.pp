@@ -6,7 +6,7 @@
 #  $forwarders:
 #   Array of forwarders IP addresses. Default: empty
 # $group:
-#   Group of the file. Default: bind
+#	Group of the file. Default: bind
 # $owner:
 #   Owner of the file. Default: bind
 #
@@ -15,18 +15,23 @@
 #    'forwarders' => [ '8.8.8.8', '8.8.4.4' ],
 #   }
 #
-define dns::server::options (
+define dns::server::options(
   $forwarders = [],
 ) {
-  include dns::server::params
+
+  if ! defined(Class['::dns::server']) {
+    fail('You must include the ::dns::server base class before using any dns options defined resources')
+  }
+
+  validate_array($forwarders)
 
   file { $title:
     ensure  => present,
-    owner   => $dns::server::params::owner,
-    group   => $dns::server::params::group,
+    owner   => $::dns::server::params::owner,
+    group   => $::dns::server::params::group,
     mode    => '0644',
+    require => [File[$::dns::server::params::cfg_dir], Class['::dns::server::install']],
     content => template("${module_name}/named.conf.options.erb"),
-    require => Class['dns::server::install'],
     notify  => Class['dns::server::service'],
   }
 

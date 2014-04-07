@@ -19,7 +19,8 @@ define dns::record::a (
     $reverse_zone = inline_template('<%= @ip.split(".")[0..-2].reverse.join(".") %>.IN-ADDR.ARPA')
     $octet = inline_template('<%= @ip.split(".")[-1] %>')
 
-    dns::record::ptr { $octet:
+    dns::record::ptr { "$octet.${reverse_zone}":
+      host => $octet,
       zone => $reverse_zone,
       data => "${host}.${zone}"
     }
