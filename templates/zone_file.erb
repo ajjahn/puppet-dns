@@ -5,7 +5,7 @@
 $ORIGIN	<%= @zone %>.
 $TTL	<%= @zone_ttl %>
 @	IN	SOA	<%= @soa %>. <%= @soa_email %>. (
-		<%= @zone_serial %>		; Serial
+		_SERIAL_		; Serial<%# Be careful at change of number of this line. It is used in zone.pp/Exec[real-${zone}]. %>
 		<%= @zone_refresh %>		; Refresh
 		<%= @zone_retry %>		; Retry
 		<%= @zone_expire %>		; Expire

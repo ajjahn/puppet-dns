@@ -1,7 +1,6 @@
 define dns::zone (
   $soa = "${::fqdn}.",
   $soa_email = "root.${::fqdn}.",
-  $serial = false,
   $zone_ttl = '604800',
   $zone_refresh = '604800',
   $zone_retry = '86400',
@@ -16,19 +15,17 @@ define dns::zone (
   $ensure = present
 ) {
 
-  validate_array($allow_transfer)
+  $cfg_dir = $dns::server::params::cfg_dir
 
-  $zone_serial = $serial ? {
-    false   => inline_template('<%= Time.now.to_i %>'),
-    default => $serial
-  }
+  validate_array($allow_transfer)
 
   $zone = $reverse ? {
     true    => "${name}.in-addr.arpa",
     default => $name
   }
 
-  $zone_file = "/etc/bind/zones/db.${name}"
+  $zone_file = "${cfg_dir}/zones/db.${name}"
+  $zone_file_stage = "${zone_file}.stage"
 
   if $ensure == absent {
     file { $zone_file:
@@ -36,24 +33,45 @@ define dns::zone (
     }
   } else {
     # Zone Database
-    concat { $zone_file:
+
+    # Create "fake" zone file without zone-serial
+    concat { $zone_file_stage:
       owner   => 'bind',
       group   => 'bind',
       mode    => '0644',
       require => [Class['concat::setup'], Class['dns::server']],
-      notify  => Class['dns::server::service']
+      notify  => Exec["real-${zone}"]
     }
     concat::fragment{"db.${name}.soa":
-      target  => $zone_file,
+      target  => $zone_file_stage,
       order   => 1,
       content => template("${module_name}/zone_file.erb")
+    }
+
+    # Generate real zone from stage file through replacement _SERIAL_ template to current timestamp
+    # A real zone file will be updated only at change of the stage file, thanks to this serial is updated only in case of need
+    $zone_serial = inline_template('<%= Time.now.to_i %>')
+    exec { "real-${zone}":
+      command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
+      path        => ["/bin", "/sbin", "/usr/bin", "/usr/sbin"],
+      refreshonly => true,
+      provider	  => posix,
+      require     => Class['dns::server::install'],
+      notify      => Class['dns::server::service'],
+    }
+    # Set rights for real zone file
+    file { $zone_file:
+      owner   => 'bind',
+      group   => 'bind',
+      mode    => '0644',
+      require => Exec["real-${zone}"]
     }
   }
 
   # Include Zone in named.conf.local
   concat::fragment{"named.conf.local.${name}.include":
     ensure  => $ensure,
-    target  => '/etc/bind/named.conf.local',
+    target  => "${cfg_dir}/named.conf.local",
     order   => 3,
     content => template("${module_name}/zone.erb")
   }
