@@ -40,7 +40,7 @@ define dns::zone (
       group   => 'bind',
       mode    => '0644',
       require => [Class['concat::setup'], Class['dns::server']],
-      notify  => Exec["real-${zone}"]
+      notify  => Exec["bump-${zone}-serial"]
     }
     concat::fragment{"db.${name}.soa":
       target  => $zone_file_stage,
@@ -51,20 +51,16 @@ define dns::zone (
     # Generate real zone from stage file through replacement _SERIAL_ template to current timestamp
     # A real zone file will be updated only at change of the stage file, thanks to this serial is updated only in case of need
     $zone_serial = inline_template('<%= Time.now.to_i %>')
-    exec { "real-${zone}":
+    exec { "bump-${zone}-serial":
       command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
       path        => ["/bin", "/sbin", "/usr/bin", "/usr/sbin"],
       refreshonly => true,
       provider	  => posix,
+      user	  => 'bind',
+      group   	  => 'bind',
+      umask    	  => '022',
       require     => Class['dns::server::install'],
       notify      => Class['dns::server::service'],
-    }
-    # Set rights for real zone file
-    file { $zone_file:
-      owner   => 'bind',
-      group   => 'bind',
-      mode    => '0644',
-      require => Exec["real-${zone}"]
     }
   }
 
