@@ -14,5 +14,11 @@ zone "<%= @zone %>" {
 <% end -%>
   };
 <% end -%>  
+<% if @allow_forward -%>
+  allow-transfer {
+<% @allow_forward.each do |ip| -%>
+  <%= ip %>;
+<% end -%>
+  };
 <% end -%>
 };
