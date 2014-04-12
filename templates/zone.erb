@@ -14,9 +14,10 @@ zone "<%= @zone %>" {
 <% end -%>
   };
 <% end -%>  
-<% if @allow_forward -%>
-  allow-forwarder {
-<% @allow_forward.each do |ip| -%>
+<% if @allow_forwarder -%>
+  forward <%= @forward_policy %>;
+  forwarders {
+<% @allow_forwarder.each do |ip| -%>
   <%= ip %>;
 <% end -%>
   };
