@@ -41,6 +41,11 @@ describe 'dns::zone' do
 
     it {
       should contain_concat__fragment('named.conf.local.test.com.include').
+      with_content(/forward only;/)
+    }
+
+    it {
+      should contain_concat__fragment('named.conf.local.test.com.include').
       with_content(/8.8.8.8/)
     }
 
