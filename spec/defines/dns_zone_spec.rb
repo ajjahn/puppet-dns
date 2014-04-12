@@ -15,7 +15,9 @@ describe 'dns::zone' do
   context 'passing an array to data' do
     let :facts do { :concat_basedir => '/dne',  } end
     let :params do
-      { :allow_transfer => [ '192.0.2.0', '2001:db8::/32' ] }
+      { :allow_transfer => [ '192.0.2.0', '2001:db8::/32' ],
+	:allow_forwarder => ['8.8.8.8', '208.67.222.222']
+      }
     end
 
     it 'should pass input validation' do
@@ -31,11 +33,21 @@ describe 'dns::zone' do
       should contain_concat__fragment('named.conf.local.test.com.include').
       with_content(/192\.0\.2\.0/)
     }
+
+    it {
+      should contain_concat__fragment('named.conf.local.test.com.include').
+      with_content(/allow-forwarder/)
+    }
+
+    it {
+      should contain_concat__fragment('named.conf.local.test.com.include').
+      with_content(/8.8.8.8/)
+    }
+
     it {
       should contain_concat__fragment('named.conf.local.test.com.include').
       with_content(/2001:db8::\/32/)
     }
-
   end
 
 end
