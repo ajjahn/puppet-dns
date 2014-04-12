@@ -11,13 +11,18 @@ define dns::zone (
   $reverse = false,
   $zone_type = 'master',
   $allow_transfer = [],
-  $allow_forward = [],
+  $allow_forwarder = [],
   $slave_masters = undef,
   $zone_notify = false,
   $ensure = present
 ) {
 
   validate_array($allow_transfer)
+  validate_array($allow_forwarder)
+  if $dns::options::forwarder and $allow_forwarder {
+    fatal("You cannot specify a global forwarder and \
+    a zone forwarder for zone ${soa}")
+  }
 
   $zone_serial = $serial ? {
     false   => inline_template('<%= Time.now.to_i %>'),
