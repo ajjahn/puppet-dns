@@ -36,7 +36,7 @@ describe 'dns::zone' do
 
     it {
       should contain_concat__fragment('named.conf.local.test.com.include').
-      with_content(/allow-forwarder/)
+      with_content(/forwarders/)
     }
 
     it {
