@@ -16,7 +16,7 @@ describe 'dns::zone' do
     let :facts do { :concat_basedir => '/dne',  } end
     let :params do
       { :allow_transfer => [ '192.0.2.0', '2001:db8::/32' ],
-	:allow_forwarder => ['8.8.8.8', '208.67.222.222']
+        :allow_forwarder => ['8.8.8.8', '208.67.222.222']
       }
     end
 
