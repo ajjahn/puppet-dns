@@ -12,6 +12,7 @@ define dns::zone (
   $zone_type = 'master',
   $allow_transfer = [],
   $allow_forwarder = [],
+  $forward_policy = 'first',
   $slave_masters = undef,
   $zone_notify = false,
   $ensure = present
@@ -22,6 +23,9 @@ define dns::zone (
   if $dns::options::forwarder and $allow_forwarder {
     fatal("You cannot specify a global forwarder and \
     a zone forwarder for zone ${soa}")
+  }
+  if !member(['first', 'only'], $forward_policy) {
+    fatal('The forward policy can only be set to either first or only')
   }
 
   $zone_serial = $serial ? {
