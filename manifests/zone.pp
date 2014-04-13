@@ -48,17 +48,17 @@ define dns::zone (
       content => template("${module_name}/zone_file.erb")
     }
 
-    # Generate real zone from stage file through replacement _SERIAL_ template to current timestamp
-    # A real zone file will be updated only at change of the stage file, thanks to this serial is updated only in case of need
+    # Generate real zone from stage file through replacement _SERIAL_ template
+    # to current timestamp. A real zone file will be updated only at change of
+    # the stage file, thanks to this serial is updated only in case of need.
     $zone_serial = inline_template('<%= Time.now.to_i %>')
     exec { "bump-${zone}-serial":
       command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
-      path        => ["/bin", "/sbin", "/usr/bin", "/usr/sbin"],
+      path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
-      provider	  => posix,
-      user	  => 'bind',
-      group   	  => 'bind',
-      umask    	  => '022',
+      provider    => posix,
+      user        => 'bind',
+      group       => 'bind',
       require     => Class['dns::server::install'],
       notify      => Class['dns::server::service'],
     }
