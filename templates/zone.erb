@@ -14,7 +14,7 @@ zone "<%= @zone %>" {
 <% end -%>
   };
 <% end -%>
-<% if @allow_forwarder -%>
+<% if !@allow_forwarder.empty? -%>
   forward <%= @forward_policy %>;
   forwarders {
 <% @allow_forwarder.each do |ip| -%>
