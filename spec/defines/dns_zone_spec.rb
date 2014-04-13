@@ -41,7 +41,7 @@ describe 'dns::zone' do
 
     it {
       should contain_concat__fragment('named.conf.local.test.com.include').
-      with_content(/forward only;/)
+      with_content(/forward first;/)
     }
 
     it {
@@ -55,5 +55,30 @@ describe 'dns::zone' do
     }
   end
 
+  context 'when ask to have a only forward policy' do
+    let :facts do { :concat_basedir => '/dne',  } end
+    let :params do
+      { :allow_transfer => [ '192.0.2.0', '2001:db8::/32' ],
+        :allow_forwarder => ['8.8.8.8', '208.67.222.222'],
+        :forward_policy => 'only'
+      }
+    end
+      it {
+          should contains_concat__fragment('named.conf.local.test.com.include')
+          with_content(/foward only;/)
+      }
+  end
+  context 'when given a bogus forward policy' do
+    let :facts do { :concat_basedir => '/dne',  } end
+    let :params do
+      { :allow_transfer => [ '192.0.2.0', '2001:db8::/32' ],
+        :allow_forwarder => ['8.8.8.8', '208.67.222.222'],
+        :forward_policy => 'nonvalidpolicy'
+      }
+    end
+      it {
+          should fail
+      }
+  end
 end
 
