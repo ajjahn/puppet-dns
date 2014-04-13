@@ -76,7 +76,7 @@ describe 'dns::zone' do
       }
     end
 
-    it 'should have a forward only policy' do
+    it 'should not have any forwarder configuration' do
         should_not contain_concat__fragment('named.conf.local.test.com.include').
         with_content(/forward/)
     end
