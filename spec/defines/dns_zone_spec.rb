@@ -63,10 +63,10 @@ describe 'dns::zone' do
         :forward_policy => 'only'
       }
     end
-      it {
-          should contains_concat__fragment('named.conf.local.test.com.include')
+      it 'should have a forward only policy' do
+          should contain_concat__fragment('named.conf.local.test.com.include').
           with_content(/foward only;/)
-      }
+      end
   end
   context 'when given a bogus forward policy' do
     let :facts do { :concat_basedir => '/dne',  } end
@@ -76,9 +76,9 @@ describe 'dns::zone' do
         :forward_policy => 'nonvalidpolicy'
       }
     end
-      it {
+      it 'should not validat:' do
           should fail
-      }
+      end
   end
 end
 
