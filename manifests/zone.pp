@@ -25,7 +25,7 @@ define dns::zone (
     a zone forwarder for zone ${soa}")
   }
   if !member(['first', 'only'], $forward_policy) {
-    fatal('The forward policy can only be set to either first or only')
+    error('The forward policy can only be set to either first or only')
   }
 
   $zone_serial = $serial ? {
