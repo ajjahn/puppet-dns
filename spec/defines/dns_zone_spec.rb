@@ -68,5 +68,18 @@ describe 'dns::zone' do
           with_content(/forward only;/)
       end
   end
+
+  context 'when ask to have a only forward policy' do
+    let :facts do { :concat_basedir => '/dne',  } end
+    let :params do
+      { :allow_transfer => [ '192.0.2.0', '2001:db8::/32' ],
+      }
+    end
+
+    it 'should have a forward only policy' do
+        should_not contain_concat__fragment('named.conf.local.test.com.include').
+        with_content(/forward/)
+    end
+  end
 end
 
