@@ -3,7 +3,9 @@ zone "<%= @zone %>" {
 <% if @zone_notify -%>
   notify <%= @zone_notify %>;
 <% end -%>
+<% if @zone_type == 'slave' or @zone_type == 'master' -%>
   file "<%= @zone_file %>";
+<% end -%>
 <% if @zone_type == 'slave' -%>
   masters { <%= @slave_masters %>;};
 <% elsif @zone_type == 'master' -%>
@@ -22,5 +24,8 @@ zone "<%= @zone %>" {
 <% end -%>
   };
 <% end -%>
+<% end -%>
+<% if @zone_type == 'forward' -%>
+  forwarders { <%= @zone_forwarders %>;};
 <% end -%>
 };
