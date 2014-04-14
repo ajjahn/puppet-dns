@@ -1,0 +1,1 @@
+<%= @cfg_dir %>/puppet-scripts/zone_soa.sh <%= @zone %> <%= @soa %> <%= @soa_email %> <%= @zone_serial %> <%= @zone_ttl %> <%= @zone_refresh %> <%= @zone_retry %> <%= @zone_expire %> <%= @zone_minimum %><% @nameservers.each do |nameserver| -%> <%= nameserver %><% end -%>
