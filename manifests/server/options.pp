@@ -19,6 +19,7 @@ define dns::server::options(
   $forwarders = [],
   $allow_recursion = [],
   $check_names = true,
+  $allow_query = [],
 ) {
 
   if ! defined(Class['::dns::server']) {
