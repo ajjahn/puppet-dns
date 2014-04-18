@@ -32,6 +32,17 @@ options {
     };
 <% end -%>
 
+<% if allow_query.size == 0 then -%>
+        // allow-recursion {
+	// none; };
+    <% else -%>
+    allow-recursion {
+    <% allow_query.each do |query| -%>
+	<%= query -%>;
+    <% end -%>
+    };
+<% end -%>
+
 <% if !check_names -%>
     check-names master ignore;
     check-names slave ignore;
