@@ -25,12 +25,4 @@ zone "<%= @zone %>" {
 <% end -%>
 <% end -%>
 
-<% if !@allow_query.empty? -%>
-    allow-query{
-<% @allow_query.each do |query_ip| -%>
-    <%= query_ip %>;
-<% end -%>
-  };
-<% end -%>
-
 };
