@@ -15,8 +15,6 @@ define dns::zone (
   $ensure = present
 ) {
 
-  include dns::server::params
-
   $cfg_dir = $dns::server::params::cfg_dir
 
   validate_array($allow_transfer)

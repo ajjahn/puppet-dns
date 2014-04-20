@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'dns::zone' do
+  let(:pre_condition) { 'include dns::server::params' }
+
   let(:title) { 'test.com' }
 
   context 'passing something other than an array' do
