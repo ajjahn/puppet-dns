@@ -71,7 +71,7 @@ describe 'dns::zone' do
   end
 
   context 'when ask to have a only forward policy' do
-    let :facts do { :concat_basedir => '/dne',  } end
+    let :facts  do { :osfamily => 'Debian', :concat_basedir => '/dne' } end
     let :params do
       { :allow_transfer => [],
         :allow_forwarder => ['8.8.8.8', '208.67.222.222'],
@@ -85,7 +85,7 @@ describe 'dns::zone' do
   end
 
   context 'In the default case with no explicit forward policy or forwarder' do
-    let :facts do { :concat_basedir => '/dne',  } end
+    let :facts  do { :osfamily => 'Debian', :concat_basedir => '/dne' } end
     let :params do
       { :allow_transfer => [ '192.0.2.0', '2001:db8::/32' ],
       }
