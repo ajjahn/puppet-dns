@@ -83,6 +83,16 @@ Tweak and add the following to your site manifest:
       }
     }
 
+You can also declare forwarders for a specific zone, if you don't have one in the dns::option.
+
+      dns::zone { 'example.com':
+        soa             => "ns1.example.com",
+        soa_email       => 'admin.example.com',
+        allow_forwarder => ['8.8.8.8'],
+        forward_policy  => 'first'
+        nameservers     => ["ns1"]
+      }
+
 ### Exported resource patterns
     node default {
       # Other nodes export an A record for thier hostname
