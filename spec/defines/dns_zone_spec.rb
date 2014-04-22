@@ -1,10 +1,12 @@
 require 'spec_helper'
 
 describe 'dns::zone' do
+  let(:pre_condition) { 'include dns::server::params' }
+
   let(:title) { 'test.com' }
 
   context 'passing something other than an array' do
-    let :facts  do { :concat_basedir => '/dne',  } end
+    let :facts  do { :osfamily => 'Debian', :concat_basedir => '/dne' } end
     let :params do { :allow_transfer => '127.0.0.1' } end
 
     it 'should fail input validation' do
@@ -13,7 +15,7 @@ describe 'dns::zone' do
   end
 
   context 'passing an array to data' do
-    let :facts do { :concat_basedir => '/dne',  } end
+    let :facts  do { :osfamily => 'Debian', :concat_basedir => '/dne' } end
     let :params do
       { :allow_transfer => [ '192.0.2.0', '2001:db8::/32' ],
         :allow_forwarder => ['8.8.8.8', '208.67.222.222']
@@ -53,10 +55,23 @@ describe 'dns::zone' do
       should contain_concat__fragment('named.conf.local.test.com.include').
       with_content(/2001:db8::\/32/)
     }
+
+    it { 
+      should contain_concat('/etc/bind/zones/db.test.com.stage')
+    }
+
+    it { should contain_concat__fragment('db.test.com.soa').
+      with_content(/_SERIAL_/)
+    }
+
+    it {
+      should contain_exec('bump-test.com-serial').
+      with_refreshonly('true')
+    }
   end
 
   context 'when ask to have a only forward policy' do
-    let :facts do { :concat_basedir => '/dne',  } end
+    let :facts  do { :osfamily => 'Debian', :concat_basedir => '/dne' } end
     let :params do
       { :allow_transfer => [],
         :allow_forwarder => ['8.8.8.8', '208.67.222.222'],
@@ -70,7 +85,7 @@ describe 'dns::zone' do
   end
 
   context 'In the default case with no explicit forward policy or forwarder' do
-    let :facts do { :concat_basedir => '/dne',  } end
+    let :facts  do { :osfamily => 'Debian', :concat_basedir => '/dne' } end
     let :params do
       { :allow_transfer => [ '192.0.2.0', '2001:db8::/32' ],
       }
