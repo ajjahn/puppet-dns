@@ -1,12 +1,10 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'rake'
-gem 'puppet-lint'
-gem 'rspec-puppet'
-gem 'rspec-system-puppet'
-gem 'puppetlabs_spec_helper'
-gem 'travis'
-gem 'travis-lint'
-gem 'puppet-syntax'
-gem 'puppet', ENV['PUPPET_VERSION'] || '~> 3.2.0'
-gem 'vagrant-wrapper'
+group :test do
+  gem "rake"
+  gem "puppet", ENV['PUPPET_VERSION'] || '~> 3.4.0'
+  gem "puppet-lint"
+  gem "rspec-puppet", '~> 1.0.0' 
+  gem "puppet-syntax"
+  gem "puppetlabs_spec_helper"
+end
