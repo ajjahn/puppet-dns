@@ -1,4 +1,8 @@
-class dns::server::config inherits dns::server::params {
+class dns::server::config (
+  $cfg_dir = $dns::server::params::cfg_dir,
+  $owner   = $dns::server::params::owner,
+  $group   = $dns::server::params::group,
+) inherits dns::server::params {
 
   file { $cfg_dir:
     ensure => directory,
@@ -6,12 +10,14 @@ class dns::server::config inherits dns::server::params {
     group  => $group,
     mode   => '0755',
   }
+
   file { "${cfg_dir}/zones":
     ensure => directory,
     owner  => $owner,
     group  => $group,
     mode   => '0755',
   }
+
   file { "${cfg_dir}/bind.keys.d/":
     ensure => directory,
     owner  => $owner,
@@ -24,7 +30,10 @@ class dns::server::config inherits dns::server::params {
     owner   => $owner,
     group   => $group,
     mode    => '0644',
-    require => [File['/etc/bind'], Class['dns::server::install']],
+    require => [
+      File['/etc/bind'],
+      Class['dns::server::install']
+    ],
     notify  => Class['dns::server::service'],
   }
 
