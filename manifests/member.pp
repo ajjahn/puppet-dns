@@ -6,7 +6,7 @@ class dns::member {
   }
 }
 
-define member ($domain, $hostname, $ipaddress) {
+define dns::member ($domain, $hostname, $ipaddress) {
   dns::record::a { $hostname:
     zone => $domain,
     data => $ipaddress,

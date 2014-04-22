@@ -6,7 +6,7 @@
 #  $forwarders:
 #   Array of forwarders IP addresses. Default: empty
 # $group:
-#	Group of the file. Default: bind
+#   Group of the file. Default: bind
 # $owner:
 #   Owner of the file. Default: bind
 #
