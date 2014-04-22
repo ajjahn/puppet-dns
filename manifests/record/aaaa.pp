@@ -1,3 +1,7 @@
+# == Define: dns::record::aaaa
+#
+# Wrapper of dns::record to set AAAA records
+#
 define dns::record::aaaa (
   $zone,
   $data,

@@ -1,12 +1,17 @@
+# == Define dns::server:srv
+#
+# Wrapper for dns::zone to set SRV records
+#
 define dns::record::srv (
   $zone,
   $service,
-  $proto = "tcp",
   $pri,
   $weight,
   $port,
   $target,
-  $ttl = '') {
+  $proto = 'tcp',
+  $ttl = '',
+) {
 
   $alias = "${service}:${proto}@${target}:${port},${pri},${weight},SRV,${zone}"
 

@@ -1,3 +1,7 @@
+# == Define dns::record
+#
+# This is a private class to arbitary dns records.
+#
 define dns::record (
   $zone,
   $host,
