@@ -27,6 +27,9 @@ define dns::server::options(
   }
 
   validate_array($forwarders)
+  validate_array($allow_recursion)
+  validate_bool($check_names)
+  validate_array($allow_query)
 
   file { $title:
     ensure  => present,
