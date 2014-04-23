@@ -42,6 +42,15 @@ describe 'dns::server::options', :type => :define do
     end
   end
 
+  context 'passing a valid recursion allow range' do
+    let :params do
+      { :allow_recursion => ['10.0.0.1'] }
+    end
+
+    it { should contain_file('/etc/bind/named.conf.options').with_content("10.0.0.1;") }
+
+  end
+
   context 'passing a wrong string to slave name' do 
     let :params do
       { :check_names_slave => '8.8.8.8' }
