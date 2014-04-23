@@ -34,7 +34,7 @@ describe 'dns::server::options', :type => :define do
 
   context 'passing a string to recursion' do
     let :params do
-      { :allow_recursion => '8.8.8.8' }
+      { :allow_recursion => /8.8.8.8/ }
     end
 
     it 'should fail input validation' do
@@ -47,7 +47,7 @@ describe 'dns::server::options', :type => :define do
       { :allow_recursion => ['10.0.0.1'] }
     end
 
-    it { should contain_file('/etc/bind/named.conf.options').with_content("10.0.0.1;") }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/10\.0\.0\.1;$/) }
 
   end
 
@@ -90,9 +90,9 @@ describe 'dns::server::options', :type => :define do
     end
 
     it { should contain_file('/etc/bind/named.conf.options') }
-    it { should contain_file('/etc/bind/named.conf.options').with_content('check-names master warn;')  }
-    it { should contain_file('/etc/bind/named.conf.options').with_content('check-names slave ignore;')  }
-    it { should contain_file('/etc/bind/named.conf.options').with_content('check-names remote warn;')  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/check-names master warn;/)  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/check-names slave ignore;$/)  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/check-names remote warn;$/)  }
   end
 
   context 'passing a string to the allow query' do 
@@ -110,7 +110,7 @@ describe 'dns::server::options', :type => :define do
       { :allow_query => ['8.8.8.8'] }
     end
 
-    it { should contain_file('/etc/bind/named.conf.options').with_content('8.8.8.8;')  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/8\.8\.8\.8;/)  }
     it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-query/)  }
 
   end
