@@ -72,5 +72,19 @@ describe 'dns::server::options', :type => :define do
     end
   end
 
+  context 'passing a valid string to a check name' do 
+    let :params do
+      { :check_names_master => 'warn',
+       :check_names_slave => 'ignore',
+       :check_names_remote => 'warn',
+      }
+    end
+
+    it { should contain_file('/etc/bind/named.conf.options') }
+    it { should contain_file('/etc/bind/named.conf.options').with_content('check-names master warn;')  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content('check-names slave ignore;')  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content('check-names remote warn;')  }
+  end
+
 end
 
