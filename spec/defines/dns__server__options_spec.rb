@@ -28,9 +28,8 @@ describe 'dns::server::options', :type => :define do
       { :forwarders => '8.8.8.8' }
     end
 
-    it 'should fail input validation' do
-      expect { subject }.to raise_error(Puppet::Error, /is not an Array/)
-    end
+    it { should raise_error(Puppet::Error, /is not an Array/) }
+
   end
 
 end
