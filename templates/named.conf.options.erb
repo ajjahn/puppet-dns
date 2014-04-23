@@ -10,40 +10,40 @@ options {
 	// Uncomment the following block, and insert the addresses replacing.
 	// the all-0's placeholder.
 
-<% if forwarders.size == 0 then -%>
+<% if @forwarders.size == 0 then -%>
     // forwarders {
 	// 	0.0.0.0;
 	// };
 <% else -%>
     forwarders {
-    <% forwarders.each do |forwarder| -%>
+    <% @forwarders.each do |forwarder| -%>
       <%= forwarder -%>;
     <% end -%>};
 <% end -%>
 
-<% if allow_recursion.size == 0 then -%>
+<% if @allow_recursion.size == 0 then -%>
         // allow-recursion {
 	// none; };
     <% else -%>
     allow-recursion {
-    <% allow_recursion.each do |recursion| -%>
+    <% @allow_recursion.each do |recursion| -%>
 	<%= recursion -%>;
     <% end -%>
     };
 <% end -%>
 
-<% if allow_query.size == 0 then -%>
+<% if @allow_query.size == 0 then -%>
         // allow-recursion {
 	// none; };
     <% else -%>
     allow-recursion {
-    <% allow_query.each do |query| -%>
+    <% @allow_query.each do |query| -%>
 	<%= query -%>;
     <% end -%>
     };
 <% end -%>
 
-<% if !check_names -%>
+<% if !@check_names -%>
     check-names master ignore;
     check-names slave ignore;
 <% end -%>
