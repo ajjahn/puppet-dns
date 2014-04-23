@@ -18,9 +18,12 @@
 define dns::server::options(
   $forwarders = [],
   $allow_recursion = [],
-  $check_names = true,
+  $check_names_master = 'fail',
+  $check_names_slave = 'warn',
+  $check_names_response = 'ignore',
   $allow_query = [],
 ) {
+  $valid_check_names = ['fail', 'warn', 'ignore']
 
   if ! defined(Class['::dns::server']) {
     fail('You must include the ::dns::server base class before using any dns options defined resources')
@@ -28,7 +31,15 @@ define dns::server::options(
 
   validate_array($forwarders)
   validate_array($allow_recursion)
-  validate_bool($check_names)
+  if !member($valid_check_names, $check_names_master) {
+    error("The check name policy check_names_master must be ${valid_check_names}")
+  }
+  if !member($valid_check_names, $check_names_slave) {
+    error("The check name policy check_names_slave must be ${valid_check_names}")
+  }
+  if !member($valid_check_names, $check_names_response) {
+    error("The check name policy check_names_response must be ${valid_check_names}")
+  }
   validate_array($allow_query)
 
   file { $title:

@@ -21,10 +21,7 @@ options {
     <% end -%>};
 <% end -%>
 
-<% if @allow_recursion.size == 0 then -%>
-        // allow-recursion {
-	// none; };
-    <% else -%>
+<% if @allow_recursion.size != 0 then -%>
     allow-recursion {
     <% @allow_recursion.each do |recursion| -%>
 	<%= recursion -%>;
@@ -32,21 +29,17 @@ options {
     };
 <% end -%>
 
-<% if @allow_query.size == 0 then -%>
-        // allow-recursion {
-	// none; };
-    <% else -%>
-    allow-recursion {
+<% if @allow_query.size != 0 then -%>
+    allow-query {
     <% @allow_query.each do |query| -%>
 	<%= query -%>;
     <% end -%>
     };
 <% end -%>
 
-<% if !@check_names -%>
-    check-names master ignore;
-    check-names slave ignore;
-<% end -%>
+check-names master <%= @check_names_master %>;
+check-names slave <%= @check_names_slave %>;
+check-names response <%= @check_names_response %>;
 
 	//========================================================================
 	// If BIND logs error messages about the root key being expired,
