@@ -34,7 +34,7 @@ describe 'dns::server::options', :type => :define do
 
   context 'passing a string to recursion' do
     let :params do
-      { :allow_recursion => /8.8.8.8/ }
+      { :allow_recursion => '8.8.8.8' }
     end
 
     it 'should fail input validation' do
