@@ -6,14 +6,11 @@ describe 'dns::server::install', :type => :class do
   end
 
   context "on a Debian OS" do
-    let :facts do
-      {
-        :osfamily               => 'Debian',
-        :operatingsystemrelease => '6',
-      }
-    end
+    let(:facts) {{ :osfamily => 'Debian' }}
     it { should contain_class('dns::server::params') }
-    it { should contain_package("bind9") }
+    ['bind9', 'dnssec-tools'].each do |package|
+        it { should contain_package(package) }
+    end
   end
 
 end
