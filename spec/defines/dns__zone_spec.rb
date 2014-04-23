@@ -9,9 +9,7 @@ describe 'dns::zone' do
     let :facts  do { :osfamily => 'Debian', :concat_basedir => '/dne' } end
     let :params do { :allow_transfer => '127.0.0.1' } end
 
-    it 'should fail input validation' do
-      expect { subject }.to raise_error(Puppet::Error, /is not an Array/)
-    end
+    it { should raise_error(Puppet::Error, /is not an Array/) }
   end
 
   context 'passing an array to data' do
@@ -22,9 +20,7 @@ describe 'dns::zone' do
       }
     end
 
-    it 'should pass input validation' do
-      expect { subject }.to_not raise_error
-    end
+    it { should_not raise_error }
 
     it {
       should contain_concat__fragment('named.conf.local.test.com.include').
@@ -56,7 +52,7 @@ describe 'dns::zone' do
       with_content(/2001:db8::\/32/)
     }
 
-    it { 
+    it {
       should contain_concat('/etc/bind/zones/db.test.com.stage')
     }
 
