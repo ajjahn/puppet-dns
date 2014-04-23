@@ -32,13 +32,13 @@ define dns::server::options(
   validate_array($forwarders)
   validate_array($allow_recursion)
   if !member($valid_check_names, $check_names_master) {
-    error("The check name policy check_names_master must be ${valid_check_names}")
+    fail("The check name policy check_names_master must be ${valid_check_names}")
   }
   if !member($valid_check_names, $check_names_slave) {
-    error("The check name policy check_names_slave must be ${valid_check_names}")
+    fail("The check name policy check_names_slave must be ${valid_check_names}")
   }
   if !member($valid_check_names, $check_names_response) {
-    error("The check name policy check_names_response must be ${valid_check_names}")
+    fail("The check name policy check_names_response must be ${valid_check_names}")
   }
   validate_array($allow_query)
 
