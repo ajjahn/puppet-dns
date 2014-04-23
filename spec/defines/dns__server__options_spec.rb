@@ -32,5 +32,45 @@ describe 'dns::server::options', :type => :define do
 
   end
 
+  context 'passing a string to recursion' do
+    let :params do
+      { :allow_recursion => '8.8.8.8' }
+    end
+
+    it 'should fail input validation' do
+      expect { subject }.to raise_error(Puppet::Error, /is not an Array/)
+    end
+  end
+
+  context 'passing a wrong string to slave name' do 
+    let :params do
+      { :check_names_slave => '8.8.8.8' }
+    end
+
+    it 'should fail due to bad check name policy' do
+      expect { subject }.to raise_error(Puppet::Error, /The check name policy/)
+    end
+  end
+
+  context 'passing a wrong string to master name' do 
+    let :params do
+      { :check_names_master => '8.8.8.8' }
+    end
+
+    it 'should fail due to bad check name policy' do
+      expect { subject }.to raise_error(Puppet::Error, /The check name policy/)
+    end
+  end
+
+  context 'passing a wrong string to response name' do 
+    let :params do
+      { :check_names_master => '8.8.8.8' }
+    end
+
+    it 'should fail due to bad check name policy' do
+      expect { subject }.to raise_error(Puppet::Error, /The check name policy/)
+    end
+  end
+
 end
 
