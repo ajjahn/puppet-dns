@@ -85,14 +85,14 @@ describe 'dns::server::options', :type => :define do
     let :params do
       { :check_names_master => 'warn',
        :check_names_slave => 'ignore',
-       :check_names_remote => 'warn',
+       :check_names_response => 'warn',
       }
     end
 
     it { should contain_file('/etc/bind/named.conf.options') }
     it { should contain_file('/etc/bind/named.conf.options').with_content(/check-names master warn;/)  }
     it { should contain_file('/etc/bind/named.conf.options').with_content(/check-names slave ignore;$/)  }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/check-names remote warn;$/)  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/check-names response warn;$/)  }
   end
 
   context 'passing a string to the allow query' do 
