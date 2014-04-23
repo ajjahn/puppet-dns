@@ -95,5 +95,25 @@ describe 'dns::server::options', :type => :define do
     it { should contain_file('/etc/bind/named.conf.options').with_content('check-names remote warn;')  }
   end
 
+  context 'passing a string to the allow query' do 
+    let :params do
+      { :allow_query => '8.8.8.8' }
+    end
+
+    it 'should fail input validation' do
+      expect { subject }.to raise_error(Puppet::Error, /is not an Array/)
+    end
+  end
+
+  context 'passing a valid array to the allow query' do 
+    let :params do
+      { :allow_query => ['8.8.8.8'] }
+    end
+
+    it { should contain_file('/etc/bind/named.conf.options').with_content('8.8.8.8;')  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-query/)  }
+
+  end
+
 end
 
