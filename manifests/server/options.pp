@@ -18,12 +18,12 @@
 define dns::server::options(
   $forwarders = [],
   $allow_recursion = [],
-  $check_names_master = 'fail',
-  $check_names_slave = 'warn',
-  $check_names_response = 'ignore',
+  $check_names_master = undef,
+  $check_names_slave = undef,
+  $check_names_response = undef,
   $allow_query = [],
 ) {
-  $valid_check_names = ['fail', 'warn', 'ignore']
+  $valid_check_names = ['fail', 'warn', 'ignore', undef]
 
   if ! defined(Class['::dns::server']) {
     fail('You must include the ::dns::server base class before using any dns options defined resources')

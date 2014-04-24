@@ -37,9 +37,17 @@ options {
     };
 <% end -%>
 
+<% if @check_names_master -%>
 check-names master <%= @check_names_master %>;
+<% end -%>
+
+<% if @check_names_slave -%>
 check-names slave <%= @check_names_slave %>;
+<% end -%>
+
+<% if @check_names_response -%>
 check-names response <%= @check_names_response %>;
+<% end -%>
 
 	//========================================================================
 	// If BIND logs error messages about the root key being expired,
