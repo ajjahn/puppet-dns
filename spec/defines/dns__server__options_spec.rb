@@ -88,6 +88,12 @@ describe 'dns::server::options', :type => :define do
     it { should contain_file('/etc/bind/named.conf.options').with_content(/check-names response warn;$/)  }
   end
 
+  context 'passing no string to check name' do
+      it { should contain_file('/etc/bind/named.conf.options').without_content(/check-names master/)}
+      it { should contain_file('/etc/bind/named.conf.options').without_content(/check-names slave/)}
+      it { should contain_file('/etc/bind/named.conf.options').without_content(/check-names response/)}
+  end
+
   context 'passing a string to the allow query' do 
     let :params do
       { :allow_query => '8.8.8.8' }
