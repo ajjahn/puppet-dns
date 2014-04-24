@@ -48,6 +48,7 @@ describe 'dns::server::options', :type => :define do
     end
 
     it { should contain_file('/etc/bind/named.conf.options').with_content(/10\.0\.0\.1;$/) }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-recursion$/) }
 
   end
 
