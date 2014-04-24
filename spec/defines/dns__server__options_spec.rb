@@ -37,9 +37,7 @@ describe 'dns::server::options', :type => :define do
       { :allow_recursion => '8.8.8.8' }
     end
 
-    it 'should fail input validation' do
-      expect { subject }.to raise_error(Puppet::Error, /is not an Array/)
-    end
+      it { should raise_error(Puppet::Error, /is not an Array/) }
   end
 
   context 'passing a valid recursion allow range' do
@@ -48,7 +46,7 @@ describe 'dns::server::options', :type => :define do
     end
 
     it { should contain_file('/etc/bind/named.conf.options').with_content(/10\.0\.0\.1;$/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-recursion$/) }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-recursion {$/) }
 
   end
 
@@ -57,9 +55,7 @@ describe 'dns::server::options', :type => :define do
       { :check_names_slave => '8.8.8.8' }
     end
 
-    it 'should fail due to bad check name policy' do
-      expect { subject }.to raise_error(Puppet::Error, /The check name policy/)
-    end
+    it { should raise_error(Puppet::Error, /The check name policy/) }
   end
 
   context 'passing a wrong string to master name' do 
@@ -67,9 +63,7 @@ describe 'dns::server::options', :type => :define do
       { :check_names_master => '8.8.8.8' }
     end
 
-    it 'should fail due to bad check name policy' do
-      expect { subject }.to raise_error(Puppet::Error, /The check name policy/)
-    end
+    it { should raise_error(Puppet::Error, /The check name policy/) }
   end
 
   context 'passing a wrong string to response name' do 
@@ -77,9 +71,7 @@ describe 'dns::server::options', :type => :define do
       { :check_names_master => '8.8.8.8' }
     end
 
-    it 'should fail due to bad check name policy' do
-      expect { subject }.to raise_error(Puppet::Error, /The check name policy/)
-    end
+    it { should raise_error(Puppet::Error, /The check name policy/) }
   end
 
   context 'passing a valid string to a check name' do 
@@ -101,9 +93,7 @@ describe 'dns::server::options', :type => :define do
       { :allow_query => '8.8.8.8' }
     end
 
-    it 'should fail input validation' do
-      expect { subject }.to raise_error(Puppet::Error, /is not an Array/)
-    end
+    it { should raise_error(Puppet::Error, /is not an Array/) }
   end
 
   context 'passing a valid array to the allow query' do 
