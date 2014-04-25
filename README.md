@@ -93,6 +93,14 @@ You can also declare forwarders for a specific zone, if you don't have one in th
         nameservers     => ["ns1"]
       }
 
+You can change the checking of the domain name. The policy can be either warn fail or ignore.
+
+      dns::option {
+	check_name_master = 'fail'
+	check_name_slave = 'warn'
+	check_name_remote = 'ignore'
+      }
+
 ### Exported resource patterns
     node default {
       # Other nodes export an A record for thier hostname
