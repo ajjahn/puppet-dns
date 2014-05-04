@@ -12,7 +12,7 @@
 #
 # Sample Usage :
 #  dns::server::options { '/etc/bind/named.conf.options':
-#    'forwarders' => [ '8.8.8.8', '8.8.4.4' ],
+#    forwarders => [ '8.8.8.8', '8.8.4.4' ],
 #   }
 #
 define dns::server::options(
