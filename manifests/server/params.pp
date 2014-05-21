@@ -1,5 +1,5 @@
 class dns::server::params {
-  case $osfamily {
+  case $::osfamily {
     'Debian': {
        $cfg_dir            = '/etc/bind'
        $cfg_file           = '/etc/bind/named.conf'
@@ -20,7 +20,7 @@ class dns::server::params {
        $service            = 'named'
        $necessary_packages = [ 'bind', 'dnssec-tools']
     }
-    default: { 
+    default: {
       fail("dns::server is incompatible with this osfamily: ${::osfamily}")
     }
   }

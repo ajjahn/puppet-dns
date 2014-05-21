@@ -1,6 +1,7 @@
-.DS_Store
-pkg/
+vendor/
+.bundle
 .*.sw?
+pkg
 spec/fixtures
-Gemfile.lock
 .rspec_system
+.vagrant

@@ -1,7 +1,6 @@
 define dns::zone (
   $soa = "${::fqdn}.",
   $soa_email = "root.${::fqdn}.",
-  $serial = false,
   $zone_ttl = '604800',
   $zone_refresh = '604800',
   $zone_retry = '86400',
@@ -17,21 +16,17 @@ define dns::zone (
   $zone_notify = false,
   $ensure = present
 ) {
-  include dns::server::params
+
+  $cfg_dir = $dns::server::params::cfg_dir
 
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
-  if $dns::options::forwarder and $allow_forwarder {
+  if $dns::server::options::forwarder and $allow_forwarder {
     fatal("You cannot specify a global forwarder and \
     a zone forwarder for zone ${soa}")
   }
   if !member(['first', 'only'], $forward_policy) {
     error('The forward policy can only be set to either first or only')
-  }
-
-  $zone_serial = $serial ? {
-    false   => inline_template('<%= Time.now.to_i %>'),
-    default => $serial
   }
 
   $zone = $reverse ? {
@@ -40,6 +35,7 @@ define dns::zone (
   }
 
   $zone_file = "${dns::server::params::data_dir}/db.${name}"
+  $zone_file_stage = "${zone_file}.stage"
 
   if $ensure == absent {
     file { $zone_file:
@@ -47,24 +43,41 @@ define dns::zone (
     }
   } else {
     # Zone Database
-    concat { $zone_file:
+
+    # Create "fake" zone file without zone-serial
+    concat { $zone_file_stage:
       owner   => $dns::server::params::owner,
       group   => $dns::server::params::group,
       mode    => '0644',
       require => [Class['concat::setup'], Class['dns::server']],
-      notify  => Class['dns::server::service']
+      notify  => Exec["bump-${zone}-serial"]
     }
     concat::fragment{"db.${name}.soa":
-      target  => $zone_file,
+      target  => $zone_file_stage,
       order   => 1,
       content => template("${module_name}/zone_file.erb")
+    }
+
+    # Generate real zone from stage file through replacement _SERIAL_ template
+    # to current timestamp. A real zone file will be updated only at change of
+    # the stage file, thanks to this serial is updated only in case of need.
+    $zone_serial = inline_template('<%= Time.now.to_i %>')
+    exec { "bump-${zone}-serial":
+      command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
+      path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+      refreshonly => true,
+      provider    => posix,
+      user        => $dns::server::params::owner,
+      group       => $dns::server::params::group,
+      require     => Class['dns::server::install'],
+      notify      => Class['dns::server::service'],
     }
   }
 
   # Include Zone in named.conf.local
   concat::fragment{"named.conf.local.${name}.include":
     ensure  => $ensure,
-    target  => "${dns::server::params::cfg_dir}/named.conf.local",
+    target  => "${cfg_dir}/named.conf.local",
     order   => 3,
     content => template("${module_name}/zone.erb")
   }

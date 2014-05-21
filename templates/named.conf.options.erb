@@ -10,15 +10,43 @@ options {
 	// Uncomment the following block, and insert the addresses replacing.
 	// the all-0's placeholder.
 
-<% if forwarders.size == 0 then -%>
+<% if @forwarders.size == 0 then -%>
     // forwarders {
 	// 	0.0.0.0;
 	// };
 <% else -%>
     forwarders {
-    <% forwarders.each do |forwarder| -%>
+    <% @forwarders.each do |forwarder| -%>
       <%= forwarder -%>;
     <% end -%>};
+<% end -%>
+
+<% if @allow_recursion.size != 0 then -%>
+    allow-recursion {
+    <% @allow_recursion.each do |recursion| -%>
+	<%= recursion -%>;
+    <% end -%>
+    };
+<% end -%>
+
+<% if @allow_query.size != 0 then -%>
+    allow-query {
+    <% @allow_query.each do |query| -%>
+	<%= query -%>;
+    <% end -%>
+    };
+<% end -%>
+
+<% if @check_names_master -%>
+check-names master <%= @check_names_master %>;
+<% end -%>
+
+<% if @check_names_slave -%>
+check-names slave <%= @check_names_slave %>;
+<% end -%>
+
+<% if @check_names_response -%>
+check-names response <%= @check_names_response %>;
 <% end -%>
 
 	//========================================================================

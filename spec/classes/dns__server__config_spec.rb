@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe 'dns::server::config', :type => :class do
 
-  context "on an unknown OS" do
-    let :facts do { :concat_basedir  => '/dne', } end
-    it  { expect { subject }.to raise_error() }
+  context "on an unsupported OS" do
+    let :facts do { :osfamily => 'Solaris', :concat_basedir  => '/dne', } end
+    it { should raise_error(/dns::server is incompatible with this osfamily/) }
   end
 
   context "on a Debian OS" do
@@ -15,6 +15,7 @@ describe 'dns::server::config', :type => :class do
         :concat_basedir         => '/dne',
       }
     end
+
     it { should contain_file('/etc/bind/').with_owner('bind') }
   end
 

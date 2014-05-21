@@ -11,7 +11,7 @@
 #
 # dns::acl { 'trusted':
 #   ensure => present,
-#   data   => [ 10.0.0.0/8, 172.16.2.0/24, ]
+#   data   => [ '10.0.0.0/8', '172.16.2.0/24', ]
 # }
 #
 define dns::acl (
