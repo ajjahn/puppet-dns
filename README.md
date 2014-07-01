@@ -1,6 +1,6 @@
 # Puppet DNS (BIND9) Module
 
-[![Build Status](https://travis-ci.org/ajjahn/puppet-dns.png)](https://travis-ci.org/ajjahn/puppet-dns)
+[![Build Status](https://travis-ci.org/ajjahn/puppet-dns.png?branch=master)](https://travis-ci.org/ajjahn/puppet-dns)
 
 Module for provisioning DNS (bind9)
 
