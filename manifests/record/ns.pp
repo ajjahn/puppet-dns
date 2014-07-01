@@ -2,7 +2,6 @@ define dns::record::ns (
   $zone,
   $data,
   $ttl = '',
-  $preference = '0',
   $host = $name ) {
 
   $alias = "${host},NS,${zone}"
@@ -12,7 +11,6 @@ define dns::record::ns (
     host       => $host,
     ttl        => $ttl,
     record     => 'NS',
-    preference => $preference,
     data       => "${data}.",
     order      => 2
   }
