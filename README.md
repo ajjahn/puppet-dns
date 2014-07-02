@@ -70,12 +70,14 @@ Tweak and add the following to your site manifest:
           data       => 'ALT1.ASPMX.L.GOOGLE.com';
       }
       
-      # NS Records:
-      dns::record::ns {
-        'example.com.':
-         zone => 'example.com',
-         data => "$hostname.example.com";
-      }
+     # NS Records:
+     dns::record::ns {
+     'example.com.':
+        zone => 'example.com',
+        # data => ["dns1.example.com.", "dns2.example.com"];  # Two NS for the domain
+        data => "$hostname.example.com.";    # One NS for the domain and using facts to get the local host name. 
+  }
+
 
       # CNAME Record:
       dns::record::cname { 'www':
