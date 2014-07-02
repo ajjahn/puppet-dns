@@ -71,11 +71,11 @@ Tweak and add the following to your site manifest:
       }
       
      # NS Records:
+     # Note: Multiple NS can be used as following sample: data => ['dns1.example.com.', 'dns2.example.com.'];
      dns::record::ns {
      'example.com.':
         zone => 'example.com',
-        # data => ["dns1.example.com.", "dns2.example.com"];  # Two NS for the domain
-        data => "$hostname.example.com.";    # One NS for the domain and using facts to get the local host name. 
+        data => "$hostname.example.com.";  
   }
 
 
