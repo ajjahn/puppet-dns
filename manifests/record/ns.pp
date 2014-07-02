@@ -11,7 +11,7 @@ define dns::record::ns (
     host       => $host,
     ttl        => $ttl,
     record     => 'NS',
-    data       => "${data}",
+    data       => $data,
     order      => 2
   }
 }
