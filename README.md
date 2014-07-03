@@ -72,8 +72,7 @@ Tweak and add the following to your site manifest:
       
      # NS Records:
      # Note: Multiple NS can be used as following sample: data => ['dns1.example.com.', 'dns2.example.com.'];
-     dns::record::ns {
-     'example.com.':
+     dns::record::ns { 'example.com.':
         zone => 'example.com',
         data => "$hostname.example.com.";  
   }
