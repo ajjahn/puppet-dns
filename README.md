@@ -12,11 +12,8 @@ This module depends on concat (https://github.com/puppetlabs/puppet-concat).
 
 Clone this repo to your Puppet modules directory
 
-    git clone git://github.com/ajjahn/puppet-dns.git dns
+    git clone git://github.com/gilneidp/puppet-dns.git dns
 
-or
-
-    puppet module install ajjahn/dns
 
 ## Usage
 
