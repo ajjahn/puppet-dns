@@ -37,6 +37,14 @@ options {
     };
 <% end -%>
 
+<% if @allow_query_cache.size != 0 then -%>
+    allow-query-cache {
+    <% @allow_query_cache.each do |query_cache| -%>
+	<%= query_cache -%>;
+    <% end -%>
+    };
+<% end -%>
+
 <% if @check_names_master -%>
 check-names master <%= @check_names_master %>;
 <% end -%>
