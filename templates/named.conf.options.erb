@@ -53,7 +53,9 @@ check-names response <%= @check_names_response %>;
 	// If BIND logs error messages about the root key being expired,
 	// you will need to update your keys.  See https://www.isc.org/bind-keys
 	//========================================================================
+<% if @dnssec_validation -%>
 	dnssec-validation auto;
+<% end -%>
 
 	auth-nxdomain no;    # conform to RFC1035
 	listen-on-v6 { any; };
