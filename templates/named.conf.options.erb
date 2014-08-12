@@ -69,5 +69,5 @@ check-names response <%= @check_names_response %>;
 	dnssec-validation auto;
 
 	auth-nxdomain no;    # conform to RFC1035
-	listen-on-v6 { any; };
+	listen-on-v6 { <%= @ipv6_listen_ifs %>; };
 };
