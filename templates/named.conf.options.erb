@@ -12,13 +12,17 @@ options {
 
 <% if @forwarders.size == 0 then -%>
     // forwarders {
-	// 	0.0.0.0;
-	// };
+    //  0.0.0.0;
+    // };
 <% else -%>
     forwarders {
     <% @forwarders.each do |forwarder| -%>
       <%= forwarder -%>;
     <% end -%>};
+<% end -%>
+<% if @forward_only == true then -%>
+
+    forward only;
 <% end -%>
 
 <% if @listen_on.size == 0 then -%>
