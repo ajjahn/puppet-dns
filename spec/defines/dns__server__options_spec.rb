@@ -102,6 +102,14 @@ describe 'dns::server::options', :type => :define do
     it { should raise_error(Puppet::Error, /is not an Array/) }
   end
 
+  context 'passing a string to the allow query cache' do 
+    let :params do
+      { :allow_query_cache => '8.8.8.8' }
+    end
+
+    it { should raise_error(Puppet::Error, /is not an Array/) }
+  end
+
   context 'passing a valid array to the allow query' do 
     let :params do
       { :allow_query => ['8.8.8.8'] }
@@ -109,6 +117,16 @@ describe 'dns::server::options', :type => :define do
 
     it { should contain_file('/etc/bind/named.conf.options').with_content(/8\.8\.8\.8;/)  }
     it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-query/)  }
+
+  end
+
+  context 'passing a valid array to the allow query cache' do 
+    let :params do
+      { :allow_query_cache => ['8.8.8.8'] }
+    end
+
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/8\.8\.8\.8;/)  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-query-cache/)  }
 
   end
 
