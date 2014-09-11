@@ -43,6 +43,7 @@ define dns::server::options(
     fail("The check name policy check_names_response must be ${valid_check_names}")
   }
   validate_array($allow_query)
+  validate_array($allow_query_cache)
 
   file { $title:
     ensure  => present,
