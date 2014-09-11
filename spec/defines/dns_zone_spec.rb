@@ -38,5 +38,33 @@ describe 'dns::zone' do
 
   end
 
+      context 'when dns_key_name and dns_key_file are set' do
+        let :params do {
+                :dns_key_name => 'rndc-key',
+                :dns_key_file => '/etc/bind/rndc.key'
+        } end
+
+        it { should_not raise_error }
+
+        it {
+          should contain_concat__fragment('named.conf.local.test.com.include').
+          with_content(/allow-update/)
+        }
+
+        it {
+          should contain_concat__fragment('named.conf.local.test.com.include').
+          with_content(/key rndc-key/)
+        }
+
+        it {
+          should contain_file_line('Include key file for zone test.com').
+          with_path(/\/etc\/bind\/named\.conf\.local/)
+        }
+
+        it {
+          should contain_file_line('Include key file for zone test.com').
+          with_line(/include "\/etc\/bind\/rndc\.key"/)
+        }
+      end
 end
 
