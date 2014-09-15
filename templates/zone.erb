@@ -13,6 +13,9 @@ zone "<%= @zone %>" {
   <%= ip %>;
 <% end -%>
   };
+<% if @dns_key_name -%>
+  allow-update { key <%= @dns_key_name %>; };
+<% end -%>
 <% end -%>
 
 <% if !@allow_forwarder.empty? -%>
@@ -24,5 +27,4 @@ zone "<%= @zone %>" {
   };
 <% end -%>
 <% end -%>
-
 };

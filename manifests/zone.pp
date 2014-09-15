@@ -12,6 +12,8 @@ define dns::zone (
   $allow_transfer = [],
   $allow_forwarder = [],
   $forward_policy = 'first',
+  $dns_key_name = undef,
+  $dns_key_file = undef,
   $slave_masters = undef,
   $zone_notify = false,
   $ensure = present
@@ -81,5 +83,10 @@ define dns::zone (
     order   => 3,
     content => template("${module_name}/zone.erb")
   }
-
+  # Include key file in named.conf.local
+  file_line { "Include key file for zone ${name}":
+    path   => "/etc/bind/named.conf.local",
+    line   => "include \"${dns_key_file}\";",
+    ensure => present
+  }
 }

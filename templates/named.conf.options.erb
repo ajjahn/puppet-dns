@@ -37,6 +37,14 @@ options {
     };
 <% end -%>
 
+<% if @allow_query_cache.size != 0 then -%>
+    allow-query-cache {
+    <% @allow_query_cache.each do |query_cache| -%>
+	<%= query_cache -%>;
+    <% end -%>
+    };
+<% end -%>
+
 <% if @check_names_master -%>
 check-names master <%= @check_names_master %>;
 <% end -%>
@@ -53,7 +61,9 @@ check-names response <%= @check_names_response %>;
 	// If BIND logs error messages about the root key being expired,
 	// you will need to update your keys.  See https://www.isc.org/bind-keys
 	//========================================================================
-	dnssec-validation auto;
+        <% if @dnssec_validation -%>
+                dnssec-validation <%= @dnssec_validation -%>;
+        <% end -%>
 
 	auth-nxdomain no;    # conform to RFC1035
 	listen-on-v6 { any; };

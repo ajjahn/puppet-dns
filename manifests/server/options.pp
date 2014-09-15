@@ -22,6 +22,8 @@ define dns::server::options(
   $check_names_slave = undef,
   $check_names_response = undef,
   $allow_query = [],
+  $allow_query_cache = [],
+  $dnssec_validation = undef,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
 
@@ -41,6 +43,7 @@ define dns::server::options(
     fail("The check name policy check_names_response must be ${valid_check_names}")
   }
   validate_array($allow_query)
+  validate_array($allow_query_cache)
 
   file { $title:
     ensure  => present,
