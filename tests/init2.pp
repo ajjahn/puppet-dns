@@ -27,7 +27,6 @@
      }
    }
   
-  
   # NS Records:
   dns::record::ns {'mtd.ksu':
       zone => 'mtd.ksu',
