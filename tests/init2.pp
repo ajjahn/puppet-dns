@@ -1,4 +1,3 @@
-class role::hadoop::dns_server::default {
   include dns::server
   $nodes = hiera("instances")
   
