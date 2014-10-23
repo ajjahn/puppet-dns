@@ -101,10 +101,9 @@ You can change the checking of the domain name. The policy can be either warn fa
 
 ```puppet
 dns::server::options { '/etc/bind/named.conf.options':
-  check_name_master => 'fail',
-  check_name_slave  => 'warn',
-  check_name_remote => 'ignore',
-  forwarders        => [ '8.8.8.8', '4.4.4.4' ],
+  check_names_master => 'fail',
+  check_names_slave  => 'warn',
+  forwarders         => [ '8.8.8.8', '4.4.4.4' ],
 }
 ```
 
