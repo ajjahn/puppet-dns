@@ -18,6 +18,7 @@ define dns::acl (
   $ensure = present,
   $aclname = $name,
   $data = [],
+  $template = "${module_name}/acl.erb",
 ) {
 
   validate_string($aclname)
@@ -27,7 +28,7 @@ define dns::acl (
     ensure  => $ensure,
     target  => '/etc/bind/named.conf.local',
     order   => 2,
-    content => template("${module_name}/acl.erb"),
+    content => template($template),
   }
 
 }

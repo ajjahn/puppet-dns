@@ -10,7 +10,8 @@ define dns::record (
   $dns_class = 'IN',
   $ttl = '',
   $preference = false,
-  $order = 9
+  $order = 9,
+  $template = "${module_name}/zone_record.erb"
 ) {
 
   $cfg_dir = $dns::server::params::cfg_dir
@@ -20,7 +21,7 @@ define dns::record (
   concat::fragment{"db.${zone}.${name}.record":
     target  => $zone_file_stage,
     order   => $order,
-    content => template("${module_name}/zone_record.erb")
+    content => template($template)
   }
 
 }
