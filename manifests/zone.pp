@@ -14,7 +14,9 @@ define dns::zone (
   $forward_policy = 'first',
   $slave_masters = undef,
   $zone_notify = false,
-  $ensure = present
+  $ensure = present,
+  $template = "${module_name}/zone.erb",
+  $template_file = "${module_name}/zone_file.erb"
 ) {
 
   $cfg_dir = $dns::server::params::cfg_dir
@@ -55,7 +57,7 @@ define dns::zone (
     concat::fragment{"db.${name}.soa":
       target  => $zone_file_stage,
       order   => 1,
-      content => template("${module_name}/zone_file.erb")
+      content => template($template_file)
     }
 
     # Generate real zone from stage file through replacement _SERIAL_ template
@@ -79,7 +81,7 @@ define dns::zone (
     ensure  => $ensure,
     target  => "${cfg_dir}/named.conf.local",
     order   => 3,
-    content => template("${module_name}/zone.erb")
+    content => template($template)
   }
 
 }

@@ -22,6 +22,7 @@ define dns::server::options(
   $check_names_slave = undef,
   $check_names_response = undef,
   $allow_query = [],
+  $template = "${module_name}/named.conf.options.erb"
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
 
@@ -48,7 +49,7 @@ define dns::server::options(
     group   => $::dns::server::params::group,
     mode    => '0644',
     require => [File[$::dns::server::params::cfg_dir], Class['::dns::server::install']],
-    content => template("${module_name}/named.conf.options.erb"),
+    content => template($template),
     notify  => Class['::dns::server::service'],
   }
 
