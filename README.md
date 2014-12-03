@@ -52,7 +52,7 @@ node 'server.example.com' {
       data => ['98.76.54.32'];
     'duey':
       zone => 'example.com',
-      data => ['12.34.56.78', "12.23.34.45'];
+      data => ['12.34.56.78', '12.23.34.45'];
     'luey':
       zone => 'example.com',
       data => ['192.168.1.25'],
