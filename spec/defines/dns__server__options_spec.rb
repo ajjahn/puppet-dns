@@ -302,7 +302,7 @@ describe 'dns::server::options', :type => :define do
     end
     it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation no/) }
   end
-  context 'passing a valid array to the allow query' do
+  context 'with not empty zone generation' do
     let :params do
       { :no_empty_zones => true }
     end
