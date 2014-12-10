@@ -89,6 +89,35 @@ describe 'dns::zone' do
                   with_content(/forward/)
           end
       end
+      context 'with a forward zone' do
+          let :params do
+              { :allow_transfer => ['123.123.123.123'],
+                :allow_forwarder => ['8.8.8.8', '208.67.222.222'],
+                :forward_policy => 'only',
+                :zone_type => 'forward'
+              }
+          end
+          it 'should have a type forward entry' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                         with_content(/type forward/)
+          end
+          it 'should not have allow_tranfer entry' do
+              should_not contain_concat__fragment('named.conf.local.test.com.include').
+                         with_content(/allow_transfer/)
+          end
+          it 'should not have file entry' do
+              should_not contain_concat__fragment('named.conf.local.test.com.include').
+                             with_content(/file/)
+          end
+          it 'should have a forward-policy entry' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                             with_content(/forward only/)
+          end
+          it 'should  have a forwarders entry' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                             with_content(/forwarders/)
+          end
+      end
   end
 end
 
