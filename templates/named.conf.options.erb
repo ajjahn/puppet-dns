@@ -48,7 +48,9 @@ check-names slave <%= @check_names_slave %>;
 <% if @check_names_response -%>
 check-names response <%= @check_names_response %>;
 <% end -%>
-
+<% if @no_empty_zones -%>
+empty-zones-enable no;
+<% end -%>
 	//========================================================================
 	// If BIND logs error messages about the root key being expired,
 	// you will need to update your keys.  See https://www.isc.org/bind-keys
