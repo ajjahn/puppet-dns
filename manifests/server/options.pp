@@ -72,11 +72,11 @@
 #   package is too old to include dnssec validation), and "auto" on
 #   Debian and on RedHat 6 and above.
 #   Note: If *dnssec_enable* is set to false, this option is ignored.
-# 
+#
 #
 # [*dnssec_enable*]
 #   Controls whether to enable/disable DNS-SEC support. Boolean.
-#   Default is false on RedHat 5 (for the same reasons as 
+#   Default is false on RedHat 5 (for the same reasons as
 #   dnssec_validation above), and true on Debian and on RedHat 6
 #   and above.
 #
@@ -104,6 +104,7 @@ define dns::server::options (
   $also_notify = [],
   $dnssec_validation = $dns::server::params::default_dnssec_validation,
   $dnssec_enable = $dns::server::params::default_dnssec_enable,
+  $no_empty_zones = false,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $cfg_dir = $::dns::server::params::cfg_dir
