@@ -3,8 +3,10 @@
 # BIND server template-based configuration definition.
 #
 # Parameters:
-#  $forwarders:
+# $forwarders:
 #   Array of forwarders IP addresses. Default: empty
+# $listen_on:
+#   Array of IP addresses on which to listen. Default: empty, meaning "any"
 # $group:
 #   Group of the file. Default: bind
 # $owner:
@@ -17,6 +19,7 @@
 #
 define dns::server::options(
   $forwarders = [],
+  $listen_on = [],
   $allow_recursion = [],
   $check_names_master = undef,
   $check_names_slave = undef,
@@ -30,6 +33,7 @@ define dns::server::options(
   }
 
   validate_array($forwarders)
+  validate_array($listen_on)
   validate_array($allow_recursion)
   if $check_names_master != undef and !member($valid_check_names, $check_names_master) {
     fail("The check name policy check_names_master must be ${valid_check_names}")

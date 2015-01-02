@@ -21,6 +21,15 @@ options {
     <% end -%>};
 <% end -%>
 
+<% if @listen_on.size == 0 then -%>
+    listen-on { any; };
+<% else -%>
+    listen-on {
+    <% @listen_on.each do |ipv4_addr| -%>
+      <%= ipv4_addr -%>;
+    <% end -%>};
+<% end -%>
+
 <% if @allow_recursion.size != 0 then -%>
     allow-recursion {
     <% @allow_recursion.each do |recursion| -%>
