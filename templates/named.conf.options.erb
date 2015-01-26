@@ -22,9 +22,9 @@ options {
 <% end -%>
 
 <% if @listen_on.size == 0 then -%>
-    listen-on { any; };
+    listen-on <%- if @listen_on_port %>port <%= @listen_on_port %><% end -%> { any; };
 <% else -%>
-    listen-on {
+    listen-on <%- if @listen_on_port %>port <%= @listen_on_port %><% end -%> {
     <% @listen_on.each do |ipv4_addr| -%>
       <%= ipv4_addr -%>;
     <% end -%>};

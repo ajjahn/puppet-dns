@@ -20,6 +20,7 @@
 define dns::server::options(
   $forwarders = [],
   $listen_on = [],
+  $listen_on_port = undef,
   $allow_recursion = [],
   $check_names_master = undef,
   $check_names_slave = undef,
