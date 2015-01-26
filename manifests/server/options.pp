@@ -8,7 +8,8 @@
 # $listen_on:
 #   Array of IP addresses on which to listen. Default: empty, meaning "any"
 # $listen_on_port:
-#   UDP/TCP port number to use for receiving and sending traffic.  Default: undefined, meaning 53
+#   UDP/TCP port number to use for receiving and sending traffic.
+#   Default: undefined, meaning 53
 # $group:
 #   Group of the file. Default: bind
 # $owner:
