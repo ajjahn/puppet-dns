@@ -4,27 +4,33 @@
 #
 # === Parameters
 #
-# $forwarders:
+# [*forwarders*]
 #   Array of forwarders IP addresses. Default: empty
-# $listen_on:
+#
+# [*listen_on*]
 #   Array of IP addresses on which to listen. Default: empty, meaning "any"
-# $allow_recursion:
+#
+# [*allow_recursion*]
 #   Array of IP addresses which are allowed to make recursive queries.
 #   Default: empty, meaning "localnets; localhost"
-# $check_names_master:
+#
+# [*check_names_master*]
 #   Restrict the character set and syntax of master zones.
 #   Default: undefined, meaning "fail"
-# $check_names_slave:
+#
+# [*check_names_slave*]
 #   Restrict the character set and syntax of slave zones.
 #   Default: undefined, meaning "warn"
-# $check_names_response:
+#
+# [*check_names_response*]
 #   Restrict the character set and syntax of network responses.
 #   Default: undefined, meaning "ignore"
-# $allow_query:
+#
+# [*allow_query*]
 #   Array of IP addresses which are allowed to ask ordinary DNS questions.
 #   Default: empty, meaning "any"
 #
-# == Examples
+# === Examples
 #
 #  dns::server::options { '/etc/bind/named.conf.options':
 #    forwarders => [ '8.8.8.8', '8.8.4.4' ],
