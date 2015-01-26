@@ -47,16 +47,7 @@ describe 'dns::server::options', :type => :define do
       { :listen_on_port => 5300 }
     end
 
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/listen-on port 5300 { any; };/)  }
-
-  end
-
-  context 'passing custom port to listen_on_port and valid array to listen_on' do
-    let :params do
-      { :listen_on_port => 5300, :listen_on => [ '10.11.12.13' ] }
-    end
-
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/listen-on port 5300 {\s+10\.11\.12\.13;\s+};/)  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/port 5300;/)  }
 
   end
 

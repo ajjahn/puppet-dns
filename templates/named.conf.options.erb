@@ -22,12 +22,16 @@ options {
 <% end -%>
 
 <% if @listen_on.size == 0 then -%>
-    listen-on <%- if @listen_on_port %>port <%= @listen_on_port %><% end -%> { any; };
+    listen-on { any; };
 <% else -%>
-    listen-on <%- if @listen_on_port %>port <%= @listen_on_port %><% end -%> {
+    listen-on {
     <% @listen_on.each do |ipv4_addr| -%>
       <%= ipv4_addr -%>;
     <% end -%>};
+<% end -%>
+
+<% if @listen_on_port -%>
+    port <%= @listen_on_port %>;
 <% end -%>
 
 <% if @allow_recursion.size != 0 then -%>
