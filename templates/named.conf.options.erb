@@ -30,6 +30,10 @@ options {
     <% end -%>};
 <% end -%>
 
+<% if @listen_on_port -%>
+    port <%= @listen_on_port %>;
+<% end -%>
+
 <% if @allow_recursion.size != 0 then -%>
     allow-recursion {
     <% @allow_recursion.each do |recursion| -%>

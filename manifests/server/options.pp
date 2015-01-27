@@ -10,6 +10,10 @@
 # [*listen_on*]
 #   Array of IP addresses on which to listen. Default: empty, meaning "any"
 #
+# [*listen_on_port*]:
+#   UDP/TCP port number to use for receiving and sending traffic.
+#   Default: undefined, meaning 53
+#
 # [*allow_recursion*]
 #   Array of IP addresses which are allowed to make recursive queries.
 #   Default: empty, meaning "localnets; localhost"
@@ -39,6 +43,7 @@
 define dns::server::options(
   $forwarders = [],
   $listen_on = [],
+  $listen_on_port = undef,
   $allow_recursion = [],
   $check_names_master = undef,
   $check_names_slave = undef,
