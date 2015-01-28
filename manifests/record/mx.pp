@@ -9,7 +9,7 @@ define dns::record::mx (
   $preference = '0',
   $host = $name ) {
 
-  $alias = "${host},MX,${zone}"
+  $alias = "${host},MX,${zone},${data}"
 
   dns::record { $alias:
     zone       => $zone,
