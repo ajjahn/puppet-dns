@@ -26,12 +26,12 @@ define dns::key {
     creates     => "${cfg_dir}/bind.keys.d/${name}.secret",
     require     => [
       Exec["dnssec-keygen-${name}"],
-      File["${cfg_dir}/bind.keys.d"]
+      File["${cfg_dir}/bind.keys.d"],
       File["/tmp/${name}-secret.sh"],
     ],
     refreshonly => true,
   }
- 
+
   file { "${cfg_dir}/bind.keys.d/${name}.secret":
     require => Exec["get-secret-from-${name}"],
   }
