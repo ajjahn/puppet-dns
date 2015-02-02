@@ -1,22 +1,49 @@
-# Define: dns::server::options
+# == Define: dns::server::options
 #
 # BIND server template-based configuration definition.
 #
-# Parameters:
-#  $forwarders:
-#   Array of forwarders IP addresses. Default: empty
-# $group:
-#   Group of the file. Default: bind
-# $owner:
-#   Owner of the file. Default: bind
+# === Parameters
 #
-# Sample Usage :
+# [*forwarders*]
+#   Array of forwarders IP addresses. Default: empty
+#
+# [*listen_on*]
+#   Array of IP addresses on which to listen. Default: empty, meaning "any"
+#
+# [*listen_on_port*]:
+#   UDP/TCP port number to use for receiving and sending traffic.
+#   Default: undefined, meaning 53
+#
+# [*allow_recursion*]
+#   Array of IP addresses which are allowed to make recursive queries.
+#   Default: empty, meaning "localnets; localhost"
+#
+# [*check_names_master*]
+#   Restrict the character set and syntax of master zones.
+#   Default: undefined, meaning "fail"
+#
+# [*check_names_slave*]
+#   Restrict the character set and syntax of slave zones.
+#   Default: undefined, meaning "warn"
+#
+# [*check_names_response*]
+#   Restrict the character set and syntax of network responses.
+#   Default: undefined, meaning "ignore"
+#
+# [*allow_query*]
+#   Array of IP addresses which are allowed to ask ordinary DNS questions.
+#   Default: empty, meaning "any"
+#
+# === Examples
+#
 #  dns::server::options { '/etc/bind/named.conf.options':
 #    forwarders => [ '8.8.8.8', '8.8.4.4' ],
 #   }
 #
 define dns::server::options(
   $forwarders = [],
+  $listen_on = [],
+  $listen_on_port = undef,
   $allow_recursion = [],
   $check_names_master = undef,
   $check_names_slave = undef,
@@ -30,6 +57,7 @@ define dns::server::options(
   }
 
   validate_array($forwarders)
+  validate_array($listen_on)
   validate_array($allow_recursion)
   if $check_names_master != undef and !member($valid_check_names, $check_names_master) {
     fail("The check name policy check_names_master must be ${valid_check_names}")

@@ -1,5 +1,5 @@
 name 'ajjahn-dns'
-version '0.1.5'
+version '1.0.0'
 summary "Module for provisioning DNS (bind9)"
 description "Module for provisioning DNS (bind9)"
 author 'Adam Jahn'

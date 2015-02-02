@@ -32,6 +32,34 @@ describe 'dns::server::options', :type => :define do
 
   end
 
+  context 'passing valid array to listen_on' do
+    let :params do
+      { :listen_on => [ '10.11.12.13', '192.168.1.2' ] }
+    end
+
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/10\.11\.12\.13;$/)  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/192\.168\.1\.2;$/)  }
+
+  end
+
+  context 'passing custom port to listen_on_port' do
+    let :params do
+      { :listen_on_port => 5300 }
+    end
+
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/port 5300;/)  }
+
+  end
+
+  context 'passing a string to listen_on' do
+    let :params do
+      { :listen_on => '10.9.8.7' }
+    end
+
+    it { should raise_error(Puppet::Error, /is not an Array/) }
+
+  end
+
   context 'passing a string to recursion' do
     let :params do
       { :allow_recursion => '8.8.8.8' }
@@ -50,7 +78,7 @@ describe 'dns::server::options', :type => :define do
 
   end
 
-  context 'passing a wrong string to slave name' do 
+  context 'passing a wrong string to slave name' do
     let :params do
       { :check_names_slave => '8.8.8.8' }
     end
@@ -58,7 +86,7 @@ describe 'dns::server::options', :type => :define do
     it { should raise_error(Puppet::Error, /The check name policy/) }
   end
 
-  context 'passing a wrong string to master name' do 
+  context 'passing a wrong string to master name' do
     let :params do
       { :check_names_master => '8.8.8.8' }
     end
@@ -66,7 +94,7 @@ describe 'dns::server::options', :type => :define do
     it { should raise_error(Puppet::Error, /The check name policy/) }
   end
 
-  context 'passing a wrong string to response name' do 
+  context 'passing a wrong string to response name' do
     let :params do
       { :check_names_master => '8.8.8.8' }
     end
@@ -74,7 +102,7 @@ describe 'dns::server::options', :type => :define do
     it { should raise_error(Puppet::Error, /The check name policy/) }
   end
 
-  context 'passing a valid string to a check name' do 
+  context 'passing a valid string to a check name' do
     let :params do
       { :check_names_master => 'warn',
        :check_names_slave => 'ignore',
@@ -94,7 +122,7 @@ describe 'dns::server::options', :type => :define do
       it { should contain_file('/etc/bind/named.conf.options').without_content(/check-names response/)}
   end
 
-  context 'passing a string to the allow query' do 
+  context 'passing a string to the allow query' do
     let :params do
       { :allow_query => '8.8.8.8' }
     end
@@ -102,7 +130,7 @@ describe 'dns::server::options', :type => :define do
     it { should raise_error(Puppet::Error, /is not an Array/) }
   end
 
-  context 'passing a valid array to the allow query' do 
+  context 'passing a valid array to the allow query' do
     let :params do
       { :allow_query => ['8.8.8.8'] }
     end
