@@ -47,12 +47,3 @@ describe 'dns::key' do
   end
 end
 
-#On a RedHat OS
-#   should contain Exec[get-secret-from-rspec-key] with creates => "/etc/bind/bind.keys.d/rspec-key.secret" (FAILED - 1)
-#
-#     Failures:
-#
-#           1) dns::key On a RedHat OS should contain Exec[get-secret-from-rspec-key] with creates => "/etc/bind/bind.keys.d/rspec-key.secret"
-#         Failure/Error: should contain_exec('get-secret-from-rspec-key').with_creates('/etc/bind/bind.keys.d/rspec-key.secret')
-#               expected that the catalogue would contain Exec[get-secret-from-rspec-key] with creates set to "/etc/bind/bind.keys.d/rspec-key.secret" but it is set to "/etc/named/bind.keys.d/rspec-key.secret"
-# ./spec/defines/dns__key_spec.rb:40:in `block (3 levels) in <top (required)>'
