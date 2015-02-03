@@ -2,7 +2,10 @@ require 'spec_helper'
 
 describe 'dns::acl' do
   let(:title) { 'trusted' }
-  let(:facts) { { :concat_basedir => '/tmp' } }
+  let(:facts) { {
+    :concat_basedir => '/tmp',
+    :osfamily       => 'Debian',
+  } }
 
   context 'passing a string to data' do
     let :params do

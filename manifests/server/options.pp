@@ -77,7 +77,7 @@ define dns::server::options(
     mode    => '0644',
     require => [File[$::dns::server::params::cfg_dir], Class['::dns::server::install']],
     content => template("${module_name}/named.conf.options.erb"),
-    notify  => Class['::dns::server::service'],
+    notify  => Class['dns::server::service'],
   }
 
 }

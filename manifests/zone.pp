@@ -34,7 +34,7 @@ define dns::zone (
     default => $name
   }
 
-  $zone_file = "${cfg_dir}/zones/db.${name}"
+  $zone_file = "${dns::server::params::data_dir}/db.${name}"
   $zone_file_stage = "${zone_file}.stage"
 
   if $ensure == absent {
@@ -46,8 +46,8 @@ define dns::zone (
 
     # Create "fake" zone file without zone-serial
     concat { $zone_file_stage:
-      owner   => 'bind',
-      group   => 'bind',
+      owner   => $dns::server::params::owner,
+      group   => $dns::server::params::group,
       mode    => '0644',
       require => [Class['concat::setup'], Class['dns::server']],
       notify  => Exec["bump-${zone}-serial"]
@@ -67,8 +67,8 @@ define dns::zone (
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
       provider    => posix,
-      user        => 'bind',
-      group       => 'bind',
+      user        => $dns::server::params::owner,
+      group       => $dns::server::params::group,
       require     => Class['dns::server::install'],
       notify      => Class['dns::server::service'],
     }
