@@ -96,7 +96,7 @@ describe 'dns::server::options', :type => :define do
 
   context 'passing a wrong string to response name' do
     let :params do
-      { :check_names_master => '8.8.8.8' }
+      { :check_names_response => '8.8.8.8' }
     end
 
     it { should raise_error(Puppet::Error, /The check name policy/) }
