@@ -1,3 +1,5 @@
+# == Define dns::zone
+#
 define dns::zone (
   $soa = "${::fqdn}.",
   $soa_email = "root.${::fqdn}.",

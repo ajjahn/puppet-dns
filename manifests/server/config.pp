@@ -1,3 +1,5 @@
+# == Class dns::server
+#
 class dns::server::config (
   $cfg_dir  = $dns::server::params::cfg_dir,
   $cfg_file = $dns::server::params::cfg_file,

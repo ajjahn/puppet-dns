@@ -1,3 +1,5 @@
+# == Class dns::server::params
+#
 class dns::server::params {
   case $::osfamily {
     'Debian': {

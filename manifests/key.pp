@@ -1,3 +1,5 @@
+# == Class define::key
+#
 define dns::key {
   include dns::server::params
   $cfg_dir = $dns::server::params::cfg_dir # Used in a template

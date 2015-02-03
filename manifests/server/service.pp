@@ -1,3 +1,5 @@
+# == Class dns::server::service
+#
 class dns::server::service (
   $service = $dns::server::params::service
 ) inherits dns::server::params {
