@@ -1,0 +1,25 @@
+{
+  "name": "ajjahn-dns",
+  "version": "1.1.0",
+  "author": "Adam Jahn",
+  "summary": "Module for provisioning DNS (bind9)",
+  "license": "Apache 2.0",
+  "source": "https://github.com/ajjahn/puppet-dns",
+  "project_page": "https://github.com/ajjahn/puppet-dns",
+  "issues_url": "https://github.com/ajjahn/puppet-dns/issues",
+  "description": "Module for provisioning DNS (bind9)",
+  "operatingsystem_support": [
+    {
+    "operatingsystem":"RedHat",
+    "operatingsystemrelease":[ "5.0", "6.0" ]
+    },
+    {
+    "operatingsystem": "Ubuntu",
+    "operatingsystemrelease": [ "12.04", "10.04" ]
+    }
+   ],
+  "dependencies": [
+    {"name":"puppetlabs/concat","version_requirement":">=1.0.0 <2.0.0"},
+    {"name":"puppetlabs/stdlib","version_requirement":">=2.4.0 <6.0.0"}
+  ]
+}
