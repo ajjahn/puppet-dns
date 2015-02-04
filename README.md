@@ -12,7 +12,7 @@ This module depends on concat (https://github.com/puppetlabs/puppet-concat).
 
 Clone this repo to your Puppet modules directory
 
-    git clone git://github.com/gilneidp/puppet-dns.git dns
+    git clone git://github.com/ajjahn/puppet-dns.git dns
 
 
 ## Usage
@@ -66,14 +66,17 @@ Tweak and add the following to your site manifest:
           preference => 10,
           data       => 'ALT1.ASPMX.L.GOOGLE.com';
       }
-      
-     # NS Records:
-     # Note: Multiple NS can be used as following sample: data => ['dns1.example.com.', 'dns2.example.com.'];
-     dns::record::ns { 'example.com':
-        zone => 'example.com',
-        data => "$hostname.example.com.";  
-  }
 
+      # NS Records:
+      dns::record::ns {
+        'example.com':
+          zone => 'example.com',
+          data => 'ns3';
+        'delegation-to-ns4-example-net':
+          zone => 'example.com',
+          host => 'delegated-zone',
+          data => 'ns4.jp.example.net.';
+      }
 
       # CNAME Record:
       dns::record::cname { 'www':
