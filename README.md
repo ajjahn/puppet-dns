@@ -14,6 +14,9 @@ Clone this repo to your Puppet modules directory
 
     git clone git://github.com/ajjahn/puppet-dns.git dns
 
+or
+
+    puppet module install ajjahn/dns
 
 ## Usage
 
