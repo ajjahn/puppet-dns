@@ -75,7 +75,7 @@ Tweak and add the following to your site manifest:
         'example.com':
           zone => 'example.com',
           data => 'ns3';
-        'delegation-to-ns4-example-net':
+        'delegation-to-ns4-jp-example-net':
           zone => 'example.com',
           host => 'delegated-zone',
           data => 'ns4.jp.example.net.';
