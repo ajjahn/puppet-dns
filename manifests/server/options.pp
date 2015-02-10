@@ -94,8 +94,8 @@ define dns::server::options (
     fail('The statistic_channel_port is not a number')
   }
 
-  if !validate_ip($statistic_channel_ip) {
-    fail('The statistic_channel_ip is not an ip')
+  if !is_string($statistic_channel_ip) or !is_ip($statistic_channel_ip) {
+    fail('The statistic_channel_ip is not an ip string')
   }
 
   file { $title:
