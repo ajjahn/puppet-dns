@@ -164,5 +164,25 @@ describe 'dns::server::options', :type => :define do
 
   end
 
+  context 'passing no statistic channel ip' do
+    let :params do
+      { :statistic_channel_ip => undef }
+    end
+
+    it { should_not contain_file('/etc/bind/named.conf.options').with_content(/statistics-channels/)  }
+
+  end
+
+  context 'passing a valid ip and a valid port' do
+    let :params do
+      { :statistic_channel_ip => '127.0.0.1' }
+      { :statistic_channel_port => 12455 }
+    end
+
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/statistics-channels/)  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/inet 127.0.0.1 port 12455/)  }
+
+  end
+
 end
 
