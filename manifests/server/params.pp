@@ -10,7 +10,7 @@ class dns::server::params {
       $owner              = 'bind'
       $package            = 'bind9'
       $service            = 'bind9'
-      $necessary_packages = [ 'bind9', 'dnssec-tools']
+      $necessary_packages = [ 'bind9', 'dnssec-tools' ]
     }
     'RedHat': {
       $cfg_dir            = '/etc/named'
@@ -20,8 +20,15 @@ class dns::server::params {
       $owner              = 'named'
       $package            = 'bind'
       $service            = 'named'
-      $necessary_packages = [ 'bind', 'dnssec-tools']
-    }
+      case $operatingsystemmajrelease {
+        '7': {
+          $necessary_packages = [ 'bind', ]
+        }        
+        default: {
+          $necessary_packages = [ 'bind', 'dnssec-tools' ]  
+        }
+      }
+    }  
     default: {
       fail("dns::server is incompatible with this osfamily: ${::osfamily}")
     }
