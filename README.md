@@ -7,6 +7,7 @@ Module for provisioning DNS (bind9)
 Tested on Ubuntu 12.04 and CentOS 6.5, patches to support other operating systems are welcome.
 
 This module depends on concat (https://github.com/puppetlabs/puppet-concat).
+This module requires the package dnssec-tools. For RHEL/CentOS dnssec-tools can be found in the EPEL repository.
 
 ## Installation
 
