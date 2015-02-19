@@ -25,7 +25,7 @@ class dns::server::params {
           $necessary_packages = [ 'bind', ]
         }
         default: {
-          $necessary_packages = [ 'bind', 'dnssec-tools' 
+          $necessary_packages = [ 'bind', 'dnssec-tools' ]
         }
       }
     }
