@@ -61,8 +61,8 @@ define dns::key {
   }
 
   concat::fragment { "${name}.key-secret":
-    order   => 2,
-    source  => "${cfg_dir}/bind.keys.d/${name}.secret",
+    order  => 2,
+    source => "${cfg_dir}/bind.keys.d/${name}.secret",
   }
 
   concat::fragment { "${name}.key-footer":
