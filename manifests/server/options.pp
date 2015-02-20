@@ -48,9 +48,11 @@ define dns::server::options(
   $check_names_master = undef,
   $check_names_slave = undef,
   $check_names_response = undef,
+  $ipv6_listen_ifs  = "any",
   $allow_query = [],
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
+  $valid_ipv6_listen_ifs = ['none', 'any']
 
   if ! defined(Class['::dns::server']) {
     fail('You must include the ::dns::server base class before using any dns options defined resources')
@@ -67,6 +69,9 @@ define dns::server::options(
   }
   if $check_names_response != undef and !member($valid_check_names, $check_names_response) {
     fail("The check name policy check_names_response must be ${valid_check_names}")
+  }
+  if !member($valid_ipv6_listen_ifs, $ipv6_listen_ifs) {
+    fail("The list of valid ipv6 listen interfaces is neither 'none' nor 'any'")
   }
   validate_array($allow_query)
 
