@@ -100,8 +100,18 @@ dns::zone { 'example.com':
 
 You can change the checking of the domain name. The policy can be either warn fail or ignore.
 
+Debian example:
 ```puppet
 dns::server::options { '/etc/bind/named.conf.options':
+  check_names_master => 'fail',
+  check_names_slave  => 'warn',
+  forwarders         => [ '8.8.8.8', '4.4.4.4' ],
+}
+```
+
+RHEL example:
+```puppet
+dns::server::options { '/etc/named/named.conf.options':
   check_names_master => 'fail',
   check_names_slave  => 'warn',
   forwarders         => [ '8.8.8.8', '4.4.4.4' ],
@@ -144,6 +154,7 @@ Note: This module is a merge of the work from the following authors:
 * [ajjahn](https://github.com/ajjahn/puppet-dns)
 * [Danzilio](https://github.com/danzilio)
 * [solarkennedy](https://github.com/solarkennedy)
+* [ITBlogger](https://github.com/itblogger)
 
 ## License
 
