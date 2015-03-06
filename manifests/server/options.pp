@@ -2,10 +2,12 @@
 #
 # BIND server template-based configuration definition.
 #
-# === Parameters
 #
 # [*forwarders*]
 #   Array of forwarders IP addresses. Default: empty
+#
+# [*forward_only*]
+#   Boolean whether to forward all queries. Default: false
 #
 # [*listen_on*]
 #   Array of IP addresses on which to listen. Default: empty, meaning "any"
@@ -42,6 +44,7 @@
 #
 define dns::server::options (
   $forwarders = [],
+  $forward_only = false,
   $listen_on = [],
   $listen_on_port = undef,
   $allow_recursion = [],
@@ -59,6 +62,7 @@ define dns::server::options (
 
   validate_array($forwarders)
   validate_array($listen_on)
+  validate_bool($forward_only)
   validate_array($allow_recursion)
   if $check_names_master != undef and !member($valid_check_names, $check_names_master) {
     fail("The check name policy check_names_master must be ${valid_check_names}")
