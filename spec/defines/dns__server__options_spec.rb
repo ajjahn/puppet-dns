@@ -23,12 +23,36 @@ describe 'dns::server::options', :type => :define do
 
   end
 
+  context 'passing valid array to transfers' do
+    let :params do
+      { :transfers => ['192.168.0.3', '192.168.0.4'] }
+    end
+
+    it { should contain_file('/etc/bind/named.conf.options') }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/192\.168\.0\.3;$/) }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/192\.168\.0\.4;$/) }
+    it { should contain_file('/etc/bind/named.conf.options').with_ensure("present") }
+    it { should contain_file('/etc/bind/named.conf.options').with_owner("bind") }
+    it { should contain_file('/etc/bind/named.conf.options').with_group("bind") }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-transfer/) }
+
+  end
+
   context 'passing a string to forwarders' do
     let :params do
       { :forwarders => '8.8.8.8' }
     end
 
     it { should raise_error(Puppet::Error, /is not an Array/) }
+
+  end
+
+  context 'passing a string to transfers' do
+    let :params do
+      { :transfers => '192.168.0.3' }
+    end
+
+  it { should raise_error(Puppet::Error, /is not an Array/) }
 
   end
 
