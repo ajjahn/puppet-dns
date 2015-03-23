@@ -67,7 +67,7 @@ define dns::key {
 
   concat::fragment { "${name}.key-footer":
     order   => 3,
-    content => '}:',
+    content => '};',
   }
 
 }
