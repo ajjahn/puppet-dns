@@ -13,6 +13,7 @@ define dns::zone (
   $zone_type = 'master',
   $allow_transfer = [],
   $allow_forwarder = [],
+  $allow_update = undef,
   $forward_policy = 'first',
   $slave_masters = undef,
   $zone_notify = false,
@@ -46,13 +47,24 @@ define dns::zone (
   } else {
     # Zone Database
 
+    # If it is a dynamic zone, we don't want to overwrite the existing zone file as it might
+    # destroy records that have been added
+    if $allow_update {
+      $replace_zone_file = false
+      $zone_bump_serial = undef
+    } else {
+      $replace_zone_file = true
+      $zone_bump_serial = Exec["bump-${zone}-serial"]
+    }
+
     # Create "fake" zone file without zone-serial
     concat { $zone_file_stage:
       owner   => $dns::server::params::owner,
       group   => $dns::server::params::group,
       mode    => '0644',
       require => [Class['concat::setup'], Class['dns::server']],
-      notify  => Exec["bump-${zone}-serial"]
+      replace => $replace_zone_file,
+      notify  => $zone_bump_serial
     }
     concat::fragment{"db.${name}.soa":
       target  => $zone_file_stage,

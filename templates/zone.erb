@@ -16,6 +16,13 @@ type <%= @zone_type %>;
         <% end -%>
         };
     <% end -%>
+    <% if @allow_update -%>
+        allow-update {
+        <% @allow_update.each do |ip| -%>
+            <%= ip %>;
+        <% end -%>
+        };
+    <% end %>
 <% end -%>
 <% if !@allow_forwarder.empty? and ( @zone_type == 'master' or  @zone_type == 'forward') -%>
     forward <%= @forward_policy %>;
