@@ -80,7 +80,34 @@ describe 'dns::zone' do
                   with_content(/forward only;/)
           end
       end
+      
+      context 'when ask to have supplementary zone' do
+          let :params do {
+              :supplementary => true
+          }
+          end
 
+          it {
+              should contain_file('/etc/bind/zones/db.test.com.supplementary').with({
+                  'ensure' => 'present',
+                  'replace' => 'no',
+              }).with_content(/; Supplementary file from Puppet/)
+          }
+      end
+
+      context 'when not asked to have supplementary zone' do
+          let :params do {
+              :ensure => 'absent'
+          }
+          end
+
+          it {
+              should contain_file('/etc/bind/zones/db.test.com.supplementary').with({
+                  'ensure' => 'absent',
+              })
+          }
+      end
+      
       context 'with no explicit forward policy or forwarder' do
           let(:params) {{ :allow_transfer => ['192.0.2.0', '2001:db8::/32'] }}
 
@@ -89,6 +116,7 @@ describe 'dns::zone' do
                   with_content(/forward/)
           end
       end
+      
       context 'with a forward zone' do
           let :params do
               { :allow_transfer => ['123.123.123.123'],
