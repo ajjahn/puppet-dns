@@ -21,6 +21,13 @@ options {
     <% end -%>};
 <% end -%>
 
+<% if @transfers.size != 0 then -%>
+    allow-transfer {
+    <% @transfers.each do |transfer| -%>
+      <%= transfer -%>;
+    <% end -%>};
+<% end -%>
+
 <% if @listen_on.size == 0 then -%>
     listen-on { any; };
 <% else -%>
