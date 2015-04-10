@@ -1,8 +1,6 @@
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
-require 'puppetlabs_spec_helper/rake_tasks' # needed for some module packaging tasks
-require 'puppet_blacksmith/rake_tasks'
 
 # These two gems aren't always present, for instance
 # on Travis with --without development
