@@ -15,3 +15,6 @@ $TTL	<%= @zone_ttl %>
 @		IN	NS	<%= nameserver -%>.
 <% end -%>
 ;
+<% if @supplementary == true %>
+$INCLUDE db.<%= zone %>.supplementary;
+<% end -%>

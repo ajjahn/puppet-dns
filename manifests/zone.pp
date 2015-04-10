@@ -16,7 +16,8 @@ define dns::zone (
   $forward_policy = 'first',
   $slave_masters = undef,
   $zone_notify = false,
-  $ensure = present
+  $ensure = present,
+  $supplementary = false
 ) {
 
   $cfg_dir = $dns::server::params::cfg_dir
@@ -41,6 +42,9 @@ define dns::zone (
 
   if $ensure == absent {
     file { $zone_file:
+      ensure => absent,
+    }
+    file { "$zone_file.supplementary":
       ensure => absent,
     }
   } else {
@@ -82,6 +86,18 @@ define dns::zone (
     target  => "${cfg_dir}/named.conf.local",
     order   => 3,
     content => template("${module_name}/zone.erb")
+  }
+
+    # This ensures the supplementary zone file is present, even if it is just a blank one
+  if $supplementary == true {
+    file {"$zone_file.supplementary":
+      replace => 'no',
+      ensure  => 'present',
+      content => '; Supplementary file from Puppet\n',
+      owner   => "$group",
+      group   => "$owner",
+      mode    => '0744',
+    }
   }
 
 }
