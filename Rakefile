@@ -6,7 +6,7 @@ require 'puppet-syntax/tasks/puppet-syntax'
 # on Travis with --without development
 begin
   require 'puppetlabs_spec_helper/rake_tasks'
-  require 'puppet_blacksmith/rake_tasks' require 'puppet_blacksmith/rake_tasks'
+  require 'puppet_blacksmith/rake_tasks'
 rescue LoadError
 end
 
