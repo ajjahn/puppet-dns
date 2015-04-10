@@ -1,5 +1,9 @@
 source "https://rubygems.org"
 
+group :development do
+  gem "puppet-blacksmith"
+end
+
 group :test do
   gem "rake"
   gem "puppet", ENV['PUPPET_VERSION'] || '~> 3.7.0'
