@@ -104,7 +104,7 @@ describe 'dns::zone' do
           end
           it 'should not have allow_tranfer entry' do
               should_not contain_concat__fragment('named.conf.local.test.com.include').
-                         with_content(/allow_transfer/)
+                         with_content(/allow-transfer/)
           end
           it 'should not have file entry' do
               should_not contain_concat__fragment('named.conf.local.test.com.include').
@@ -118,8 +118,10 @@ describe 'dns::zone' do
               should contain_concat__fragment('named.conf.local.test.com.include').
                              with_content(/forwarders/)
           end
-          it 'should not have a zone file concat' do
-              should_not contain_concat('/etc/bind/zones/db.test.com.stage')
+          it 'should have an "absent" zone file concat' do
+              should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+                  :ensure => "absent"
+              })
           end
       end
 
@@ -143,14 +145,16 @@ describe 'dns::zone' do
           end
           it 'should not have allow_tranfer entry' do
               should_not contain_concat__fragment('named.conf.local.test.com.include').
-                         with_content(/allow_transfer/)
+                         with_content(/allow-transfer/)
           end
           it 'should not have any forward information' do
               should_not contain_concat__fragment('named.conf.local.test.com.include').
                              with_content(/forward/)
           end
-          it 'should not have a zone file concat' do
-              should_not contain_concat('/etc/bind/zones/db.test.com.stage')
+          it 'should have an "absent" zone file concat' do
+              should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+                  :ensure => "absent"
+              })
           end
       end
 
@@ -176,7 +180,7 @@ describe 'dns::zone' do
           end
           it 'should have allow_tranfer entry' do
               should contain_concat__fragment('named.conf.local.test.com.include').
-                         with_content(/allow_transfer/)
+                         with_content(/allow-transfer/)
           end
           it 'should have a forward-policy entry' do
               should contain_concat__fragment('named.conf.local.test.com.include').
@@ -187,7 +191,9 @@ describe 'dns::zone' do
                              with_content(/forwarders/)
           end
           it 'should have a zone file concat' do
-              should contain_concat('/etc/bind/zones/db.test.com.stage')
+              should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+                  :ensure => "present"
+              })
           end
       end
 
