@@ -8,7 +8,7 @@ define dns::record::ns (
   $ttl = '',
   $host = $name ) {
 
-  $alias = "${host},NS,${zone}"
+  $alias = "${name},NS,${zone}"
 
   dns::record { $alias:
     zone   => $zone,

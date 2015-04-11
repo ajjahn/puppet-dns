@@ -10,7 +10,7 @@ describe 'dns::record::mx', :type => :define do
         :data => 'mailserver.example.com'
     } end
     it { should_not raise_error }
-    it { should contain_concat__fragment('db.example.com.@,example.com,MX,10,mailserver.example.com.record').with_content(/^@\s+IN\s+MX\s+10\s+mailserver\.example\.com\.$/) }
+    it { should contain_concat__fragment('db.example.com.mxtest,example.com,MX,10,mailserver.example.com.record').with_content(/^@\s+IN\s+MX\s+10\s+mailserver\.example\.com\.$/) }
   end
 
   context 'passing an explicit origin and preference' do
@@ -21,7 +21,7 @@ describe 'dns::record::mx', :type => :define do
         :preference => 22
     } end
     it { should_not raise_error }
-    it { should contain_concat__fragment('db.example.com.branchoffice,example.com,MX,22,ittybittymx.example.com.record').with_content(/^branchoffice\s+IN\s+MX\s+22\s+ittybittymx\.example\.com\.$/) }
+    it { should contain_concat__fragment('db.example.com.mxtest,example.com,MX,22,ittybittymx.example.com.record').with_content(/^branchoffice\s+IN\s+MX\s+22\s+ittybittymx\.example\.com\.$/) }
   end
 
   context 'passing a wrong (out-of-range) preference' do

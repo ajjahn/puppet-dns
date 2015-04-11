@@ -10,7 +10,7 @@ define dns::record::a (
   $ptr = false,
   $host = $name ) {
 
-  $alias = "${host},A,${zone}"
+  $alias = "${name},A,${zone}"
 
   dns::record { $alias:
     zone => $zone,

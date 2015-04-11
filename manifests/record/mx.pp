@@ -9,7 +9,7 @@ define dns::record::mx (
   $preference = 10,
   $host       = '@' ) {
 
-  $alias = "${host},${zone},MX,${preference},${data}"
+  $alias = "${name},${zone},MX,${preference},${data}"
 
   validate_string($zone)
   validate_string($data)
