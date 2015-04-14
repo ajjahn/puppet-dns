@@ -8,7 +8,7 @@ define dns::record::cname (
   $ttl = '',
   $host = $name) {
 
-  $alias = "${host},CNAME,${zone}"
+  $alias = "${name},CNAME,${zone}"
 
   $qualified_data = $data ? {
     '@'     => $data,
