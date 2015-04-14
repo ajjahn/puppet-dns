@@ -43,7 +43,7 @@ define dns::zone (
     file { $zone_file:
       ensure => absent,
     }
-  } else {
+  } elsif $zone_type == 'master' {
     # Zone Database
 
     # Create "fake" zone file without zone-serial
@@ -73,6 +73,12 @@ define dns::zone (
       group       => $dns::server::params::group,
       require     => Class['dns::server::install'],
       notify      => Class['dns::server::service'],
+    }
+  } else {
+    # For any zone file that is not a master zone, we should make sure
+    # we don't have a staging file
+    concat { $zone_file_stage:
+      ensure => absent
     }
   }
 

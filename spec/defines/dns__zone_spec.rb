@@ -89,6 +89,7 @@ describe 'dns::zone' do
                   with_content(/forward/)
           end
       end
+
       context 'with a forward zone' do
           let :params do
               { :allow_transfer => ['123.123.123.123'],
@@ -103,7 +104,7 @@ describe 'dns::zone' do
           end
           it 'should not have allow_tranfer entry' do
               should_not contain_concat__fragment('named.conf.local.test.com.include').
-                         with_content(/allow_transfer/)
+                         with_content(/allow-transfer/)
           end
           it 'should not have file entry' do
               should_not contain_concat__fragment('named.conf.local.test.com.include').
@@ -117,7 +118,86 @@ describe 'dns::zone' do
               should contain_concat__fragment('named.conf.local.test.com.include').
                              with_content(/forwarders/)
           end
+          it 'should have an "absent" zone file concat' do
+              should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+                  :ensure => "absent"
+              })
+          end
       end
+
+      context 'with a slave zone' do
+          let :params do
+              { :slave_masters => ['123.123.123.123'],
+                :zone_type => 'slave'
+              }
+          end
+          it 'should have a type slave entry' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                         with_content(/type slave/)
+          end
+          it 'should have file entry' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                             with_content(/file/)
+          end
+          it 'should have masters entry' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                             with_content(/masters/)
+          end
+          it 'should not have allow_tranfer entry' do
+              should_not contain_concat__fragment('named.conf.local.test.com.include').
+                         with_content(/allow-transfer/)
+          end
+          it 'should not have any forward information' do
+              should_not contain_concat__fragment('named.conf.local.test.com.include').
+                             with_content(/forward/)
+          end
+          it 'should have an "absent" zone file concat' do
+              should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+                  :ensure => "absent"
+              })
+          end
+      end
+
+      context 'with a master zone' do
+          let :params do
+              { :allow_transfer => ['8.8.8.8','8.8.4.4'],
+                :allow_forwarder => ['8.8.8.8', '208.67.222.222'],
+                :forward_policy => 'only',
+                :zone_type => 'master'
+              }
+          end
+          it 'should have a type master entry' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                         with_content(/type master/)
+          end
+          it 'should have file entry' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                             with_content(/file/)
+          end
+          it 'should not have masters entry' do
+              should_not contain_concat__fragment('named.conf.local.test.com.include').
+                             with_content(/masters/)
+          end
+          it 'should have allow_tranfer entry' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                         with_content(/allow-transfer/)
+          end
+          it 'should have a forward-policy entry' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                             with_content(/forward /)
+          end
+          it 'should have a forwarders entry' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                             with_content(/forwarders/)
+          end
+          it 'should have a zone file concat' do
+              should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+                  :ensure => "present"
+              })
+          end
+      end
+
+
   end
 end
 
