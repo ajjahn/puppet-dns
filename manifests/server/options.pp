@@ -39,9 +39,15 @@
 #
 # === Examples
 #
+#  Debian:
 #  dns::server::options { '/etc/bind/named.conf.options':
 #    forwarders => [ '8.8.8.8', '8.8.4.4' ],
-#   }
+#  }
+#
+#  RHEL:
+#  dns::server::options { '/etc/named/named.conf.options':
+#    forwarders => [ '8.8.8.8', '8.8.4.4' ],
+#  }
 #
 define dns::server::options (
   $forwarders = [],
