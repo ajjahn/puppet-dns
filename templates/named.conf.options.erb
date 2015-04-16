@@ -1,6 +1,8 @@
 options {
 <% if @osfamily == 'Debian' -%>
   directory "/var/cache/bind";
+<% else -%>
+    directory "<%= @data_dir %>";
 <% end -%>
 	// If there is a firewall between you and nameservers you want
 	// to talk to, you may need to fix the firewall to allow multiple
@@ -38,7 +40,6 @@ options {
     <% end -%>};
 <% end -%>
 
-    directory "<%= @data_dir %>";
 
 <% if @listen_on_port -%>
     port <%= @listen_on_port %>;
