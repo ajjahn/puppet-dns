@@ -29,16 +29,35 @@ class dns::server::config (
     mode   => '0755',
   }
 
-  file { $cfg_file:
-    ensure  => present,
-    owner   => $owner,
-    group   => $group,
-    mode    => '0644',
-    require => [
-      File[$cfg_dir],
-      Class['dns::server::install']
-    ],
-    notify  => Class['dns::server::service'],
+  case $::osfamily {
+    'RedHat': {
+      file { $cfg_file:
+        ensure  => present,
+        owner   => $owner,
+        group   => $group,
+        mode    => '0644',
+        content => template("${module_name}/named.conf.erb"),
+        require => [
+          File[$cfg_dir],
+          Class['dns::server::install']
+        ],
+        notify  => Class['dns::server::service'],
+      }
+    }
+    'Debian': {
+      file { $cfg_file:
+        ensure  => present,
+        owner   => $owner,
+        group   => $group,
+        mode    => '0644',
+        require => [
+          File[$cfg_dir],
+          Class['dns::server::install']
+        ],
+        notify  => Class['dns::server::service'],
+      }
+    }
+    default: { fail('Unrecognized operating system') }
   }
 
   concat { "${cfg_dir}/named.conf.local":

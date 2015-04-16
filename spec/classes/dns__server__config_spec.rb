@@ -18,6 +18,25 @@ describe 'dns::server::config', :type => :class do
 
     it { should contain_file('/etc/bind/').with_owner('bind') }
   end
-
+  context "on a RedHat OS" do
+    let :facts do
+      {
+        :osfamily => 'RedHat'
+      }
+    end
+    let :params do
+      {
+        :owner => 'named',
+        :group => 'named',
+      }
+    end
+    it { should contain_file('/etc/named.conf').with({
+      'ensure' => 'present',
+      'owner'  => 'named',
+      'group'  => 'named',
+      'mode'   => '0644',
+    })
+    it shoud contain_file('/etc/named.conf').with_content("/^include /etc/named/named.conf.options;$/")
+  end
 end
 
