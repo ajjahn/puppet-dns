@@ -112,7 +112,7 @@ dns::server::options { '/etc/bind/named.conf.options':
 
 ```puppet
 node default {
-  # Other nodes export an A record for thier hostname
+  # Other nodes export an A record for their hostname
   @@dns::record::a { $::hostname:
     zone => $::domain, 
     data => $::ipaddress,
