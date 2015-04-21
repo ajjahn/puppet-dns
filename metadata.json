@@ -30,6 +30,10 @@
       "version_requirement": ">=1.0.0 <2.0.0"
     },
     {
+      "name": "electrical/file_concat",
+      "version_requirement": ">= 1.0.1"
+    },
+    {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">=2.4.0 <6.0.0"
     }
