@@ -53,6 +53,7 @@ define dns::server::options (
   $check_names_slave = undef,
   $check_names_response = undef,
   $allow_query = [],
+  $dnssec_validation = undef,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $cfg_dir = $::dns::server::params::cfg_dir
