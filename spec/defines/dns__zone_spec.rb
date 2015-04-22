@@ -81,6 +81,42 @@ describe 'dns::zone' do
           end
       end
 
+      context 'when zone is dynamic' do
+          let :params do
+              { :allow_update => ['192.168.0.3', '192.168.0.4'] }
+          end
+
+          it 'should not replace zone file and not bump serial' do
+              should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+                  'replace' => false,
+              }).without_notify
+          end
+
+          it 'should add allow-update statements to the zone file' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                  with_content(/allow-update/)
+          end
+
+          it 'should have the allow update IPs' do
+              should contain_concat__fragment('named.conf.local.test.com.include').
+                  with_content(/192\.168\.0\.3;/).
+                  with_content(/192\.168\.0\.4;/)
+          end
+      end
+
+     context 'when zone is not dynamic' do
+         it 'should replace the zone file and bump serial' do
+             should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+                 'replace' => true,
+             }).with_notify('Exec[bump-test.com-serial]')
+         end
+
+         it 'should not have allow-update in the zone file' do
+             should_not contain_concat__fragment('named.conf.local.test.come.include').
+                 with_content(/allow-update/)
+         end
+      end
+
       context 'with no explicit forward policy or forwarder' do
           let(:params) {{ :allow_transfer => ['192.0.2.0', '2001:db8::/32'] }}
 
