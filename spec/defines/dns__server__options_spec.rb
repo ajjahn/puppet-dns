@@ -163,6 +163,16 @@ describe 'dns::server::options', :type => :define do
     it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-query/)  }
 
   end
+  context 'disable dns-sec option' do
+    let :params do
+      { :no_dns_sec => true }
+    end
+
+    it { should_not contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation auto/)  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation no;/)  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-enable no;/)  }
+
+  end
 
 end
 
