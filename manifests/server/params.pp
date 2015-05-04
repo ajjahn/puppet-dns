@@ -21,7 +21,7 @@ class dns::server::params {
       $package            = 'bind'
       $service            = 'named'
       case $::operatingsystemmajrelease {
-        '7': {
+        '6', '7': {
           $necessary_packages = [ 'bind', ]
         }
         default: {
