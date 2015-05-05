@@ -75,6 +75,17 @@ statistics-channels {
 };
 <% end -%>
 
+<% if @zone_notify -%>
+notify <%= @zone_notify %>;
+<% end -%>
+<% if @also_notify.size != 0 then -%>
+also-notify {
+    <%- @also_notify.each do |ip| -%>
+    <%= ip -%>;
+    <%- end -%>
+};
+<% end -%>
+
 	//========================================================================
 	// If BIND logs error messages about the root key being expired,
 	// you will need to update your keys.  See https://www.isc.org/bind-keys
