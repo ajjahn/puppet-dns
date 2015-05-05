@@ -37,6 +37,18 @@
 #   Array of IP addresses which are allowed to ask ordinary DNS questions.
 #   Default: empty, meaning "any"
 #
+# [*statistic_channel_ip*]
+#   String of one ip for which the statistic api is bound.
+#   Default: undef, meaning the statistic channel is disable,
+#            both statistic_channel_port and statistic_channel_ip must be defined
+#            for the statistic api to be enabled
+#
+# [*statistic_channel_port*]
+#   String of one port for which the statistic api is bound.
+#   Default: undef, meaning the statistic channel is disable
+#            both statistic_channel_port and statistic_channel_ip must be defined
+#            for the statistic api to be enabled
+#
 # === Examples
 #
 #  dns::server::options { '/etc/bind/named.conf.options':
@@ -53,6 +65,8 @@ define dns::server::options (
   $check_names_slave = undef,
   $check_names_response = undef,
   $allow_query = [],
+  $statistic_channel_ip = undef,
+  $statistic_channel_port = undef,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $cfg_dir = $::dns::server::params::cfg_dir
@@ -75,6 +89,14 @@ define dns::server::options (
     fail("The check name policy check_names_response must be ${valid_check_names}")
   }
   validate_array($allow_query)
+
+  if $statistic_channel_port != undef and !is_numeric($statistic_channel_port) {
+    fail('The statistic_channel_port is not a number')
+  }
+
+  if $statistic_channel_ip != undef and (!is_string($statistic_channel_ip) or !is_ip_address($statistic_channel_ip)) {
+    fail('The statistic_channel_ip is not an ip string')
+  }
 
   file { $title:
     ensure  => present,

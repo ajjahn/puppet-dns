@@ -69,6 +69,12 @@ check-names slave <%= @check_names_slave %>;
 check-names response <%= @check_names_response %>;
 <% end -%>
 
+<% if @statistic_channel_ip and @statistic_channel_port -%>
+statistics-channels {
+    inet <%= @statistic_channel_ip %> port <%= @statistic_channel_port %>;
+};
+<% end -%>
+
 	//========================================================================
 	// If BIND logs error messages about the root key being expired,
 	// you will need to update your keys.  See https://www.isc.org/bind-keys

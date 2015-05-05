@@ -108,6 +108,18 @@ dns::server::options { '/etc/bind/named.conf.options':
 }
 ```
 
+You can enable the report of bind stats trough the `statistics-channels` using:
+
+```puppet
+dns::server::options { '/etc/bind/named.conf.options':
+  check_names_master     => 'fail',
+  check_names_slave      => 'warn',
+  forwarders             => [ '8.8.8.8', '4.4.4.4' ],
+  statistic_channel_ip   => '127.0.0.1',
+  statistic_channel_port => 8053
+}
+```
+
 ### Exported resource patterns
 
 ```puppet
