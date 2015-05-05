@@ -243,7 +243,7 @@ describe 'dns::zone' do
     let :params do
       { :also_notify => [ '8.8.8.8' ] }
     end
-    it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/ also-notify {/) }
+    it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/ also-notify \{/) }
     it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/8\.8\.8\.8;/) }
   end
 

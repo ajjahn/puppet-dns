@@ -216,7 +216,7 @@ describe 'dns::server::options', :type => :define do
     let :params do
       { :also_notify => [ '8.8.8.8' ] }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/^also-notify {/) }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/^also-notify \{/) }
     it { should contain_file('/etc/bind/named.conf.options').with_content(/8\.8\.8\.8;/) }
   end
 
