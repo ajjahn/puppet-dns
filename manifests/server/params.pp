@@ -20,13 +20,7 @@ class dns::server::params {
       $owner              = 'named'
       $package            = 'bind'
       $service            = 'named'
-      case $::operatingsystemmajrelease {
-        /^[0-5]$/: {
-          $necessary_packages = [ 'bind', 'dnssec-tools' ]
-        }
-        default: {
-          $necessary_packages = [ 'bind', ]
-        }
+      $necessary_packages = [ 'bind' ]
       }
     }
     default: {
