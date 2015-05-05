@@ -42,7 +42,7 @@
 #   Default: undef, meaning the statistic channel is disable,
 #            both statistic_channel_port and statistic_channel_ip must be defined
 #            for the statistic api to be enabled
-# 
+#
 # [*statistic_channel_port*]
 #   String of one port for which the statistic api is bound.
 #   Default: undef, meaning the statistic channel is disable
@@ -94,7 +94,7 @@ define dns::server::options (
     fail('The statistic_channel_port is not a number')
   }
 
-  if $statistic_channel_ip and (!is_string($statistic_channel_ip) or !is_ip($statistic_channel_ip)) {
+  if $statistic_channel_ip and (!is_string($statistic_channel_ip) or !is_ip_address($statistic_channel_ip)) {
     fail('The statistic_channel_ip is not an ip string')
   }
 
