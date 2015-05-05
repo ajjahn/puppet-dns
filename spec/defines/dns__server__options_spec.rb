@@ -175,12 +175,12 @@ describe 'dns::server::options', :type => :define do
 
   context 'passing a valid ip and a valid port' do
     let :params do
-      { :statistic_channel_ip => '127.0.0.1' }
-      { :statistic_channel_port => 12455 }
+      { :statistic_channel_ip => '127.0.0.1',
+        :statistic_channel_port => 12455 }
     end
 
     it { should contain_file('/etc/bind/named.conf.options').with_content(/statistics-channels/)  }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/inet 127.0.0.1 port 12455/)  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/inet 127\.0\.0\.1 port 12455;/)  }
 
   end
 

@@ -69,7 +69,7 @@ check-names slave <%= @check_names_slave %>;
 check-names response <%= @check_names_response %>;
 <% end -%>
 
-<% if @statistic_channel_ip and @statistic_channel_ip -%>
+<% if @statistic_channel_ip and @statistic_channel_port -%>
 statistics-channels {
     inet <%= @statistic_channel_ip %> port <%= @statistic_channel_port %>;
 };
