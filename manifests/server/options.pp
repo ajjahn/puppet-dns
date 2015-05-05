@@ -90,11 +90,11 @@ define dns::server::options (
   }
   validate_array($allow_query)
 
-  if $statistic_channel_port and !is_numeric($statistic_channel_port) {
+  if $statistic_channel_port != undef and !is_numeric($statistic_channel_port) {
     fail('The statistic_channel_port is not a number')
   }
 
-  if $statistic_channel_ip and (!is_string($statistic_channel_ip) or !is_ip_address($statistic_channel_ip)) {
+  if $statistic_channel_ip != undef and (!is_string($statistic_channel_ip) or !is_ip_address($statistic_channel_ip)) {
     fail('The statistic_channel_ip is not an ip string')
   }
 
