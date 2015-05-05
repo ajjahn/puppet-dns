@@ -166,7 +166,7 @@ describe 'dns::server::options', :type => :define do
 
   context 'passing no statistic channel ip' do
     let :params do
-      { :statistic_channel_ip => undef }
+      { :statistic_channel_ip => nil }
     end
 
     it { should_not contain_file('/etc/bind/named.conf.options').with_content(/statistics-channels/)  }
