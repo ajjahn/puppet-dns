@@ -21,11 +21,11 @@ class dns::server::params {
       $package            = 'bind'
       $service            = 'named'
       case $::operatingsystemmajrelease {
-        '7': {
-          $necessary_packages = [ 'bind', ]
+        /^[0-5]$/: {
+          $necessary_packages = [ 'bind', 'dnssec-tools' ]
         }
         default: {
-          $necessary_packages = [ 'bind', 'dnssec-tools' ]
+          $necessary_packages = [ 'bind', ]
         }
       }
     }
