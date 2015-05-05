@@ -15,7 +15,8 @@ define dns::zone (
   $allow_forwarder = [],
   $forward_policy = 'first',
   $slave_masters = undef,
-  $zone_notify = false,
+  $zone_notify = undef,
+  $also_notify = [],
   $ensure = present
 ) {
 
@@ -29,6 +30,12 @@ define dns::zone (
   }
   if !member(['first', 'only'], $forward_policy) {
     error('The forward policy can only be set to either first or only')
+  }
+
+  validate_array($also_notify)
+  $valid_zone_notify = ['yes', 'no', 'explicit', 'master-only']
+  if $zone_notify != undef and !member($valid_zone_notify, $zone_notify) {
+    fail("The zone_notify must be ${valid_zone_notify}")
   }
 
   $zone = $reverse ? {
