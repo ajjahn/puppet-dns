@@ -21,7 +21,6 @@ class dns::server::params {
       $package            = 'bind'
       $service            = 'named'
       $necessary_packages = [ 'bind' ]
-      }
     }
     default: {
       fail("dns::server is incompatible with this osfamily: ${::osfamily}")
