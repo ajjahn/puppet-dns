@@ -15,7 +15,6 @@ describe 'dns::server::config', :type => :class do
         :concat_basedir         => '/dne',
       }
     end
-
     it { should contain_file('/etc/bind/').with_owner('bind') }
   end
 

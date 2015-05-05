@@ -30,7 +30,6 @@ describe 'dns::record::mx', :type => :define do
         :data       => 'badpref.example.com',
         :preference => 65537
     } end
-
     it { should raise_error(Puppet::Error, /must be an integer within 0-65536/) }
   end
 
@@ -40,48 +39,48 @@ describe 'dns::record::mx', :type => :define do
         :data       => 'worsepref.example.com',
         :preference => 'highest'
     } end
-
     it { should raise_error(Puppet::Error, /must be an integer within 0-65536/) }
   end
+
   context 'passing a wrong (numeric top-level domain) zone' do
     let :params do {
         :zone => 'one.618',
         :data => 'goldenratio.example.com'
     } end
-
     it { should raise_error(Puppet::Error, /must be a valid domain name/) }
   end
+
   context 'passing a wrong (numeric) zone' do
     let :params do {
         :zone => 123,
         :data => 'badzone.example.com'
     } end
-
     it { should raise_error(Puppet::Error, /must be a valid domain name/) }
   end
+
   context 'passing a wrong (IP address) zone' do
     let :params do {
         :zone => '192.168.1.1',
         :data => 'ipaddrzone.example.com'
     } end
-
     it { should raise_error(Puppet::Error, /must be a valid domain name/) }
   end
+
   context 'passing wrong (numeric) data' do
     let :params do {
         :zone => 'example.com',
         :data => 456
     } end
-
     it { should raise_error(Puppet::Error, /must be a valid hostname/) }
   end
+
   context 'passing wrong (IP address) data' do
     let :params do {
         :zone => 'example.com',
         :data => '192.168.4.4'
     } end
-
     it { should raise_error(Puppet::Error, /must be a valid hostname/) }
   end
+
 end
 
