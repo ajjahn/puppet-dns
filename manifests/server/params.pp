@@ -20,14 +20,7 @@ class dns::server::params {
       $owner              = 'named'
       $package            = 'bind'
       $service            = 'named'
-      case $::operatingsystemmajrelease {
-        '7': {
-          $necessary_packages = [ 'bind', ]
-        }
-        default: {
-          $necessary_packages = [ 'bind', 'dnssec-tools' ]
-        }
-      }
+      $necessary_packages = [ 'bind' ]
     }
     default: {
       fail("dns::server is incompatible with this osfamily: ${::osfamily}")
