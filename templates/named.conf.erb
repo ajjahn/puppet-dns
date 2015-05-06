@@ -1,0 +1,18 @@
+; File managed by puppet.
+;
+
+include /etc/named/named.conf.options;
+logging {
+        channel default_debug {
+                file "data/named.run";
+                severity dynamic;
+        };
+};
+zone "." IN {
+       type hint;
+       file "named.ca";
+};
+include "/etc/named.rfc1912.zones";
+include "/etc/named.root.key";
+include "/etc/named/named.conf.local";
+
