@@ -13,5 +13,11 @@ describe 'dns::server::install', :type => :class do
     end
   end
 
+  context "on a RedHat OS" do
+    let(:facts) {{ :osfamily => 'RedHat' }}
+    it { should contain_class('dns::server::params') }
+    it { should contain_package('bind') }
+  end
+
 end
 
