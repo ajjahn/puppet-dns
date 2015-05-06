@@ -183,4 +183,69 @@ describe 'dns::zone' do
       end
   end
 
+  context 'passing no zone_notify setting' do
+    let :params do
+      {}
+    end
+    it { should contain_concat__fragment('named.conf.local.test.com.include').without_content(/ notify /) }
+  end
+
+  context 'passing a wrong zone_notify setting' do
+    let :params do
+      { :zone_notify => 'maybe' }
+    end
+    it { should raise_error(Puppet::Error, /The zone_notify/) }
+  end
+
+  context 'passing yes to zone_notify' do
+    let :params do
+      { :zone_notify => 'yes' }
+    end
+    it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/ notify yes;/) }
+  end
+
+  context 'passing no to zone_notify' do
+    let :params do
+      { :zone_notify => 'no' }
+    end
+    it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/ notify no;/) }
+  end
+
+  context 'passing master-only to zone_notify' do
+    let :params do
+      { :zone_notify => 'master-only' }
+    end
+    it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/ notify master-only;/) }
+  end
+
+  context 'passing explicit to zone_notify' do
+    let :params do
+      { :zone_notify => 'explicit' }
+    end
+    it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/ notify explicit;/) }
+  end
+
+  context 'passing no also_notify setting' do
+    let :params do
+      {}
+    end
+    it { should contain_concat__fragment('named.conf.local.test.com.include').without_content(/ also-notify /) }
+  end
+
+  context 'passing a string to also_notify' do
+    let :params do
+      { :also_notify => '8.8.8.8' }
+    end
+    it { should raise_error(Puppet::Error, /is not an Array/) }
+  end
+
+  context 'passing a valid array to also_notify' do
+    let :params do
+      { :also_notify => [ '8.8.8.8' ] }
+    end
+    it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/ also-notify \{/) }
+    it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/8\.8\.8\.8;/) }
+  end
+
 end
+

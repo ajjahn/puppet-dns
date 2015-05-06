@@ -3,6 +3,13 @@ type <%= @zone_type %>;
 <% if @zone_notify -%>
     notify <%= @zone_notify %>;
 <% end -%>
+<% if @also_notify.size != 0 -%>
+    also-notify {
+    <%- @also_notify.each do |ip| -%>
+        <%= ip %>;
+    <%- end -%>
+    };
+<% end -%>
 <% if @zone_type != 'forward' -%>
     file "<%= @zone_file %>";
 <% end -%>
