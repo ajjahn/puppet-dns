@@ -34,6 +34,7 @@ class dns::server::config (
     owner   => $owner,
     group   => $group,
     mode    => '0644',
+    content => template("${module_name}/named.conf.erb"),
     require => [
       File[$cfg_dir],
       Class['dns::server::install']
