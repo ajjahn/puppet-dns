@@ -10,7 +10,7 @@ logging {
 };
 zone "." IN {
        type hint;
-       file "<%= root_hint %>";
+       file "<%= @root_hint %>";
 };
 include "<%= @rfc1912_zones_cfg %>";
 include "<%= @rndc_key_file %>";
