@@ -32,4 +32,5 @@ class dns::server::params {
       fail("dns::server is incompatible with this osfamily: ${::osfamily}")
     }
   }
+  $ensure_packages = latest
 }
