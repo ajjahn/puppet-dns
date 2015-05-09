@@ -1,0 +1,18 @@
+; File managed by puppet.
+;
+
+include "<%= @cfg_dir %>/named.conf.options";
+logging {
+        channel default_debug {
+                file "data/named.run";
+                severity dynamic;
+        };
+};
+zone "." IN {
+       type hint;
+       file "<%= @root_hint %>";
+};
+include "<%= @rfc1912_zones_cfg %>";
+include "<%= @rndc_key_file %>";
+include "<%= @cfg_dir %>/named.conf.local";
+
