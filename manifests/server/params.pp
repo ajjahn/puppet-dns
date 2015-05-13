@@ -14,6 +14,8 @@ class dns::server::params {
       $package            = 'bind9'
       $service            = 'bind9'
       $necessary_packages = [ 'bind9', 'dnssec-tools' ]
+      $startup_file       = '/etc/default/bind9'
+      $startup_template   = 'startup.debian.erb'
     }
     'RedHat': {
       $cfg_dir            = '/etc/named'
@@ -27,6 +29,8 @@ class dns::server::params {
       $package            = 'bind'
       $service            = 'named'
       $necessary_packages = [ 'bind', ]
+      $startup_file       = '/etc/sysconfig/named'
+      $startup_template   = 'startup.redhat.erb'
     }
     default: {
       fail("dns::server is incompatible with this osfamily: ${::osfamily}")
