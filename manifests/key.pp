@@ -42,7 +42,6 @@ define dns::key {
     owner   => $dns::server::params::owner,
     group   => $dns::server::params::group,
     mode    => '0644',
-    require => Class['concat::setup'],
     notify  => Class['dns::server::service']
   }
 
