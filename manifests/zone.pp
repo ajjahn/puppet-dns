@@ -1,7 +1,7 @@
 # == Define dns::zone
 #
 define dns::zone (
-  $soa = "${::fqdn}",
+  $soa = ${::fqdn},
   $soa_email = "root.${::fqdn}",
   $zone_ttl = '604800',
   $zone_refresh = '604800',
