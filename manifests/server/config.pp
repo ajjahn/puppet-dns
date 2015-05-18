@@ -43,10 +43,10 @@ class dns::server::config (
   }
 
   concat { "${cfg_dir}/named.conf.local":
-    owner   => $owner,
-    group   => $group,
-    mode    => '0644',
-    notify  => Class['dns::server::service']
+    owner  => $owner,
+    group  => $group,
+    mode   => '0644',
+    notify => Class['dns::server::service']
   }
 
   concat::fragment{'named.conf.local.header':

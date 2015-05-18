@@ -39,10 +39,10 @@ define dns::key {
   }
 
   concat { "${cfg_dir}/bind.keys.d/${name}.key":
-    owner   => $dns::server::params::owner,
-    group   => $dns::server::params::group,
-    mode    => '0644',
-    notify  => Class['dns::server::service']
+    owner  => $dns::server::params::owner,
+    group  => $dns::server::params::group,
+    mode   => '0644',
+    notify => Class['dns::server::service']
   }
 
   Concat::Fragment {
