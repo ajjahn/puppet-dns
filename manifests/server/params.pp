@@ -8,7 +8,7 @@ class dns::server::params {
       $data_dir           = '/etc/bind/zones'
       $root_hint          = "${cfg_dir}/db.root"
       $rfc1912_zones_cfg  = "${cfg_dir}/named.conf.default-zones"
-      $rndc_key_file      = "${cfg_dir}/ns-example-com_rndc-key"
+      $rndc_key_file      = "${cfg_dir}/rndc.key"
       $group              = 'bind'
       $owner              = 'bind'
       $package            = 'bind9'
