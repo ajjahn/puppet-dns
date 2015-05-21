@@ -8,11 +8,6 @@ logging {
                 severity dynamic;
         };
 };
-zone "." IN {
-       type hint;
-       file "<%= @root_hint %>";
-};
 include "<%= @rfc1912_zones_cfg %>";
 include "<%= @rndc_key_file %>";
 include "<%= @cfg_dir %>/named.conf.local";
-
