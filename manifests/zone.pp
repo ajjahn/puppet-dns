@@ -24,10 +24,6 @@ define dns::zone (
 
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
-  if $dns::server::options::forwarder and $allow_forwarder {
-    fatal("You cannot specify a global forwarder and \
-    a zone forwarder for zone ${soa}")
-  }
   if !member(['first', 'only'], $forward_policy) {
     error('The forward policy can only be set to either first or only')
   }
