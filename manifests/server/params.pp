@@ -28,7 +28,7 @@ class dns::server::params {
       $package            = 'bind'
       $service            = 'named'
       $necessary_packages = [ 'bind', ]
-      if $operatingsystemmajrelease < 6 {
+      if $::operatingsystemmajrelease =~ /^[1-5]$/ {
         $default_dnssec_validation = 'absent'
       } else {
         $default_dnssec_validation = 'auto'
