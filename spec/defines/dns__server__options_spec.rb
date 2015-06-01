@@ -220,5 +220,54 @@ describe 'dns::server::options', :type => :define do
     it { should contain_file('/etc/bind/named.conf.options').with_content(/8\.8\.8\.8;/) }
   end
 
+  context 'default value of dnssec_validation on RedHat 5' do
+    let :facts do
+      { :osfamily => 'RedHat', :operatingsystemmajrelease => '5' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').without_content(/dnssec-validation/) }
+  end
+
+  context 'default value of dnssec_validation on RedHat 6' do
+    let :facts do
+      { :osfamily => 'RedHat', :operatingsystemmajrelease => '6' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation auto/) }
+  end
+
+  context 'default value of dnssec_validation on Debian' do
+    let :facts do
+      { :osfamily => 'Debian' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation auto/) }
+  end
+
+  context 'passing `absent` to dnssec_validation' do
+    let :params do
+      { :dnssec_validation => 'absent' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').without_content(/dnssec-validation/) }
+  end
+
+  context 'passing `auto` to dnssec_validation' do
+    let :params do
+      { :dnssec_validation => 'auto' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation auto/) }
+  end
+
+  context 'passing `yes` to dnssec_validation' do
+    let :params do
+      { :dnssec_validation => 'yes' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation yes/) }
+  end
+
+  context 'passing `no` to dnssec_validation' do
+    let :params do
+      { :dnssec_validation => 'no' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation no/) }
+  end
+
 end
 
