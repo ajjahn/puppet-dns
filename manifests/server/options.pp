@@ -63,11 +63,10 @@
 #   Default: empty, meaning no additional servers
 #
 # [*dnssec_validation*]
-#   Controls DNS-SEC validation.  String of "yes", "auto", "no", or
-#   "absent" (to prevent the `dnssec-validation` option from being
-#   included).  Default is "absent" on RedHat 5 (whose default bind
-#   package is too old to include dnssec validation), and "auto" on
-#   Debian and on RedHat 6 and above.
+#   Controls DNS-SEC validation.  String of "yes", "no", or "auto".
+#   If set to `undef`, the dnssec_validation option will be omitted.
+#   Default is `undef` on RedHat 5, and "auto" on Debian and on
+#   RedHat 6 and above.
 #
 # === Examples
 #
@@ -128,7 +127,7 @@ define dns::server::options (
     fail("The zone_notify must be ${valid_zone_notify}")
   }
 
-  $valid_dnssec_validation = ['yes', 'no', 'auto', 'absent']
+  $valid_dnssec_validation = ['yes', 'no', 'auto']
   if $dnssec_validation != undef and !member($valid_dnssec_validation, $dnssec_validation) {
     fail("The dnssec_validation must be ${valid_dnssec_validation}")
   }
