@@ -75,6 +75,7 @@
 #    forwarders => [ '8.8.8.8', '8.8.4.4' ],
 #   }
 #
+include dns::server::params
 define dns::server::options (
   $forwarders = [],
   $transfers = [],
@@ -89,7 +90,7 @@ define dns::server::options (
   $statistic_channel_port = undef,
   $zone_notify = undef,
   $also_notify = [],
-  $dnssec_validation = undef,
+  $dnssec_validation = $dns::server::params::default_dnssec_validation,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $cfg_dir = $::dns::server::params::cfg_dir
@@ -130,14 +131,6 @@ define dns::server::options (
   $valid_dnssec_validation = ['yes', 'no', 'auto', 'absent']
   if $dnssec_validation != undef and !member($valid_dnssec_validation, $dnssec_validation) {
     fail("The dnssec_validation must be ${valid_dnssec_validation}")
-  }
-
-  if $dnssec_validation != undef {
-    $real_dnssec_validation = $dnssec_validation
-  } elsif $::osfamily == 'RedHat' and $::operatingsystemmajrelease == 5 {
-    $real_dnssec_validation = 'absent'
-  } else {
-    $real_dnssec_validation = 'auto'
   }
 
   file { $title:

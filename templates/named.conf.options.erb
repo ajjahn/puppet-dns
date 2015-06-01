@@ -90,8 +90,8 @@ also-notify {
 	// If BIND logs error messages about the root key being expired,
 	// you will need to update your keys.  See https://www.isc.org/bind-keys
 	//========================================================================
-<% if @real_dnssec_validation != 'absent' -%>
-	dnssec-validation <%= @real_dnssec_validation %>;
+<% if @dnssec_validation != 'absent' -%>
+	dnssec-validation <%= @dnssec_validation %>;
 <% end -%>
 
 	auth-nxdomain no;    # conform to RFC1035

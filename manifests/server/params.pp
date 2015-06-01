@@ -14,6 +14,7 @@ class dns::server::params {
       $package            = 'bind9'
       $service            = 'bind9'
       $necessary_packages = [ 'bind9', 'dnssec-tools' ]
+      $default_dnssec_validation = 'auto'
     }
     'RedHat': {
       $cfg_dir            = '/etc/named'
@@ -27,6 +28,11 @@ class dns::server::params {
       $package            = 'bind'
       $service            = 'named'
       $necessary_packages = [ 'bind', ]
+      if $operatingsystemmajrelease < 6 {
+        $default_dnssec_validation = 'absent'
+      } else {
+        $default_dnssec_validation = 'auto'
+      }
     }
     default: {
       fail("dns::server is incompatible with this osfamily: ${::osfamily}")
