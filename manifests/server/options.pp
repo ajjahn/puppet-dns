@@ -62,12 +62,20 @@
 #   should be sent.
 #   Default: empty, meaning no additional servers
 #
+# [*dnssec_validation*]
+#   Controls DNS-SEC validation.  String of "yes", "auto", "no", or
+#   "absent" (to prevent the `dnssec-validation` option from being
+#   included).  Default is "absent" on RedHat 5 (whose default bind
+#   package is too old to include dnssec validation), and "auto" on
+#   Debian and on RedHat 6 and above.
+#
 # === Examples
 #
 #  dns::server::options { '/etc/bind/named.conf.options':
 #    forwarders => [ '8.8.8.8', '8.8.4.4' ],
 #   }
 #
+include dns::server::params
 define dns::server::options (
   $forwarders = [],
   $transfers = [],
@@ -82,6 +90,7 @@ define dns::server::options (
   $statistic_channel_port = undef,
   $zone_notify = undef,
   $also_notify = [],
+  $dnssec_validation = $dns::server::params::default_dnssec_validation,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $cfg_dir = $::dns::server::params::cfg_dir
@@ -117,6 +126,11 @@ define dns::server::options (
   $valid_zone_notify = ['yes', 'no', 'explicit', 'master-only']
   if $zone_notify != undef and !member($valid_zone_notify, $zone_notify) {
     fail("The zone_notify must be ${valid_zone_notify}")
+  }
+
+  $valid_dnssec_validation = ['yes', 'no', 'auto', 'absent']
+  if $dnssec_validation != undef and !member($valid_dnssec_validation, $dnssec_validation) {
+    fail("The dnssec_validation must be ${valid_dnssec_validation}")
   }
 
   file { $title:
