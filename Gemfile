@@ -1,7 +1,12 @@
 source "https://rubygems.org"
 
 group :development do
+  gem "beaker", "> 2.0.0"
+  gem "beaker-rspec", ">= 5.1.0"
+  gem "pry"
   gem "puppet-blacksmith"
+  gem "serverspec"
+  gem "vagrant-wrapper"
 end
 
 group :test do
@@ -12,9 +17,4 @@ group :test do
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper"
   gem 'rspec'
-  gem "beaker", "> 2.0.0"
-  gem "beaker-rspec", ">= 5.1.0"
-  gem "pry"
-  gem "serverspec"
-  gem "vagrant-wrapper"
 end
