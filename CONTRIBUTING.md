@@ -93,11 +93,22 @@ with:
 
     bundle exec rake beaker
 
-This will run the tests on an Ubuntu 14.04 virtual machine. You can also
+This will run the tests on an Ubuntu 12.04 virtual machine. You can also
 run the integration tests against Centos 6.6 with:
 
     BEAKER_set=centos-66-x64 bundle exec rake beaker
 
-Or with Ubuntu 14.04 with:
+Or with Ubuntu 12.04 with:
 
-    BEAKER_set=ubuntu-server-1404-x64 bundle exec rake beaker
+    BEAKER_set=ubuntu-server-12-x64 bundle exec rake beaker
+
+If you need to inspect a vm manually afterwards, you can ask beaker to not
+destroy the box:
+
+    bundle exec rake BEAKER_destroy=no beaker
+
+Then vagrant ssh to the box that was left behind
+
+    vagrant global-status
+    vagrant ssh (box-id)
+

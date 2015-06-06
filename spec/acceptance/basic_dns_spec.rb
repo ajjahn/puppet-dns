@@ -5,6 +5,9 @@ describe 'basic dns' do
  context 'default parameters' do
     let(:pp) {"
       include dns::server
+      dns::server::options { '/etc/bind/named.conf.options':
+        forwarders => [ '8.8.8.8', '8.8.4.4' ]
+      }
     "}
     it 'should apply with no errors' do
       apply_manifest(pp, :catch_failures=>true)
