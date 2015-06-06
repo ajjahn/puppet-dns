@@ -11,5 +11,10 @@ group :test do
   gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git'
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper"
-  gem 'rspec', '< 2.99'
+  gem 'rspec'
+  gem "beaker", "> 2.0.0"
+  gem "beaker-rspec", ">= 5.1.0"
+  gem "pry"
+  gem "serverspec"
+  gem "vagrant-wrapper"
 end
