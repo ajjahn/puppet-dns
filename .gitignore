@@ -5,3 +5,4 @@ pkg
 .rspec_system
 .vagrant
 /.project
+log/
