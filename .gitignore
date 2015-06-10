@@ -6,3 +6,4 @@ pkg
 .vagrant
 /.project
 log/
+Gemfile.lock
