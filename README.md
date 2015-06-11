@@ -85,6 +85,15 @@ node 'server.example.com' {
     zone => 'example.com',
     data => 'Hello World',
   }
+
+  # TSIG
+  dns::tsig { 'ns3' :
+    ensure    => present,
+    algorithm => "hmac-md5",
+    secret    => "La/E5CjG9O+os1jq0a2jdA==",
+    server    => "192.168.1.3"
+  }
+
 }
 ```
 

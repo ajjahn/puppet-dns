@@ -1,0 +1,17 @@
+key <%= @keyname %>. {
+  algorithm <%= @algorithm %>;
+  secret "<%= @secret %>";
+};
+<% if server.class == Array -%>
+<% server.each do |host| -%>
+server <%= host -%> {
+  keys { <%= @keyname %>. ; };
+};
+<% end -%>
+<% else -%>
+<% if @server then -%>
+server <%= @server %> {
+  keys { <%= @keyname %>. ; };
+};
+<% end -%>
+<% end -%>
