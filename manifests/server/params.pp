@@ -14,7 +14,10 @@ class dns::server::params {
       $package            = 'bind9'
       $service            = 'bind9'
       $necessary_packages = [ 'bind9', 'dnssec-tools' ]
+      $startup_file       = '/etc/default/bind9'
+      $startup_template   = 'startup.debian.erb'
       $default_dnssec_validation = 'auto'
+
     }
     'RedHat': {
       $cfg_dir            = '/etc/named'
@@ -28,6 +31,8 @@ class dns::server::params {
       $package            = 'bind'
       $service            = 'named'
       $necessary_packages = [ 'bind', ]
+      $startup_file       = '/etc/sysconfig/named'
+      $startup_template   = 'startup.redhat.erb'
       if $::operatingsystemmajrelease =~ /^[1-5]$/ {
         $default_dnssec_validation = 'absent'
       } else {
