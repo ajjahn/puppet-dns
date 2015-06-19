@@ -33,30 +33,30 @@
 #                            utility for every zone to ensure all zones are
 #                            valid before named starts. If you set this option
 #                            to 'yes' then initscript doesn't perform those checks.
-<% @rootdir -%>
+<% if @rootdir -%>
 ROOTDIR="<%= @rootdir %>"
 <% end -%>
 
-<% @options -%>
+<% if @options -%>
 OPTIONS="<%= @options %>"
 <% end -%>
 
-<% @enable_zone_write -%>
+<% if @enable_zone_write -%>
 ENABLE_ZONE_WRITE=<%= @enable_zone_write %>
 <% end -%>
 
-<% @enable_sdb -%>
+<% if @enable_sdb -%>
 ENABLE_SDB=<%= @enable_sdb %>
 <% end -%>
 
-<% @disable_named_dbus -%>
-DISABLE_NAMED_DBUS=[<%= @enable_zone_write %>]
+<% if @disable_named_dbus -%>
+DISABLE_NAMED_DBUS=<%= @disable_named_dbus %>
 <% end -%>
 
-<% @keytab_file -%>
+<% if @keytab_file -%>
 KEYTAB_FILE="<%= @keytab_file %>"
 <% end -%>
 
-<% @disable_zone_checking -%>
+<% if @disable_zone_checking -%>
 DISABLE_ZONE_CHECKING=<%= @disable_zone_checking %>
 <% end -%>

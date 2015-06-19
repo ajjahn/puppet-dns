@@ -22,7 +22,8 @@ describe 'dns::server::config', :type => :class do
   context "on a RedHat OS" do
     let :facts do
       {
-        :osfamily => 'RedHat'
+        :osfamily               => 'RedHat',
+        :concat_basedir         => '/dne',
       }
     end
     it { should contain_file('/etc/named.conf').with_owner('named') }

@@ -15,7 +15,7 @@
 #
 # [*rootdir*]
 #   Must be an absolute path to set up the chroot environment
-# 
+#
 # [*enable_zone_write*]
 #   If SELinux is disabled, then allow named to write its zone files
 #   Set string "yes", "no" or leave empty. Default: empty
@@ -60,26 +60,28 @@ class dns::server::startup (
 
   validate_absolute_path( $startup_file )
 
-  validate_re( $resolvconf, '^(yes|no)$', 'The resolvconf value is not type of a string yes / no.' )
+  if $resolvconf != '' {
+    validate_re( $resolvconf, '^(yes|no)$', 'The resolvconf value is not type of a string yes / no.' )
+  }
 
-  if $rootdir != "" {
+  if $rootdir != '' {
     validate_absolute_path( $rootdir )
   }
 
   validate_re( $enable_zone_write, '^(yes|no|\s*)$', 'The enable_zone_write value is not type of a string yes / no or empty.' )
 
-  validate_re( $enable_sdb, '^(yes|no|\s*)$' )
+  validate_re( $enable_sdb, '^(yes|no|1|0|\s*)$', 'The enable_sdb value is not type of a string yes / no / 1 / 0 or empty.' )
 
   if $keytab_file != '' {
     validate_absolute_path( $keytab_file )
   }
 
-  validate_re( $disable_zone_checking, '^(yes|no|\s*)$', "The disable_zone_checking value is not type of a string yes / no or empty." )
+  validate_re( $disable_zone_checking, '^(yes|no|\s*)$', 'The disable_zone_checking value is not type of a string yes / no or empty.' )
 
   file { $startup_file:
     ensure  => present,
-    owner   => $owner,
-    group   => $group,
+    owner   => $::dns::server::params::owner,
+    group   => $::dns::server::params::group,
     mode    => '0644',
     content => template("${module_name}/${startup_template}"),
     notify  => Class['dns::server::service'],
