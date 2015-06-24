@@ -291,6 +291,3 @@ DEPENDENCIES
   rspec-puppet (~> 2.1)
   serverspec
   vagrant-wrapper
-
-BUNDLED WITH
-   1.10.0

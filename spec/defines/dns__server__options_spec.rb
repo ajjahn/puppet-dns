@@ -222,21 +222,21 @@ describe 'dns::server::options', :type => :define do
 
   context 'default value of dnssec_validation on RedHat 5' do
     let :facts do
-      { :osfamily => 'RedHat', :operatingsystemmajrelease => '5' }
+      { :osfamily => 'RedHat', :operatingsystemmajrelease => '5', :concat_basedir => '/tmp' }
     end
     it { should contain_file('/etc/bind/named.conf.options').without_content(/dnssec-validation/) }
   end
 
   context 'default value of dnssec_validation on RedHat 6' do
     let :facts do
-      { :osfamily => 'RedHat', :operatingsystemmajrelease => '6' }
+      { :osfamily => 'RedHat', :operatingsystemmajrelease => '6', :concat_basedir => '/tmp' }
     end
     it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation auto/) }
   end
 
   context 'default value of dnssec_validation on Debian' do
     let :facts do
-      { :osfamily => 'Debian' }
+      { :osfamily => 'Debian', :concat_basedir => '/tmp' }
     end
     it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation auto/) }
   end
