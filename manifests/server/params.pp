@@ -13,8 +13,15 @@ class dns::server::params {
       $owner              = 'bind'
       $package            = 'bind9'
       $service            = 'bind9'
-      $necessary_packages = [ 'bind9', 'dnssec-tools' ]
       $default_dnssec_validation = 'auto'
+      case $::operatingsystemmajrelease {
+        '8': {
+          $necessary_packages = ['bind9']
+        }
+        default: {
+          $necessary_packages = [ 'bind9', 'dnssec-tools' ]
+        }
+      }
     }
     'RedHat': {
       $cfg_dir            = '/etc/named'
