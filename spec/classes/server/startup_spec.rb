@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'dns::server::startup', :type => :type do
+describe 'dns::server::default', :type => :type do
 
   let :pre_condition do
     'class { "::dns::server": }'
