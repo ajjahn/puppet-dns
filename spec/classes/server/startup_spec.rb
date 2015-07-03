@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe 'dns::server::default', :type => :type do
 
-  let :pre_condition do
-    'class { "::dns::server": }'
-  end
-
   context "on an unsupported OS" do
     it{ should raise_error(/dns::server is incompatible with this osfamily/) }
   end

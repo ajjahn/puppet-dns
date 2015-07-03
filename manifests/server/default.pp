@@ -16,10 +16,6 @@ class dns::server::default (
 
 ) inherits dns::server::params {
 
-  if ! defined(Class['::dns::server']) {
-    fail('You must include the ::dns::server base class before using any dns default defined resources')
-  }
-
   validate_absolute_path( $default_file )
 
   if $resolvconf != '' {

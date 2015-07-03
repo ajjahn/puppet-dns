@@ -56,4 +56,6 @@ class dns::server::config (
     content => "// File managed by Puppet.\n"
   }
 
+  include dns::server::default
+
 }
