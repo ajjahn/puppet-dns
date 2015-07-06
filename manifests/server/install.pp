@@ -1,7 +1,5 @@
 # == Class dns::server
 #
-include dns::server::default
-
 class dns::server::install (
   $necessary_packages = $dns::server::params::necessary_packages,
   $ensure_packages    = $dns::server::params::ensure_packages,
