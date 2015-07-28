@@ -14,7 +14,11 @@ type <%= @zone_type %>;
     file "<%= @zone_file %>";
 <% end -%>
 <% if @zone_type == 'slave' -%>
+<%- if @slave_masters.is_a?(Array) -%>
+    masters { <%= @slave_masters.join(";") %>;};
+<%- else -%>
     masters { <%= @slave_masters %>;};
+<%- end -%>
 <% elsif @zone_type == 'master' -%>
     <% if @allow_transfer.is_a?(Array) and @allow_transfer.size != 0 -%>
         allow-transfer {
