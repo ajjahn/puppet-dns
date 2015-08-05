@@ -37,6 +37,15 @@ options {
     <% end -%>};
 <% end -%>
 
+<% if @listen_on_ipv6.empty? then -%>
+    listen-on-v6 { any; };
+<% else -%>
+    listen-on-v6 {
+    <% @listen_on_ipv6.each do |ipv6_addr| -%>
+      <%= ipv6_addr -%>;
+    <% end -%>};
+<% end -%>
+
 <% if @listen_on_port -%>
     port <%= @listen_on_port %>;
 <% end -%>
@@ -95,5 +104,4 @@ also-notify {
 <% end -%>
 
 	auth-nxdomain no;    # conform to RFC1035
-	listen-on-v6 { any; };
 };

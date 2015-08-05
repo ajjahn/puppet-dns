@@ -13,6 +13,9 @@
 # [*listen_on*]
 #   Array of IP addresses on which to listen. Default: empty, meaning "any"
 #
+# [*listen_on_ipv6*]
+#   Array of IPv6 addresses on which to listen. Default: empty, meaning "any"
+#
 # [*listen_on_port*]:
 #   UDP/TCP port number to use for receiving and sending traffic.
 #   Default: undefined, meaning 53
@@ -80,6 +83,7 @@ define dns::server::options (
   $forwarders = [],
   $transfers = [],
   $listen_on = [],
+  $listen_on_ipv6 = [],
   $listen_on_port = undef,
   $allow_recursion = [],
   $check_names_master = undef,
@@ -103,6 +107,7 @@ define dns::server::options (
   validate_array($forwarders)
   validate_array($transfers)
   validate_array($listen_on)
+  validate_array($listen_on_ipv6)
   validate_array($allow_recursion)
   if $check_names_master != undef and !member($valid_check_names, $check_names_master) {
     fail("The check name policy check_names_master must be ${valid_check_names}")

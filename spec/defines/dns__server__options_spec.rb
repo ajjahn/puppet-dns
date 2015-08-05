@@ -70,6 +70,26 @@ describe 'dns::server::options', :type => :define do
     it { should raise_error(Puppet::Error, /is not an Array/) }
   end
 
+  context 'when passing valid array to listen_on_ipv6' do
+    let :params do
+      { :listen_on_ipv6 => [ '2001:db8:1::1', '2001:db8:2::/124' ] }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/2001:db8:1::1;$/)  }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/2001:db8:2::\/124;$/)  }
+  end
+
+  context 'when passing a string to listen_on_ipv6' do
+    let :params do
+      { :listen_on_ipv6 => '2001:db8:1::1' }
+    end
+    it { should raise_error(Puppet::Error, /is not an Array/) }
+  end
+
+  context 'when the listen_on_ipv6 option is not provided' do
+    let(:params) { {} }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/listen-on-v6 {.+?any;.+?}/) }
+  end
+
   context 'passing a string to recursion' do
     let :params do
       { :allow_recursion => '8.8.8.8' }
