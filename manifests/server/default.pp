@@ -18,11 +18,11 @@ class dns::server::default (
 
   validate_absolute_path( $default_file )
 
-  if $resolvconf != '' {
+  if $resolvconf {
     validate_re( $resolvconf, '^(yes|no)$', 'The resolvconf value is not type of a string yes / no.' )
   }
 
-  if $rootdir != '' {
+  if $rootdir {
     validate_absolute_path( $rootdir )
   }
 
@@ -30,7 +30,7 @@ class dns::server::default (
 
   validate_re( $enable_sdb, '^(yes|no|1|0|\s*)$', 'The enable_sdb value is not type of a string yes / no / 1 / 0 or empty.' )
 
-  if $keytab_file != '' {
+  if $keytab_file {
     validate_absolute_path( $keytab_file )
   }
 
