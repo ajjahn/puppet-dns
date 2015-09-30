@@ -8,6 +8,7 @@ define dns::record::a (
   $data,
   $ttl = '',
   $ptr = false,
+  $all_ptr = false,
   $host = $name ) {
 
   $alias = "${name},A,${zone}"
@@ -19,15 +20,10 @@ define dns::record::a (
     data => $data
   }
 
-  if $ptr {
+  if $all_ptr {
+    dns_reverse_ptr_record { $data: host => $host, zone => $zone }
+  } elsif $ptr {
     $ip = inline_template('<%= @data.kind_of?(Array) ? @data.first : @data %>')
-    $reverse_zone = inline_template('<%= @ip.split(".")[0..-2].reverse.join(".") %>.IN-ADDR.ARPA')
-    $octet = inline_template('<%= @ip.split(".")[-1] %>')
-
-    dns::record::ptr { "${octet}.${reverse_zone}":
-      host => $octet,
-      zone => $reverse_zone,
-      data => "${host}.${zone}"
-    }
+    dns_reverse_ptr_record { $ip: host => $host, zone => $zone }
   }
 }
