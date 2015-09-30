@@ -1,0 +1,13 @@
+# run resolvconf?
+<% if @resolvconf -%>
+RESOLVCONF=<%= @resolvconf %>
+<% else %> 
+RESOLVCONF=no
+<% end -%>
+
+# startup options for the server
+<% if @options -%>
+OPTIONS="<%= @options %>"
+<% else %> 
+OPTIONS="-u bind"
+<% end -%>

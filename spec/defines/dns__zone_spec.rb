@@ -127,7 +127,7 @@ describe 'dns::zone' do
       end
       it 'should have masters entry' do
           should contain_concat__fragment('named.conf.local.test.com.include').
-                         with_content(/masters/)
+                         with_content(/masters.*123.123.123.123 *;/)
       end
       it 'should not have allow_tranfer entry' do
           should_not contain_concat__fragment('named.conf.local.test.com.include').
@@ -141,6 +141,18 @@ describe 'dns::zone' do
           should contain_concat('/etc/bind/zones/db.test.com.stage').with({
               :ensure => "absent"
           })
+      end
+  end
+
+  context 'with a slave zone with multiple masters' do
+      let :params do
+          { :slave_masters => ['123.123.123.123', '234.234.234.234'],
+            :zone_type => 'slave'
+          }
+      end
+      it 'should have masters entry with all masters joined by ;' do
+          should contain_concat__fragment('named.conf.local.test.com.include').
+                         with_content(/masters.*123.123.123.123 *;[ \n]*234.234.234.234 *;/)
       end
   end
 
