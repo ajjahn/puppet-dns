@@ -20,9 +20,9 @@ define dns::record::a (
   }
 
   if $ptr == 'all' {
-    dns_reverse_ptr_record { $data: host => $host, zone => $zone }
+    dns::record::a::reverse { $data: host => $host, zone => $zone }
   } elsif $ptr == 'first' or str2bool($ptr) {
     $ip = inline_template('<%= @data.kind_of?(Array) ? @data.first : @data %>')
-    dns_reverse_ptr_record { $ip: host => $host, zone => $zone }
+    dns::record::a::reverse { $ip: host => $host, zone => $zone }
   }
 }
