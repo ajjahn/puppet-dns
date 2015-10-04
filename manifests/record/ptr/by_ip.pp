@@ -1,4 +1,4 @@
-# == Definition: dns::record::a::reverse
+# == Definition: dns::record::ptr::by_ip
 #
 # This type is defined to allow the dns::record::a resource type to
 # use pre-4.x 'iteration' to create reverse ptr records for hosts with
@@ -12,6 +12,9 @@
 # * `$host`
 # The (unqualified) host pointed to by this ptr record.
 #
+# * `$ttl`
+# The TTL of the records to be created.  Defaults to undefined.
+#
 # * `$zone`
 # The domain of the host pointed to by this ptr record.
 #
@@ -23,7 +26,7 @@
 # === Examples
 #
 # @example
-#     dns::record::a::reverse { '192.168.128.42':
+#     dns::record::ptr::by_ip { '192.168.128.42':
 #       host => 'server' ,
 #       zone => 'example.com' ,
 #     }
@@ -39,7 +42,7 @@
 #
 # ---
 # @example
-#     dns::record::a::reverse { [ '192.168.128.68', '192.168.128.69', '192.168.128.70' ]:
+#     dns::record::ptr::by_ip { [ '192.168.128.68', '192.168.128.69', '192.168.128.70' ]:
 #       host => 'multihomed-server' ,
 #       zone => 'example.com' ,
 #     }
@@ -65,9 +68,10 @@
 #       data => 'multihomed-server.example.com' ,
 #     }
 
-define dns::record::a::reverse (
+define dns::record::ptr::by_ip (
   $host,
   $zone,
+  $ttl = undef ,
   $ip = $name ) {
 
   $reverse_zone = inline_template('<%= @ip.split(".")[0..-2].reverse.join(".") %>.IN-ADDR.ARPA')
@@ -76,6 +80,7 @@ define dns::record::a::reverse (
   dns::record::ptr { "${octet}.${reverse_zone}":
     host => $octet,
     zone => $reverse_zone,
+    ttl  => $ttl ,
     data => "${host}.${zone}"
   }
 }
