@@ -27,10 +27,10 @@ define dns::record::ns (
   }
 
   dns::record { $alias:
-    zone       => $zone,
-    host       => $host,
-    ttl        => $ttl,
-    record     => 'NS',
-    data       => $data
+    zone   => $zone,
+    host   => $host,
+    ttl    => $ttl,
+    record => 'NS',
+    data   => $data
   }
 }
