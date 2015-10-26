@@ -1,28 +1,40 @@
 zone "<%= @zone %>" {
-  type <%= @zone_type %>;
+type <%= @zone_type %>;
 <% if @zone_notify -%>
-  notify <%= @zone_notify %>;
+    notify <%= @zone_notify %>;
 <% end -%>
-  file "<%= @zone_file %>";
+<% if @also_notify.size != 0 -%>
+    also-notify {
+    <%- @also_notify.each do |ip| -%>
+        <%= ip %>;
+    <%- end -%>
+    };
+<% end -%>
+<% if @zone_type != 'forward' -%>
+    file "<%= @zone_file %>";
+<% end -%>
 <% if @zone_type == 'slave' -%>
-  masters { <%= @slave_masters %>;};
+<%- if @slave_masters.is_a?(Array) -%>
+    masters { <%= @slave_masters.join(";") %>;};
+<%- else -%>
+    masters { <%= @slave_masters %>;};
+<%- end -%>
 <% elsif @zone_type == 'master' -%>
-<% if @allow_transfer -%>
-  allow-transfer {
-<% @allow_transfer.each do |ip| -%>
-  <%= ip %>;
+    <% if @allow_transfer.is_a?(Array) and @allow_transfer.size != 0 -%>
+        allow-transfer {
+        <% @allow_transfer.each do |ip| -%>
+            <%= ip %>;
+        <% end -%>
+        };
+    <% end -%>
 <% end -%>
-  };
-<% end -%>
-
-<% if !@allow_forwarder.empty? -%>
-  forward <%= @forward_policy %>;
-  forwarders {
-<% @allow_forwarder.each do |ip| -%>
-  <%= ip %>;
-<% end -%>
-  };
-<% end -%>
+<% if !@allow_forwarder.empty? and ( @zone_type == 'master' or  @zone_type == 'forward') -%>
+    forward <%= @forward_policy %>;
+    forwarders {
+    <% @allow_forwarder.each do |ip| -%>
+        <%= ip %>;
+    <% end -%>
+    };
 <% end -%>
 
 };

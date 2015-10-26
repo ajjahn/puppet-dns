@@ -1,5 +1,5 @@
 options {
-	directory "/var/cache/bind";
+	directory "<%= @data_dir %>";
 
 	// If there is a firewall between you and nameservers you want
 	// to talk to, you may need to fix the firewall to allow multiple
@@ -19,6 +19,35 @@ options {
     <% @forwarders.each do |forwarder| -%>
       <%= forwarder -%>;
     <% end -%>};
+<% end -%>
+
+<% if @transfers.size != 0 then -%>
+    allow-transfer {
+    <% @transfers.each do |transfer| -%>
+      <%= transfer -%>;
+    <% end -%>};
+<% end -%>
+
+<% if @listen_on.size == 0 then -%>
+    listen-on { any; };
+<% else -%>
+    listen-on {
+    <% @listen_on.each do |ipv4_addr| -%>
+      <%= ipv4_addr -%>;
+    <% end -%>};
+<% end -%>
+
+<% if @listen_on_ipv6.empty? then -%>
+    listen-on-v6 { any; };
+<% else -%>
+    listen-on-v6 {
+    <% @listen_on_ipv6.each do |ipv6_addr| -%>
+      <%= ipv6_addr -%>;
+    <% end -%>};
+<% end -%>
+
+<% if @listen_on_port -%>
+    port <%= @listen_on_port %>;
 <% end -%>
 
 <% if @allow_recursion.size != 0 then -%>
@@ -49,12 +78,30 @@ check-names slave <%= @check_names_slave %>;
 check-names response <%= @check_names_response %>;
 <% end -%>
 
+<% if @statistic_channel_ip and @statistic_channel_port -%>
+statistics-channels {
+    inet <%= @statistic_channel_ip %> port <%= @statistic_channel_port %>;
+};
+<% end -%>
+
+<% if @zone_notify -%>
+notify <%= @zone_notify %>;
+<% end -%>
+<% if @also_notify.size != 0 then -%>
+also-notify {
+    <%- @also_notify.each do |ip| -%>
+    <%= ip -%>;
+    <%- end -%>
+};
+<% end -%>
+
 	//========================================================================
 	// If BIND logs error messages about the root key being expired,
 	// you will need to update your keys.  See https://www.isc.org/bind-keys
 	//========================================================================
-	dnssec-validation auto;
+<% if @dnssec_validation != 'absent' -%>
+	dnssec-validation <%= @dnssec_validation %>;
+<% end -%>
 
 	auth-nxdomain no;    # conform to RFC1035
-	listen-on-v6 { any; };
 };

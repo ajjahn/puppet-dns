@@ -1,12 +1,15 @@
 # Puppet DNS (BIND9) Module
 
-[![Build Status](https://travis-ci.org/ajjahn/puppet-dns.png)](https://travis-ci.org/ajjahn/puppet-dns)
+[![Build Status](https://travis-ci.org/ajjahn/puppet-dns.png?branch=master)](https://travis-ci.org/ajjahn/puppet-dns)
 
 Module for provisioning DNS (bind9)
 
-Tested on Ubuntu 12.04, patches to support other operating systems are welcome.
+Tested on Ubuntu 12.04 and CentOS 6.5, patches to support other operating systems are welcome.
 
 This module depends on concat (https://github.com/puppetlabs/puppet-concat).
+
+This module ''will'' overwrite all bind configuration, it is not safe to apply
+to a server with an existing bind configuration.
 
 ## Installation
 
@@ -22,110 +25,135 @@ or
 
 Tweak and add the following to your site manifest:
 
-    node 'server.example.com' {
-      include dns::server
+```puppet
+node 'server.example.com' {
+  include dns::server
 
-      # Forwarders
-      dns::server::options{ '/etc/bind/named.conf.options':
-        forwarders => [ '8.8.8.8', '8.8.4.4' ]
-      }
+  # Forwarders
+  dns::server::options { '/etc/bind/named.conf.options':
+    forwarders => [ '8.8.8.8', '8.8.4.4' ]
+  }
 
-      # Forward Zone
-      dns::zone { 'example.com':
-        soa         => "ns1.example.com",
-        soa_email   => 'admin.example.com',
-        nameservers => ["ns1"]
-      }
+  # Forward Zone
+  dns::zone { 'example.com':
+    soa         => 'ns1.example.com',
+    soa_email   => 'admin.example.com',
+    nameservers => ['ns1']
+  }
 
-      # Reverse Zone
-      dns::zone { '1.168.192.IN-ADDR.ARPA':
-        soa         => "ns1.example.com",
-        soa_email   => 'admin.example.com',
-        nameservers => ["ns1"]
-      }
+  # Reverse Zone
+  dns::zone { '1.168.192.IN-ADDR.ARPA':
+    soa         => 'ns1.example.com',
+    soa_email   => 'admin.example.com',
+    nameservers => ['ns1']
+  }
 
-      # A Records:
-      dns::record::a {
-        'huey':
-          zone => 'example.com',
-          data => ["98.76.54.32"];
-        'duey':
-          zone => 'example.com',
-          data => ["12.34.56.78", "12.23.34.45"];
-        'luey':
-          zone => 'example.com',
-          data => ["192.168.1.25"],
-          ptr  => true; # Creates a matching reverse zone record.  Make sure you've added the proper reverse zone in the manifest.
-      }
+  # A Records:
+  dns::record::a {
+    'huey':
+      zone => 'example.com',
+      data => ['98.76.54.32'];
+    'duey':
+      zone => 'example.com',
+      data => ['12.34.56.78', '12.23.34.45'];
+    'luey':
+      zone => 'example.com',
+      data => ['192.168.1.25'],
+      ptr  => true; # Creates a matching reverse zone record.  Make sure you've added the proper reverse zone in the manifest.
+  }
 
-      # MX Records:
-      dns::record::mx {
-        'mx,0':
-          zone       => 'example.com',
-          preference => 0,
-          data       => 'ASPMX.L.GOOGLE.com';
-        'mx,10':
-          zone       => 'example.com',
-          preference => 10,
-          data       => 'ALT1.ASPMX.L.GOOGLE.com';
-      }
+  # MX Records:
+  dns::record::mx {
+    'mx,0':
+      zone       => 'example.com',
+      preference => 0,
+      data       => 'ASPMX.L.GOOGLE.com';
+    'mx,10':
+      zone       => 'example.com',
+      preference => 10,
+      data       => 'ALT1.ASPMX.L.GOOGLE.com';
+  }
 
-      # NS Records:
-      dns::record::ns {
-        'example.com':
-          zone => 'example.com',
-          data => 'ns3';
-        'delegation-to-ns4-jp-example-net':
-          zone => 'example.com',
-          host => 'delegated-zone',
-          data => 'ns4.jp.example.net.';
-      }
+  # NS Records:
+  dns::record::ns {
+    'example.com':
+      zone => 'example.com',
+      data => 'ns3';
+    'delegation-to-ns4-jp-example-net':
+      zone => 'example.com',
+      host => 'delegated-zone',
+      data => 'ns4.jp.example.net.';
+  }
 
-      # CNAME Record:
-      dns::record::cname { 'www':
-        zone => 'example.com',
-        data => 'huey.example.com',
-      }
+  # CNAME Record:
+  dns::record::cname { 'www':
+    zone => 'example.com',
+    data => 'huey.example.com',
+  }
 
-      # TXT Record:
-      dns::record::txt { 'www':
-        zone => 'example.com',
-        data => 'Hello World',
-      }
-    }
+  # TXT Record:
+  dns::record::txt { 'www':
+    zone => 'example.com',
+    data => 'Hello World',
+  }
+}
+```
 
 You can also declare forwarders for a specific zone, if you don't have one in the dns::option.
 
-      dns::zone { 'example.com':
-        soa             => "ns1.example.com",
-        soa_email       => 'admin.example.com',
-        allow_forwarder => ['8.8.8.8'],
-        forward_policy  => 'first'
-        nameservers     => ["ns1"]
-      }
+```puppet
+dns::zone { 'example.com':
+  soa             => 'ns1.example.com',
+  soa_email       => 'admin.example.com',
+  allow_forwarder => ['8.8.8.8'],
+  forward_policy  => 'first',
+  nameservers     => ['ns1'],
+}
+```
 
 You can change the checking of the domain name. The policy can be either warn fail or ignore.
 
-      dns::option {
-	check_name_master = 'fail'
-	check_name_slave = 'warn'
-	check_name_remote = 'ignore'
-      }
+```puppet
+dns::server::options { '/etc/bind/named.conf.options':
+  check_names_master => 'fail',
+  check_names_slave  => 'warn',
+  forwarders         => [ '8.8.8.8', '4.4.4.4' ],
+}
+```
+
+You can enable the report of bind stats trough the `statistics-channels` using:
+
+```puppet
+dns::server::options { '/etc/bind/named.conf.options':
+  check_names_master     => 'fail',
+  check_names_slave      => 'warn',
+  forwarders             => [ '8.8.8.8', '4.4.4.4' ],
+  statistic_channel_ip   => '127.0.0.1',
+  statistic_channel_port => 8053
+}
+```
 
 ### Exported resource patterns
-    node default {
-      # Other nodes export an A record for thier hostname
-      @@dns::record::a { $hostname: zone => $::domain, data => $::ipaddress, }
-    }
-    node 'ns1.xkyle.com' {
-      dns::zone { $::domain:
-        soa         => $::fqdn,
-        soa_email   => "admin.${::domain}",
-        nameservers => [ 'ns1' ],
-      }
-      # Collect all the records from other nodes
-      Dns::Record::A <<||>>
-    }
+
+```puppet
+node default {
+  # Other nodes export an A record for their hostname
+  @@dns::record::a { $::hostname:
+    zone => $::domain, 
+    data => $::ipaddress,
+  }
+}
+
+node 'ns1.xkyle.com' {
+  dns::zone { $::domain:
+    soa         => $::fqdn,
+    soa_email   => "admin.${::domain}",
+    nameservers => [ 'ns1' ],
+  }
+  # Collect all the records from other nodes
+  Dns::Record::A <<||>>
+}
+```
 
 ## Contributing
 

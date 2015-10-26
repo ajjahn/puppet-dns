@@ -1,6 +1,6 @@
 # == Define: dns::record::ns
 #
-# Wrapper for dns::record to set an NS record.
+# Wrapper of dns::record to set NS records
 #
 define dns::record::ns (
   $zone,
@@ -31,8 +31,6 @@ define dns::record::ns (
     host       => $host,
     ttl        => $ttl,
     record     => 'NS',
-    data       => $data,
-    order      => 2
+    data       => $data
   }
 }
-
