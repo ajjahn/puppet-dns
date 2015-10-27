@@ -19,11 +19,15 @@ dns::zone { '56.168.192.IN-ADDR.ARPA':
   nameservers => [ 'ns1' ],
 }
 
-dns::record::a {
-  'ns1':
-    zone => 'example.com',
-    data => [ '192.168.56.10' ],
-    ptr  => true,
+dns::record::a { 'ns1':
+  zone => 'example.com',
+  data => [ '192.168.56.10' ],
+  ptr  => true,
+}
+
+dns::record::ns { 'example.com':
+  zone => 'example.com',
+  data => 'ns3';
 }
 
 dns::acl { 'trusted':

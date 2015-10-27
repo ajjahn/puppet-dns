@@ -74,6 +74,17 @@ node 'server.example.com' {
       data       => 'ALT1.ASPMX.L.GOOGLE.com';
   }
 
+  # NS Records:
+  dns::record::ns {
+    'example.com':
+      zone => 'example.com',
+      data => 'ns3';
+    'delegation-to-ns4-jp-example-net':
+      zone => 'example.com',
+      host => 'delegated-zone',
+      data => 'ns4.jp.example.net.';
+  }
+
   # CNAME Record:
   dns::record::cname { 'www':
     zone => 'example.com',
