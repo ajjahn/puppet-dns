@@ -139,7 +139,7 @@ dns::server::options { '/etc/bind/named.conf.options':
 node default {
   # Other nodes export an A record for their hostname
   @@dns::record::a { $::hostname:
-    zone => $::domain, 
+    zone => $::domain,
     data => $::ipaddress,
   }
 }

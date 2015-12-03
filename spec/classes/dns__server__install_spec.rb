@@ -33,18 +33,18 @@ describe 'dns::server::install', :type => :class do
   context "on a RedHat OS with default params" do
     let(:facts) {{ :osfamily => 'RedHat' }}
     it { should contain_class('dns::server::params') }
-    it do 
+    it do
       should contain_package('bind').with({
         'ensure' => 'latest',
       })
     end
   end
-  
+
   context "on a RedHat OS with non-default params" do
     let(:facts)  {{ :osfamily        => 'RedHat'  }}
     let(:params) {{ :ensure_packages => 'present' }}
     it { should contain_class('dns::server::params') }
-    it do 
+    it do
       should contain_package('bind').with({
         'ensure' => 'present',
       })
