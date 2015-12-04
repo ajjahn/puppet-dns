@@ -245,7 +245,7 @@ describe 'dns::server::options', :type => :define do
       { :osfamily => 'RedHat', :operatingsystemmajrelease => '5', :concat_basedir => '/tmp' }
     end
     it { should contain_file('/etc/bind/named.conf.options').without_content(/dnssec-validation/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-enable yes/) }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-enable no/) }
   end
 
   context 'default value of dnssec_validation on RedHat 6' do
