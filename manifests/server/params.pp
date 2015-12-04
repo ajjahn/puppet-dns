@@ -15,6 +15,7 @@ class dns::server::params {
       $service            = 'bind9'
       $default_file       = '/etc/default/bind9'
       $default_template   = 'default.debian.erb'
+      $default_dnssec_enable     = true
       $default_dnssec_validation = 'auto'
       case $::operatingsystemmajrelease {
         '8': {
@@ -40,8 +41,10 @@ class dns::server::params {
       $default_file       = '/etc/sysconfig/named'
       $default_template   = 'default.redhat.erb'
       if $::operatingsystemmajrelease =~ /^[1-5]$/ {
+        $default_dnssec_enable     = false
         $default_dnssec_validation = 'absent'
       } else {
+        $default_dnssec_enable     = true
         $default_dnssec_validation = 'auto'
       }
     }
