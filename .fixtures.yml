@@ -1,7 +1,7 @@
 fixtures:
   forge_modules:
     stdlib: "puppetlabs/stdlib"
-    concat: "puppetlabs/concat.git"
+    concat: "puppetlabs/concat"
 #    file_concat: "git://github.com/electrical/puppet-lib-file_concat.git"
   symlinks:
     dns: "#{source_dir}"
