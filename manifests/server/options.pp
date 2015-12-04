@@ -80,6 +80,10 @@
 #   dnssec_validation above), and true on Debian and on RedHat 6
 #   and above.
 #
+# [*no_empty_zones*]
+#   Controls whether to enable/disable empty zones. Boolean values.
+#   Default: false, meaning enable empty zones
+#
 # === Examples
 #
 #  dns::server::options { '/etc/bind/named.conf.options':
@@ -148,6 +152,8 @@ define dns::server::options (
   if $dnssec_validation != undef and !member($valid_dnssec_validation, $dnssec_validation) {
     fail("The dnssec_validation must be ${valid_dnssec_validation}")
   }
+
+  validate_bool($no_empty_zones)
 
   validate_bool($dnssec_enable)
   if (! $dnssec_enable) and ($dnssec_validation != undef) {
