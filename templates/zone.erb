@@ -10,7 +10,7 @@ type <%= @zone_type %>;
     <%- end -%>
     };
 <% end -%>
-<% if @zone_type != 'forward' -%>
+<% if (@zone_type != 'forward') && (@zone_type != 'delegation-only')-%>
     file "<%= @zone_file %>";
 <% end -%>
 <% if @zone_type == 'slave' -%>
