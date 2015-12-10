@@ -76,6 +76,18 @@ describe 'dns::zone' do
       end
   end
 
+  context 'with a delegation-only zone' do
+      let :params do
+          { :zone_type => 'delegation-only'
+          }
+      end
+      it 'should only have a type delegation-only entry' do
+          should contain_concat__fragment('named.conf.local.test.com.include').
+                     with_content(/zone \"test.com\" \{\s*type delegation-only;\s*\}/)
+      end 
+  end
+
+
   context 'with a forward zone' do
       let :params do
           { :allow_transfer => ['123.123.123.123'],

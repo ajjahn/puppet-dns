@@ -127,9 +127,9 @@
 #
 # [*zone_type*]
 #   The type of DNS zone being described.  Can be one of `master`, `slave`
-#   (requires *slave_masters* to be set), or `forward` (requires both
-#   *allow_forwarder* and *forward_policy* to be set).  Defaults to
-#   `master`.
+#   (requires *slave_masters* to be set), `delegation-only`, or `forward`
+#   (requires both *allow_forwarder* and *forward_policy* to be set).
+#   Defaults to `master`.
 #
 define dns::zone (
   $soa = $::fqdn,
@@ -168,6 +168,13 @@ define dns::zone (
   $zone = $reverse ? {
     true    => "${name}.in-addr.arpa",
     default => $name
+  }
+
+  validate_string($zone_type)
+  $valid_zone_type_array = ['master', 'slave', 'forward', 'delegation-only']
+  if !member($valid_zone_type_array, $zone_type) {
+    $valid_zone_type_array_str = join($valid_zone_type_array, ',')
+    fail("The zone_type must be one of [${valid_zone_type_array}]")
   }
 
   $zone_file = "${dns::server::params::data_dir}/db.${name}"
