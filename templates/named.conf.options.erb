@@ -1,19 +1,21 @@
 options {
-	directory "<%= @data_dir %>";
+  directory "<%= @data_dir %>";
 
-	// If there is a firewall between you and nameservers you want
-	// to talk to, you may need to fix the firewall to allow multiple
-	// ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+  // If there is a firewall between you and nameservers you want
+  // to talk to, you may need to fix the firewall to allow multiple
+  // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
 
-	// If your ISP provided one or more IP addresses for stable.
-	// nameservers, you probably want to use them as forwarders...
-	// Uncomment the following block, and insert the addresses replacing.
-	// the all-0's placeholder.
+  // If your ISP provided one or more IP addresses for stable.
+  // nameservers, you probably want to use them as forwarders...
+  // Uncomment the following block, and insert the addresses replacing.
+  // the all-0's placeholder.
+
+    recursion <%= @recursion %>;
 
 <% if @forwarders.size == 0 then -%>
-    // forwarders {
-	// 	0.0.0.0;
-	// };
+  // forwarders {
+  //   0.0.0.0;
+  // };
 <% else -%>
     forwarders {
     <% @forwarders.each do |forwarder| -%>
@@ -53,7 +55,7 @@ options {
 <% if @allow_recursion.size != 0 then -%>
     allow-recursion {
     <% @allow_recursion.each do |recursion| -%>
-	<%= recursion -%>;
+  <%= recursion -%>;
     <% end -%>
     };
 <% end -%>
@@ -61,7 +63,7 @@ options {
 <% if @allow_query.size != 0 then -%>
     allow-query {
     <% @allow_query.each do |query| -%>
-	<%= query -%>;
+  <%= query -%>;
     <% end -%>
     };
 <% end -%>
@@ -95,17 +97,17 @@ also-notify {
 };
 <% end -%>
 
-	//========================================================================
-	// If BIND logs error messages about the root key being expired,
-	// you will need to update your keys.  See https://www.isc.org/bind-keys
-	//========================================================================
+    //========================================================================
+    // If BIND logs error messages about the root key being expired,
+    // you will need to update your keys.  See https://www.isc.org/bind-keys
+    //========================================================================
 <% if @dnssec_enable -%>
     dnssec-enable yes;
     <% if @dnssec_validation != 'absent' -%>
-	dnssec-validation <%= @dnssec_validation %>;
+    dnssec-validation <%= @dnssec_validation %>;
     <% end -%>
 <% else -%>
     dnssec-enable no;
 <% end -%>
-	auth-nxdomain no;    # conform to RFC1035
+    auth-nxdomain no;    # conform to RFC1035
 };

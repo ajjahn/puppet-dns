@@ -72,11 +72,11 @@
 #   package is too old to include dnssec validation), and "auto" on
 #   Debian and on RedHat 6 and above.
 #   Note: If *dnssec_enable* is set to false, this option is ignored.
-# 
+#
 #
 # [*dnssec_enable*]
 #   Controls whether to enable/disable DNS-SEC support. Boolean.
-#   Default is false on RedHat 5 (for the same reasons as 
+#   Default is false on RedHat 5 (for the same reasons as
 #   dnssec_validation above), and true on Debian and on RedHat 6
 #   and above.
 #
@@ -87,26 +87,28 @@
 #   }
 #
 include dns::server::params
+#
 define dns::server::options (
-  $forwarders = [],
-  $transfers = [],
-  $listen_on = [],
-  $listen_on_ipv6 = [],
-  $listen_on_port = undef,
-  $allow_recursion = [],
-  $check_names_master = undef,
-  $check_names_slave = undef,
-  $check_names_response = undef,
-  $allow_query = [],
-  $statistic_channel_ip = undef,
+  $forwarders             = [],
+  $transfers              = [],
+  $listen_on              = [],
+  $listen_on_ipv6         = [],
+  $listen_on_port         = undef,
+  $allow_recursion        = [],
+  $check_names_master     = undef,
+  $check_names_slave      = undef,
+  $check_names_response   = undef,
+  $allow_query            = [],
+  $statistic_channel_ip   = undef,
   $statistic_channel_port = undef,
-  $zone_notify = undef,
-  $also_notify = [],
-  $dnssec_validation = $dns::server::params::default_dnssec_validation,
-  $dnssec_enable = $dns::server::params::default_dnssec_enable,
+  $zone_notify            = undef,
+  $also_notify            = [],
+  $recursion              = $dns::server::params::recursion,
+  $dnssec_validation      = $dns::server::params::default_dnssec_validation,
+  $dnssec_enable          = $dns::server::params::default_dnssec_enable,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
-  $cfg_dir = $::dns::server::params::cfg_dir
+  $cfg_dir  = $::dns::server::params::cfg_dir
   $data_dir = $::dns::server::params::data_dir
 
   if ! defined(Class['::dns::server']) {
@@ -141,6 +143,11 @@ define dns::server::options (
   $valid_zone_notify = ['yes', 'no', 'explicit', 'master-only']
   if $zone_notify != undef and !member($valid_zone_notify, $zone_notify) {
     fail("The zone_notify must be ${valid_zone_notify}")
+  }
+
+  $valid_recursion = ['yes', 'no', true, false]
+  if $recursion != undef and !member($valid_recursion, $recursion) {
+    fail("The recursion must be ${valid_recursion}")
   }
 
   $valid_dnssec_validation = ['yes', 'no', 'auto', 'absent']
