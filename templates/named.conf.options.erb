@@ -78,12 +78,6 @@ check-names slave <%= @check_names_slave %>;
 check-names response <%= @check_names_response %>;
 <% end -%>
 
-<% if @statistic_channel_ip and @statistic_channel_port -%>
-statistics-channels {
-    inet <%= @statistic_channel_ip %> port <%= @statistic_channel_port %>;
-};
-<% end -%>
-
 <% if @zone_notify -%>
 notify <%= @zone_notify %>;
 <% end -%>
@@ -109,3 +103,9 @@ also-notify {
 <% end -%>
 	auth-nxdomain no;    # conform to RFC1035
 };
+
+<% if @statistic_channel_ip and @statistic_channel_port -%>
+statistics-channels {
+    inet <%= @statistic_channel_ip %> port <%= @statistic_channel_port %>;
+};
+<% end -%>
