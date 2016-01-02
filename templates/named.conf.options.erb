@@ -108,4 +108,7 @@ also-notify {
     dnssec-enable no;
 <% end -%>
 	auth-nxdomain no;    # conform to RFC1035
+<% if @version_string.size != 0 then -%>
+	version "<%= @version_string %>";
+<% end -%>
 };

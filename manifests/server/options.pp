@@ -104,6 +104,7 @@ define dns::server::options (
   $also_notify = [],
   $dnssec_validation = $dns::server::params::default_dnssec_validation,
   $dnssec_enable = $dns::server::params::default_dnssec_enable,
+  $version_string = undef,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $cfg_dir = $::dns::server::params::cfg_dir
