@@ -36,5 +36,12 @@ type <%= @zone_type %>;
     <% end -%>
     };
 <% end -%>
+    <% if @allow_query.size != 0 %>
+        allow-query {
+        <% @allow_query.each do |ip| -%>
+            <%= ip %>;
+        <% end -%>
+        };
+    <% end -%>
 
 };
