@@ -54,6 +54,10 @@
 #   '192.168.100.102 port 1234' ]`.  Defaults to an empty array, which
 #   means no forwarding will be done.
 #
+# [*allow_query*]
+#   An array of IP addresses from which queries should be allowed
+#  Defaults to an empty array, which allows all ip to query the zone
+#
 # [*also_notify*]
 #   This is an array of IP addresses and optional port numbers to
 #   which this DNS server will send notifies when the master DNS server
@@ -144,6 +148,7 @@ define dns::zone (
   $zone_type = 'master',
   $allow_transfer = [],
   $allow_forwarder = [],
+  $allow_query =[],
   $forward_policy = 'first',
   $slave_masters = undef,
   $zone_notify = undef,
@@ -158,6 +163,7 @@ define dns::zone (
   if !member(['first', 'only'], $forward_policy) {
     error('The forward policy can only be set to either first or only')
   }
+  validate_array($allow_query)
 
   validate_array($also_notify)
   $valid_zone_notify = ['yes', 'no', 'explicit', 'master-only']

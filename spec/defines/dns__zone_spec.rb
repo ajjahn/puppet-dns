@@ -5,6 +5,28 @@ describe 'dns::zone' do
   let(:title) { 'test.com' }
   let(:facts) {{ :osfamily => 'Debian', :concat_basedir => '/mock_dir' }}
 
+  describe 'passing something other than an array to $allow_query ' do
+      let(:params) {{ :allow_query => '127.0.0.1' }}
+      it { should raise_error(Puppet::Error, /is not an Array/) }
+  end
+
+  describe 'passing an array to $allow_query' do 
+      let(:params) {{ :allow_query => ['192.0.2.0', '2001:db8::/32'] }}
+      it { should_not raise_error }
+      it {
+          should contain_concat__fragment('named.conf.local.test.com.include').
+          with_content(/allow-query/)
+      }
+      it {
+          should contain_concat__fragment('named.conf.local.test.com.include').
+          with_content(/192\.0\.2\.0;/)
+      }
+      it {
+          should contain_concat__fragment('named.conf.local.test.com.include').
+          with_content(/2001:db8::\/32/)
+      }
+  end
+
   describe 'passing something other than an array to $allow_transfer' do
       let(:params) {{ :allow_transfer => '127.0.0.1' }}
       it { should raise_error(Puppet::Error, /is not an Array/) }
