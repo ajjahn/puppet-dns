@@ -43,7 +43,7 @@ class dns::server::default (
     mode    => '0644',
     content => template("${module_name}/${default_template}"),
     notify  => Class['dns::server::service'],
-    require => Package[$necessary_packages]
+    require => Package[$::dns::server::params::necessary_packages]
   }
 
 }
