@@ -32,6 +32,15 @@ describe 'dns::server::default' do
         it { should contain_file('/etc/default/bind9').with_content(/OPTIONS="-u bind -6"/) }
       end
 
+      context "requires bind9 and dnssec-tools package" do
+        it do
+          should contain_file('/etc/default/bind9').with({
+            'require' => ['Package[bind9]', 'Package[dnssec-tools]'],
+          })
+        end
+      end
+
+
     end
 
     context "passing wrong values and paths" do
@@ -114,6 +123,14 @@ describe 'dns::server::default' do
       context 'passing `no` to disable_zone_checking' do
         let(:params) {{ :disable_zone_checking => 'no' }}
         it { should contain_file('/etc/sysconfig/named').with_content(/DISABLE_ZONE_CHECKING=no/) }
+      end
+
+      context "requires bind package" do
+        it do
+          should contain_file('/etc/sysconfig/named').with({
+            'require' => 'Package[bind]',
+          })
+        end
       end
 
     end
