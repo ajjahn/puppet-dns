@@ -72,13 +72,17 @@
 #   package is too old to include dnssec validation), and "auto" on
 #   Debian and on RedHat 6 and above.
 #   Note: If *dnssec_enable* is set to false, this option is ignored.
-# 
+#
 #
 # [*dnssec_enable*]
 #   Controls whether to enable/disable DNS-SEC support. Boolean.
-#   Default is false on RedHat 5 (for the same reasons as 
+#   Default is false on RedHat 5 (for the same reasons as
 #   dnssec_validation above), and true on Debian and on RedHat 6
 #   and above.
+#
+# [*no_empty_zones*]
+#   Controls whether to enable/disable empty zones. Boolean values.
+#   Default: false, meaning enable empty zones
 #
 # === Examples
 #
@@ -104,6 +108,7 @@ define dns::server::options (
   $also_notify = [],
   $dnssec_validation = $dns::server::params::default_dnssec_validation,
   $dnssec_enable = $dns::server::params::default_dnssec_enable,
+  $no_empty_zones = false,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $cfg_dir = $::dns::server::params::cfg_dir
@@ -147,6 +152,8 @@ define dns::server::options (
   if $dnssec_validation != undef and !member($valid_dnssec_validation, $dnssec_validation) {
     fail("The dnssec_validation must be ${valid_dnssec_validation}")
   }
+
+  validate_bool($no_empty_zones)
 
   validate_bool($dnssec_enable)
   if (! $dnssec_enable) and ($dnssec_validation != undef) {
