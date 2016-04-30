@@ -231,7 +231,6 @@ define dns::zone (
 
   # Include Zone in named.conf.local
   concat::fragment{"named.conf.local.${name}.include":
-    ensure  => $ensure,
     target  => "${cfg_dir}/named.conf.local",
     order   => 3,
     content => template("${module_name}/zone.erb")
