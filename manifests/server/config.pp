@@ -50,7 +50,6 @@ class dns::server::config (
   }
 
   concat::fragment{'named.conf.local.header':
-    ensure  => present,
     target  => "${cfg_dir}/named.conf.local",
     order   => 1,
     content => "// File managed by Puppet.\n"
