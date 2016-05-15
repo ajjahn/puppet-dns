@@ -80,6 +80,9 @@
 #
 # [*reverse*]
 #   If `true`, the zone will have `.in-addr.arpa` appended to it.
+#   If set to the string `reverse`, the `.`-separated components of
+#   the zone will be reversed, and then have `.in-addr.arpa` appended
+#   to it.
 #   Defaults to `false`.
 #
 # [*slave_masters*]
@@ -172,8 +175,9 @@ define dns::zone (
   }
 
   $zone = $reverse ? {
-    true    => "${name}.in-addr.arpa",
-    default => $name
+    'reverse' => join(reverse(split("arpa.in-addr.${name}", '\.')), '.'),
+    true      => "${name}.in-addr.arpa",
+    default   => $name
   }
 
   validate_string($zone_type)
