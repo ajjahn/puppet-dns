@@ -310,5 +310,48 @@ describe 'dns::server::options', :type => :define do
     it { should contain_file('/etc/bind/named.conf.options').with_content(/empty-zones-enable no/)  }
 
   end
+
+  context 'passing no notify_source' do
+    let :params do
+      {}
+    end
+    it { should_not contain_file('/etc/bind/named.conf.options').with_content(/notify-source/)  }
+  end
+
+  context 'passing notify_source a valid ip' do
+    let :params do
+      { :notify_source => '127.0.0.1' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/notify-source 127\.0\.0\.1;/)  }
+  end
+
+  context 'passing notify_source an invalid string' do
+    let :params do
+      { :notify_source => 'fooberry' }
+    end
+    it { should raise_error(Puppet::Error, /is not an ip/) }
+  end
+
+  context 'passing no transfer_source' do
+    let :params do
+      {}
+    end
+    it { should_not contain_file('/etc/bind/named.conf.options').with_content(/transfer-source/)  }
+  end
+
+  context 'passing transfer_source a valid ip' do
+    let :params do
+      { :transfer_source => '127.0.0.1' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/transfer-source 127\.0\.0\.1;/)  }
+  end
+
+  context 'passing transfer_source an invalid string' do
+    let :params do
+      { :transfer_source => 'fooberry' }
+    end
+    it { should raise_error(Puppet::Error, /is not an ip/) }
+  end
+
 end
 

@@ -98,6 +98,15 @@ also-notify {
 <% if @no_empty_zones -%>
 empty-zones-enable no;
 <% end -%>
+
+<% if @notify_source -%>
+notify-source <%= notify_source %>;
+<% end -%>
+
+<% if @transfer_source -%>
+transfer-source <%= transfer_source %>;
+<% end -%>
+
 	//========================================================================
 	// If BIND logs error messages about the root key being expired,
 	// you will need to update your keys.  See https://www.isc.org/bind-keys

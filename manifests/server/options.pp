@@ -84,6 +84,16 @@
 #   Controls whether to enable/disable empty zones. Boolean values.
 #   Default: false, meaning enable empty zones
 #
+# [*notify_source*]
+#   The source IP address from which to send notifies.
+#   Default: undef, meaning the primary IP address of the DNS server,
+#   as determined by BIND.
+#
+# [*transfer_source*]
+#   The source IP address from which to respond to transfer requests.
+#   Default: undef, meaning the primary IP address of the DNS server,
+#   as determined by BIND.
+#
 # === Examples
 #
 #  dns::server::options { '/etc/bind/named.conf.options':
@@ -109,6 +119,8 @@ define dns::server::options (
   $dnssec_validation = $dns::server::params::default_dnssec_validation,
   $dnssec_enable = $dns::server::params::default_dnssec_enable,
   $no_empty_zones = false,
+  $notify_source = undef,
+  $transfer_source = undef,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $cfg_dir = $::dns::server::params::cfg_dir
@@ -143,6 +155,7 @@ define dns::server::options (
   }
 
   validate_array($also_notify)
+
   $valid_zone_notify = ['yes', 'no', 'explicit', 'master-only']
   if $zone_notify != undef and !member($valid_zone_notify, $zone_notify) {
     fail("The zone_notify must be ${valid_zone_notify}")
@@ -158,6 +171,14 @@ define dns::server::options (
   validate_bool($dnssec_enable)
   if (! $dnssec_enable) and ($dnssec_validation != undef) {
     warning('dnssec_enable is false. dnssec_validation will be ignored.')
+  }
+
+  if $notify_source != undef and !is_ip_address($notify_source) {
+    fail('The notify_source is not an ip string')
+  }
+
+  if $transfer_source != undef and !is_ip_address($transfer_source) {
+    fail('The transfer_source is not an ip string')
   }
 
   file { $title:
