@@ -293,5 +293,23 @@ describe 'dns::zone' do
     it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/8\.8\.8\.8;/) }
   end
 
+  context 'passing true to reverse' do
+    let(:title) { '10.23.45' }
+    let :params do
+      { :reverse => true }
+    end
+    it { should contain_concat__fragment('named.conf.local.10.23.45.include').with_content(/zone "10\.23\.45\.in-addr\.arpa"/) }
+    it { should contain_concat__fragment('db.10.23.45.soa').with_content(/\$ORIGIN\s+10\.23\.45\.in-addr\.arpa\./) }
+  end
+
+  context 'passing reverse to reverse' do
+    let(:title) { '10.23.45' }
+    let :params do
+      { :reverse => 'reverse' }
+    end
+    it { should contain_concat__fragment('named.conf.local.10.23.45.include').with_content(/zone "45\.23\.10\.in-addr\.arpa"/) }
+    it { should contain_concat__fragment('db.10.23.45.soa').with_content(/\$ORIGIN\s+45\.23\.10\.in-addr\.arpa\./) }
+  end
+
 end
 
