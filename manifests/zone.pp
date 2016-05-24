@@ -85,6 +85,11 @@
 #   to it.
 #   Defaults to `false`.
 #
+# [*serial_style*]
+#   The style of the serial number.  This should be either `date`
+#   for the YYYYMMDDXX style of serial number, or `timestamp` for
+#   a straight unix timestamp serial number.  Defaults to `timestamp`.
+#
 # [*slave_masters*]
 #   If *zone_type* is set to `slave`, this holds an array or string
 #   containing the IP addresses of the DNS servers from which this slave
@@ -156,7 +161,8 @@ define dns::zone (
   $slave_masters = undef,
   $zone_notify = undef,
   $also_notify = [],
-  $ensure = present
+  $ensure = present,
+  $serial_style = 'timestamp',
 ) {
 
   $cfg_dir = $dns::server::params::cfg_dir
@@ -187,6 +193,13 @@ define dns::zone (
     fail("The zone_type must be one of [${valid_zone_type_array}]")
   }
 
+  validate_string($serial_style)
+  $valid_serial_style_array = ['date', 'timestamp']
+  if !member($valid_serial_style_array, $serial_style) {
+    $valid_serial_style_array_str = join($valid_serial_style_array, ',')
+    fail("The serial_style must be one of [${valid_serial_style_array_str}]")
+  }
+
   $zone_file = "${dns::server::params::data_dir}/db.${name}"
   $zone_file_stage = "${zone_file}.stage"
 
@@ -214,12 +227,47 @@ define dns::zone (
     # Generate real zone from stage file through replacement _SERIAL_ template
     # to current timestamp. A real zone file will be updated only at change of
     # the stage file, thanks to this serial is updated only in case of need.
-    $zone_serial = inline_template('<%= Time.now.to_i %>')
+
+    if $serial_style == date {
+      $zone_serial = inline_template('<%= Time.now.strftime("%Y%m%d00") %>')
+    } else {
+      $zone_serial = inline_template('<%= Time.now.to_i %>')
+    }
+
+    # generate the bump_serial_command.
+    # This uses a complicated sed command to extract the current serial
+    # number from the existing zone file (if any).  If the current serial
+    # number is less than the target serial number calculated above,
+    # then the target serial number is used; otherwise, the current
+    # serial number is incremented by 1.  Then the _SERIAL_ keyword in
+    # the staging zone file is replaced by the calculated serial number
+    # in the new zone file contents.
+    #
+    # sed script:
+    #   The first -e expression is a loop that strips DNS commends and
+    #     embedded newlines out of the pattern space, then repeats as
+    #     long as the pattern space contains a left-parenthesis '('
+    #     with no following right-parenthesis ')'.
+    #   The second -e expression replaces sequences of tabs and spaces
+    #     with a single space each.
+    #   The third -e expression locates the SOA record and extracts the
+    #     serial number from it.
+    #
+
+    $bump_serial_command = " \
+current_serial=`test -f ${zone_file} && sed -n \
+  -e ':a;s/;.*\$//;s/\\n//;/[(][^)]*\$/{N;ba}' \
+  -e 's/[\\t ][\\t ]*/ /g' \
+  -e '/^[^ ]* IN SOA /{s/^.*( *\\([^ ][^ ]*\\) [^ ][^ ]* [^ ][^ ]* [^ ][^ ]* [^ ][^ ]* *).*/\\1/p;q}' \
+${zone_file}`; \
+[ 0\$current_serial -lt ${zone_serial} ] && new_serial=${zone_serial} || new_serial=`expr \$current_serial + 1`;\
+sed 8s/_SERIAL_/\${new_serial}/ ${zone_file_stage} > ${zone_file}"
+
     exec { "bump-${zone}-serial":
-      command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
+      command     => $bump_serial_command,
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
-      provider    => posix,
+      provider    => shell,
       user        => $dns::server::params::owner,
       group       => $dns::server::params::group,
       require     => Class['dns::server::install'],
