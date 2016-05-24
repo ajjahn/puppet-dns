@@ -19,15 +19,10 @@ define dns::record::a (
     data => $data
   }
 
-  if $ptr {
+  if $ptr == 'all' {
+    dns::record::ptr::by_ip { $data: host => $host, zone => $zone }
+  } elsif $ptr == 'first' or str2bool($ptr) {
     $ip = inline_template('<%= @data.kind_of?(Array) ? @data.first : @data %>')
-    $reverse_zone = inline_template('<%= @ip.split(".")[0..-2].reverse.join(".") %>.IN-ADDR.ARPA')
-    $octet = inline_template('<%= @ip.split(".")[-1] %>')
-
-    dns::record::ptr { "${octet}.${reverse_zone}":
-      host => $octet,
-      zone => $reverse_zone,
-      data => "${host}.${zone}"
-    }
+    dns::record::ptr::by_ip { $ip: host => $host, zone => $zone }
   }
 }
