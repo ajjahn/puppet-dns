@@ -20,28 +20,28 @@ type <%= @zone_type %>;
     masters { <%= @slave_masters %>;};
 <%- end -%>
 <% elsif @zone_type == 'master' -%>
-    <% if @allow_transfer.is_a?(Array) and @allow_transfer.size != 0 -%>
+    <%- if @allow_transfer.is_a?(Array) and @allow_transfer.size != 0 -%>
         allow-transfer {
-        <% @allow_transfer.each do |ip| -%>
+        <%- @allow_transfer.each do |ip| -%>
             <%= ip %>;
-        <% end -%>
+        <%- end -%>
         };
-    <% end -%>
+    <%- end -%>
 <% end -%>
 <% if !@allow_forwarder.empty? and ( @zone_type == 'master' or  @zone_type == 'forward') -%>
     forward <%= @forward_policy %>;
     forwarders {
-    <% @allow_forwarder.each do |ip| -%>
+    <%- @allow_forwarder.each do |ip| -%>
         <%= ip %>;
-    <% end -%>
+    <%- end -%>
     };
 <% end -%>
-    <% if @allow_query.size != 0 %>
+    <%- if @allow_query.size != 0 %>
         allow-query {
-        <% @allow_query.each do |ip| -%>
+        <%- @allow_query.each do |ip| -%>
             <%= ip %>;
-        <% end -%>
+        <%- end -%>
         };
-    <% end -%>
+    <%- end -%>
 
 };
