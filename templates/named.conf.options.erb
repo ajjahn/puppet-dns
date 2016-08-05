@@ -18,14 +18,16 @@ options {
     forwarders {
     <%- @forwarders.each do |forwarder| -%>
       <%= forwarder -%>;
-    <%- end -%>};
+    <%- end -%>
+    };
 <% end -%>
 
 <% if @transfers.size != 0 then -%>
     allow-transfer {
     <%- @transfers.each do |transfer| -%>
       <%= transfer -%>;
-    <%- end -%>};
+    <%- end -%>
+    };
 <% end -%>
 
 <% if @listen_on.size == 0 then -%>
@@ -34,7 +36,8 @@ options {
     listen-on {
     <%- @listen_on.each do |ipv4_addr| -%>
       <%= ipv4_addr -%>;
-    <%- end -%>};
+    <%- end -%>
+    };
 <% end -%>
 
 <% if @listen_on_ipv6.empty? then -%>
@@ -43,7 +46,8 @@ options {
     listen-on-v6 {
     <%- @listen_on_ipv6.each do |ipv6_addr| -%>
       <%= ipv6_addr -%>;
-    <%- end -%>};
+    <%- end -%>
+    };
 <% end -%>
 
 <% if @listen_on_port -%>
@@ -53,7 +57,7 @@ options {
 <% if @allow_recursion.size != 0 then -%>
     allow-recursion {
     <%- @allow_recursion.each do |recursion| -%>
-	<%= recursion -%>;
+      <%= recursion -%>;
     <%- end -%>
     };
 <% end -%>
@@ -61,7 +65,7 @@ options {
 <% if @allow_query.size != 0 then -%>
     allow-query {
     <%- @allow_query.each do |query| -%>
-	<%= query -%>;
+      <%= query -%>;
     <%- end -%>
     };
 <% end -%>
