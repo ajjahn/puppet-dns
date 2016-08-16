@@ -14,7 +14,7 @@ describe 'dns::record::txt', :type => :define do
     it { should contain_concat__fragment('db.example.com.txttest,TXT,example.com.record').with_content(/^txttest\s+IN\s+TXT\s+"testing"$/) }
   end
 
-  context 'passing a string that includes a quote should result in the quote being escaped' do
+  context 'passing a string that includes a quote character should result in the dns module escaping the quote' do
     let :params do {
         :host => 'txttest',
         :zone => 'example.com',
@@ -24,7 +24,7 @@ describe 'dns::record::txt', :type => :define do
     it { should contain_concat__fragment('db.example.com.txttest,TXT,example.com.record').with_content(/^txttest\s+IN\s+TXT\s+"this is a \\"test\\""$/) }
   end
 
-  context 'passing a long string should result in multiple quoted strings' do
+  context 'passing a long string should result in the dns module splitting that string into multiple quoted strings' do
     let :params do {
         :host => 'txttest',
         :zone => 'example.com',
