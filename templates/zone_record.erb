@@ -1,8 +1,46 @@
 <%
-delimiter = %w[TXT SPF].include?(@record.upcase) ? '"' : ''
 data_a = @data.is_a?(String) ? @data.lines.to_a : @data
 
 data_a.each do |data_item|
+if %w[TXT SPF].include?(@record.upcase)
+  # DNS TXT and SPF records have specific formatting requirements.
+  #
+  # 1. per RFC1035 section 3.3.14, they are composed of one or more
+  # character strings.
+  #
+  # 2. per RFC1035 section 3.3, each character string can be up to 255
+  # characters (section 3.3 indicates 256 octets, but includes the length
+  # octet as part of that count).
+  #
+  # 3. per common usage, if a TXT record consists of multiple character
+  # strings, the application processing that record concatenates the
+  # character strings together with no intervening characters.
+  #
+  # 4. per RFC1035 section 5, if a character string includes spaces,
+  # it must be enclosed in double-quotes ("). Within the double-quotes,
+  # any character can occur except another double-quote; double-quotes
+  # must be escaped by backslashes (\) (and by implication, backslashes
+  # must also be escaped by backslashes).
+  #
+  # Based on these requirements, TXT and SPF records data items need
+  # to be processed in this manner:
+  #
+  # 1.  split the data_item into 255 (at most) character chunks.
+  #         (via `unpack` with a format string consisting of one 'a255'
+  #         for every 255 characters in the data item, rounded up)
+  #
+  # 2.  escape all double-quotes and backslashes within each chunk by
+  #     inserting a backslash before the escaped character.
+  #         (via a `gsub` within a `collect` over the array of chunks)
+  #
+  # 3.  surround each chunk with double-quotes.
+  #         (within the same `collect` over the array of chunks)
+  #
+  # 4.  join the chunks back together with a space between each chunk.
+  #         (via `join(' ')`)
+  #
+  data_item = data_item.unpack('a255' * ((data_item.length / 255.0).ceil())).collect { |x| '"' + x.gsub(/([\\"])/, '\\\\\\1') + '"' }.join(' ')
+end
 -%>
-<%= @host %>	<%= @ttl %>	<%= @dns_class %>	<%= @record.upcase %><%= @record.upcase == 'MX' ? " #{@preference}" : '' %>	<%= delimiter %><%= data_item %><%= delimiter %>
+<%= @host %>	<%= @ttl %>	<%= @dns_class %>	<%= @record.upcase %><%= @record.upcase == 'MX' ? " #{@preference}" : '' %>	<%= data_item %>
 <% end -%>
