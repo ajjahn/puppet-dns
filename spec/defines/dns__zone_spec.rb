@@ -311,5 +311,39 @@ describe 'dns::zone' do
     it { should contain_concat__fragment('db.10.23.45.soa').with_content(/\$ORIGIN\s+45\.23\.10\.in-addr\.arpa\./) }
   end
 
+  describe 'passing something other than an array to $allow_update ' do
+    let(:params) {{ :allow_update => '127.0.0.1' }}
+    it { should raise_error(Puppet::Error, /is not an Array/) }
+  end
+
+  describe 'passing an empty array to $allow_update' do
+    let(:params) {{ :allow_update => [] }}
+    it { should_not raise_error }
+    it {
+      should contain_concat('/etc/bind/zones/db.test.com.stage').
+          with({ :replace => true })
+    }
+  end
+
+  describe 'passing an array to $allow_update' do
+    let(:params) {{ :allow_update => ['192.0.2.0', '2001:db8::/32'] }}
+    it { should_not raise_error }
+    it {
+      should contain_concat('/etc/bind/zones/db.test.com.stage').
+                 with({ :replace => false })
+    }
+    it {
+      should contain_concat__fragment('named.conf.local.test.com.include').
+          with_content(/allow-update/)
+    }
+    it {
+      should contain_concat__fragment('named.conf.local.test.com.include').
+          with_content(/192\.0\.2\.0;/)
+    }
+    it {
+      should contain_concat__fragment('named.conf.local.test.com.include').
+          with_content(/2001:db8::\/32/)
+    }
+  end
 end
 
