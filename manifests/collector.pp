@@ -2,7 +2,7 @@
 #
 # ?
 class dns::collector {
-  Member <<| |>> {
+  Dns::Member <<| |>> {
     require => Class['dns::server'],
     notify  => Class['dns::server::service']
   }
