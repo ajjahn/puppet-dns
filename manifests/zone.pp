@@ -164,7 +164,7 @@ define dns::zone (
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
   if !member(['first', 'only'], $forward_policy) {
-    error('The forward policy can only be set to either first or only')
+    fail('The forward policy can only be set to either first or only')
   }
   validate_array($allow_query)
 
