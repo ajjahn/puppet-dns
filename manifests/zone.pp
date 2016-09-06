@@ -58,6 +58,13 @@
 #   An array of IP addresses from which queries should be allowed
 #  Defaults to an empty array, which allows all ip to query the zone
 #
+# [*allow_update*]
+#   An array of IP addresses from which updates should be allowed.
+#  Defaults to an empty array, which allows updates to the zone.
+#  If Array has entries, then zone file initial creation is allowed
+#  but content will not be replaced. This capability allows dynamic
+#  updates.
+#
 # [*also_notify*]
 #   This is an array of IP addresses and optional port numbers to
 #   which this DNS server will send notifies when the master DNS server
@@ -152,6 +159,7 @@ define dns::zone (
   $allow_transfer = [],
   $allow_forwarder = [],
   $allow_query =[],
+  $allow_update =[],
   $forward_policy = 'first',
   $slave_masters = undef,
   $zone_notify = undef,
@@ -190,6 +198,14 @@ define dns::zone (
   $zone_file = "${dns::server::params::data_dir}/db.${name}"
   $zone_file_stage = "${zone_file}.stage"
 
+  validate_array($allow_update)
+  # Replace when updates allowed
+  if empty($allow_update) {
+    $zone_replace = true
+  } else {
+    $zone_replace = false
+  }
+
   if $ensure == absent {
     file { $zone_file:
       ensure => absent,
@@ -202,6 +218,7 @@ define dns::zone (
       owner   => $dns::server::params::owner,
       group   => $dns::server::params::group,
       mode    => '0644',
+      replace => $zone_replace,
       require => Class['dns::server'],
       notify  => Exec["bump-${zone}-serial"]
     }

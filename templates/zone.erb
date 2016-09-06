@@ -43,5 +43,12 @@ type <%= @zone_type %>;
         <%- end -%>
         };
     <%- end -%>
+<%- if @allow_update.size != 0 %>
+    allow-update {
+    <%- @allow_update.each do |ip| -%>
+        <%= ip %>;
+    <%- end -%>
+    };
+<%- end -%>
 
 };

@@ -138,6 +138,19 @@ dns::server::options { '/etc/bind/named.conf.options':
 }
 ```
 
+You can also create dynamic zones. Mind they are only created once by puppet and never replaced unless allow_update is empty.
+
+```puppet
+dns::zone {
+  soa             => 'ns1.example.com',
+  soa_email       => 'admin.example.com',
+  allow_forwarder => ['8.8.8.8'],
+  allow_update    => ['192.168.1.2', '192.168.1.3'],
+  forward_policy  => 'first',
+  nameservers     => ['ns1'],
+}
+```
+
 ### Exported resource patterns
 
 ```puppet
