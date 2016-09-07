@@ -1,6 +1,6 @@
 {
   "name": "ajjahn-dns",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "author": "Adam Jahn",
   "summary": "Module for provisioning DNS (bind9)",
   "license": "Apache-2.0",
