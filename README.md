@@ -1,6 +1,9 @@
 # Puppet DNS (BIND9) Module
 
 [![Build Status](https://travis-ci.org/ajjahn/puppet-dns.png?branch=master)](https://travis-ci.org/ajjahn/puppet-dns)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/ajjahn/dns.svg)](https://forge.puppetlabs.com/ajjahn/dns)
+[![Puppet Forge](https://img.shields.io/puppetforge/f/ajjahn/dns.svg)](https://forge.puppetlabs.com/ajjahn/dns)
+
 
 Module for provisioning DNS (bind9)
 
@@ -187,6 +190,17 @@ Note: This module is a merge of the work from the following authors:
 * [ajjahn](https://github.com/ajjahn/puppet-dns)
 * [Danzilio](https://github.com/danzilio)
 * [solarkennedy](https://github.com/solarkennedy)
+
+## Making a Release
+
+This example is for a `minor` release. Optionally pick `full`, `major`, or `patch`.
+
+* `bundle install --with development --path vendor/bundle` # Get development gems for puppet-blacksmith
+* [optional] `github_changelog_generator --future-release $(bundle exec rake module:version:next:minor)`
+* `bundle exec rake module:bump_commit:minor`
+* `bundle exec rake module:tag`
+* `git push origin HEAD --tags`
+* Let travis deploy to the forge
 
 ## License
 

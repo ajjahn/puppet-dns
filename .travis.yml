@@ -11,7 +11,7 @@ rvm:
   - 2.1
 
 env:
-  - PUPPET_VERSION="~> 2.7.0"
+  - PUPPET_VERSION="~> 2.7.0" DEPLOY_TO_FORGE=yes
   - PUPPET_VERSION="~> 3.1.0"
   - PUPPET_VERSION="~> 3.2.0"
   - PUPPET_VERSION="~> 3.3.0"
@@ -25,13 +25,13 @@ script: bundle exec rake test
 matrix:
   exclude:
   - rvm: 1.9.3
-    env: PUPPET_VERSION="~> 2.7.0"
+    env: PUPPET_VERSION="~> 2.7.0" DEPLOY_TO_FORGE=yes
   - rvm: 2.0.0
-    env: PUPPET_VERSION="~> 2.7.0"
+    env: PUPPET_VERSION="~> 2.7.0" DEPLOY_TO_FORGE=yes
   - rvm: 2.0.0
     env: PUPPET_VERSION="~> 3.1.0"
   - rvm: 2.1
-    env: PUPPET_VERSION="~> 2.7.0"
+    env: PUPPET_VERSION="~> 2.7.0" DEPLOY_TO_FORGE=yes
   - rvm: 2.1
     env: PUPPET_VERSION="~> 3.1.0"
   - rvm: 2.1
@@ -40,3 +40,16 @@ matrix:
     env: PUPPET_VERSION="~> 3.3.0"
   - rvm: 2.1
     env: PUPPET_VERSION="~> 3.4.0"
+
+deploy:
+  provider: puppetforge
+  # Till https://github.com/travis-ci/dpl/issues/487 is closed
+  deploy:
+    branch: ha-bug-puppet-forge
+  user: ajjahn
+  password:
+    secure: "Add this password by running 'travis encrypt'"
+  on:
+    tags: true
+    condition: "$DEPLOY_TO_FORGE = yes"
+ 
