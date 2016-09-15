@@ -201,7 +201,7 @@ define dns::zone (
       $zone = "${name}.in-addr.arpa"
     }
     default: {
-      unless is_domain_name($name) {
+      if !is_domain_name($name) {
         fail("Name zone with parameter reverse equal false must be valid domain name! Example: 'exampe.com'!")
       }
       $zone = $name
