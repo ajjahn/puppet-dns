@@ -169,6 +169,11 @@ define dns::zone (
 
   $cfg_dir = $dns::server::params::cfg_dir
 
+  $name_lowercase = downcase($name)
+  if $name !~ /^[a-z,0-9,\.-]+$/ {
+    fail("Zone name '${name}' must be lowercase '${name_lowercase}'!")
+  }
+
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
   if !member(['first', 'only'], $forward_policy) {
@@ -182,10 +187,31 @@ define dns::zone (
     fail("The zone_notify must be ${valid_zone_notify}")
   }
 
-  $zone = $reverse ? {
-    'reverse' => join(reverse(split("arpa.in-addr.${name}", '\.')), '.'),
-    true      => "${name}.in-addr.arpa",
-    default   => $name
+  case $reverse {
+    'reverse': {
+      if $name !~ /^((25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){2}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){1}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1})$/ {
+        fail("Name zone with parameter reverse equal 'reverse' must be included only one, two or three first octets! Example: '192.168'!")
+      }
+      $zone = join(reverse(split("arpa.in-addr.${name}", '\.')), '.')
+    }
+    true: {
+      if $name !~ /^((25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){2}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){1}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1})$/ {
+        fail("Name zone with parameter reverse equal true must be included only reversed one, two or three first octets! Example: '168.192'!")
+      }
+      $zone = "${name}.in-addr.arpa"
+    }
+    default: {
+      unless is_domain_name($name) {
+        fail("Name zone with parameter reverse equal false must be valid domain name! Example: 'exampe.com'!")
+      }
+      $zone = $name
+      if $name =~ /\.in-addr\.arpa$/ {
+        $name_zone_reverse_true    = regsubst($name, '\.in-addr\.arpa$', '')
+        if $name_zone_reverse_true !~ /^((25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){2}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){1}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1})$/ {
+          fail("Name zone with parameter reverse equal false must be included only reversed one, two or three first octets and 'in-addr.arpa'! Example: '168.192.in-addr.arpa'!")
+        }
+      }
+    }
   }
 
   validate_string($zone_type)
