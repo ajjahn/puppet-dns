@@ -23,6 +23,84 @@ describe 'dns::record::ns', :type => :define do
     it { should contain_concat__fragment('db.example.com.delegated-zone,example.com,NS,ns4.jp.example.net..record').with_content(/^delegated-zone\s+IN\s+NS\s+ns4.jp.example.net\.$/) }
   end
 
+  context 'passing an explicit host for reverse zone 192 (reverse=>true)' do
+    let :params do {
+        :zone       => '192',
+        :host       => '@',
+        :data       => 'ns4.jp.example.net.'
+    } end
+    let :pre_condition do [
+        'dns::zone { "192": reverse => true, }',
+    ] end
+    it { should_not raise_error }
+    it { should contain_concat__fragment('db.192.@,192,NS,ns4.jp.example.net..record').with_content(/^@\s+IN\s+NS\s+ns4.jp.example.net\.$/) }
+  end
+
+  context 'passing an explicit host for reverse zone 192 (reverse=>"reverse")' do
+    let :params do {
+        :zone       => '192',
+        :host       => '@',
+        :data       => 'ns4.jp.example.net.'
+    } end
+    let :pre_condition do [
+        'dns::zone { "192": reverse => "reverse", }',
+    ] end
+    it { should_not raise_error }
+    it { should contain_concat__fragment('db.192.@,192,NS,ns4.jp.example.net..record').with_content(/^@\s+IN\s+NS\s+ns4.jp.example.net\.$/) }
+  end
+
+  context 'passing an explicit host for reverse zone 168.192 (reverse=>true)' do
+    let :params do {
+        :zone       => '168.192',
+        :host       => '@',
+        :data       => 'ns4.jp.example.net.'
+    } end
+    let :pre_condition do [
+        'dns::zone { "168.192": reverse => true, }',
+    ] end
+    it { should_not raise_error }
+    it { should contain_concat__fragment('db.168.192.@,168.192,NS,ns4.jp.example.net..record').with_content(/^@\s+IN\s+NS\s+ns4.jp.example.net\.$/) }
+  end
+
+  context 'passing an explicit host for reverse zone 192.168 (reverse=>"reverse")' do
+    let :params do {
+        :zone       => '192.168',
+        :host       => '@',
+        :data       => 'ns4.jp.example.net.'
+    } end
+    let :pre_condition do [
+        'dns::zone { "192.168": reverse => "reverse", }',
+    ] end
+    it { should_not raise_error }
+    it { should contain_concat__fragment('db.192.168.@,192.168,NS,ns4.jp.example.net..record').with_content(/^@\s+IN\s+NS\s+ns4.jp.example.net\.$/) }
+  end
+
+  context 'passing an explicit host for reverse zone 128.168.192 (reverse=>true)' do
+    let :params do {
+        :zone       => '128.168.192',
+        :host       => '@',
+        :data       => 'ns4.jp.example.net.'
+    } end
+    let :pre_condition do [
+        'dns::zone { "128.168.192": reverse => true, }',
+    ] end
+    it { should_not raise_error }
+    it { should contain_concat__fragment('db.128.168.192.@,128.168.192,NS,ns4.jp.example.net..record').with_content(/^@\s+IN\s+NS\s+ns4.jp.example.net\.$/) }
+  end
+
+  context 'passing an explicit host for reverse zone 192.168.128 (reverse=>"reverse")' do
+    let :params do {
+        :zone       => '192.168.128',
+        :host       => '@',
+        :data       => 'ns4.jp.example.net.'
+    } end
+    let :pre_condition do [
+        'dns::zone { "192.168.128": reverse => "reverse", }',
+    ] end
+    it { should_not raise_error }
+    it { should contain_concat__fragment('db.192.168.128.@,192.168.128,NS,ns4.jp.example.net..record').with_content(/^@\s+IN\s+NS\s+ns4.jp.example.net\.$/) }
+  end
+
   context 'passing a wrong (numeric top-level domain) zone' do
     let :params do {
         :zone => 'six.022',
@@ -33,7 +111,7 @@ describe 'dns::record::ns', :type => :define do
 
   context 'passing a wrong (numeric) zone' do
     let :params do {
-        :zone => 789,
+        :zone => '789',
         :data => 'badzone.example.com'
     } end
     it { should raise_error(Puppet::Error, /must be a valid domain name/) }
