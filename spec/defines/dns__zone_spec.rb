@@ -302,6 +302,30 @@ describe 'dns::zone' do
     it { should contain_concat__fragment('db.10.23.45.in-addr.arpa.soa').with_content(/\$ORIGIN\s+10\.23\.45\.in-addr\.arpa\./) }
   end
 
+  context 'passing true to reverse with an alphanumeric zone name' do
+    let(:title) { 'invalid.zone' }
+    let :params do
+      { :reverse => true }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
+  end
+
+  context 'passing true to reverse with an invalid octet' do
+    let(:title) { '10.23.456' }
+    let :params do
+      { :reverse => true }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
+  end
+
+  context 'passing true to reverse with too many octets' do
+    let(:title) { '10.23.45.67' }
+    let :params do
+      { :reverse => true }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
+  end
+
   context 'passing reverse to reverse' do
     let(:title) { '10.23.45' }
     let :params do
@@ -309,6 +333,30 @@ describe 'dns::zone' do
     end
     it { should contain_concat__fragment('named.conf.local.45.23.10.in-addr.arpa.include').with_content(/zone "45\.23\.10\.in-addr\.arpa"/) }
     it { should contain_concat__fragment('db.45.23.10.in-addr.arpa.soa').with_content(/\$ORIGIN\s+45\.23\.10\.in-addr\.arpa\./) }
+  end
+
+  context 'passing reverse to reverse with an alphanumeric zone name' do
+    let(:title) { 'invalid.zone' }
+    let :params do
+      { :reverse => 'reverse' }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
+  end
+
+  context 'passing reverse to reverse with an invalid octet' do
+    let(:title) { '10.23.456' }
+    let :params do
+      { :reverse => 'reverse' }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
+  end
+
+  context 'passing reverse to reverse with too many octets' do
+    let(:title) { '10.23.45.67' }
+    let :params do
+      { :reverse => 'reverse' }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
   end
 
   describe 'passing something other than an array to $allow_update ' do

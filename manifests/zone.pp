@@ -222,6 +222,8 @@ define dns::zone (
   }
 
   if $reverse {
+    # validate that $zone consists of 1 to 3 valid IP octets followed by in-addr.arpa
+    validate_re($zone, '^((25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.){1,3}in-addr.arpa$', 'With reverse != false, zone names must consist of 1 to 3 dot (.) separated numbers in the range 0 - 255.')
     dns::zone { $zone:
       ensure          => $ensure,
       soa             => $soa,
