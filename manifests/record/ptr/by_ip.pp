@@ -139,7 +139,7 @@ define dns::record::ptr::by_ip (
     $reverse_zone = $reverse_class_a_zone
     $octet = $class_a_host
   } else {
-    notify { "PTR record for ip-address '${ip}' not creates! Not found declareted define Dns::Zone of 'A', 'B' or 'C' network classes for ip-address '${ip}'!": }
+    notify { "PTR record for IP address '${ip}' not created: No `dns::zone` resource declared for the class A, B, or C subnet of this IP address.": }
   }
 
   if $reverse_zone and $octet {
