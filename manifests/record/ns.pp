@@ -22,7 +22,7 @@ define dns::record::ns (
   if $check_parameter_reverse != 'reverse' and $check_parameter_reverse != true and $zone =~ /^[0-9\.]+$/ {
     fail("Define[dns::record::ns]: NS zone ${zone} must be a valid domain name.")
   }
-  if ( $check_parameter_reverse == 'reverse' or $check_parameter_reverse == true ) and $zone !~ /^((25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){2}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){1}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1})$/ {
+  if ( $check_parameter_reverse == 'reverse' or $check_parameter_reverse == true ) and "${zone}." !~ /^((25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){1,3})$/ {
     fail("Define[dns::record::ns]: NS zone ${zone} PTR, when parameter 'reverse' of zone '${zone}' is not false, must be included octets with separator dot!")
   }
   # Highest label (top-level domain) must be alphabetic

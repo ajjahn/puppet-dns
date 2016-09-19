@@ -25,7 +25,7 @@ describe 'dns::record::a', :type => :define do
     } end
     it { should_not raise_error }
     it { should contain_concat__fragment('db.example.com.atest,A,example.com.record').with_content(/^atest\s+IN\s+A\s+192\.168\.128\.42$/) }
-    it { should contain_notify("PTR record for ip-address '192.168.128.42' not creates! Not found declareted define Dns::Zone of 'A', 'B' or 'C' network classes for ip-address '192.168.128.42'!")}
+    it { should contain_notify("PTR record for IP address '192.168.128.42' not created: No `dns::zone` resource declared for the class A, B, or C subnet of this IP address.")}
   end
 
   context 'passing a single ip address with ptr=>all' do
@@ -37,7 +37,7 @@ describe 'dns::record::a', :type => :define do
     } end
     it { should_not raise_error }
     it { should contain_concat__fragment('db.example.com.atest,A,example.com.record').with_content(/^atest\s+IN\s+A\s+192\.168\.128\.42$/) }
-    it { should contain_notify("PTR record for ip-address '192.168.128.42' not creates! Not found declareted define Dns::Zone of 'A', 'B' or 'C' network classes for ip-address '192.168.128.42'!")}
+    it { should contain_notify("PTR record for IP address '192.168.128.42' not created: No `dns::zone` resource declared for the class A, B, or C subnet of this IP address.")}
   end
 
   context 'passing multiple ip addresses with ptr=>false' do
@@ -61,9 +61,9 @@ describe 'dns::record::a', :type => :define do
     } end
     it { should_not raise_error }
     it { should contain_concat__fragment('db.example.com.atest,A,example.com.record').with_content(/^atest\s+IN\s+A\s+192\.168\.128\.68\natest\s+IN\s+A\s+192\.168\.128\.69\natest\s+IN\s+A\s+192\.168\.128\.70$/) }
-    it { should contain_notify("PTR record for ip-address '192.168.128.68' not creates! Not found declareted define Dns::Zone of 'A', 'B' or 'C' network classes for ip-address '192.168.128.68'!")}
-    it { should_not contain_notify("PTR record for ip-address '192.168.128.69' not creates! Not found declareted define Dns::Zone of 'A', 'B' or 'C' network classes for ip-address '192.168.128.69'!")}
-    it { should_not contain_notify("PTR record for ip-address '192.168.128.70' not creates! Not found declareted define Dns::Zone of 'A', 'B' or 'C' network classes for ip-address '192.168.128.70'!")}
+    it { should contain_notify("PTR record for IP address '192.168.128.68' not created: No `dns::zone` resource declared for the class A, B, or C subnet of this IP address.")}
+    it { should_not contain_notify("PTR record for IP address '192.168.128.69' not created: No `dns::zone` resource declared for the class A, B, or C subnet of this IP address.")}
+    it { should_not contain_notify("PTR record for IP address '192.168.128.70' not created: No `dns::zone` resource declared for the class A, B, or C subnet of this IP address.")}
   end
 
   context 'passing multiple ip addresses with ptr=>all' do
@@ -75,9 +75,9 @@ describe 'dns::record::a', :type => :define do
     } end
     it { should_not raise_error }
     it { should contain_concat__fragment('db.example.com.atest,A,example.com.record').with_content(/^atest\s+IN\s+A\s+192\.168\.128\.68\natest\s+IN\s+A\s+192\.168\.128\.69\natest\s+IN\s+A\s+192\.168\.128\.70$/) }
-    it { should contain_notify("PTR record for ip-address '192.168.128.68' not creates! Not found declareted define Dns::Zone of 'A', 'B' or 'C' network classes for ip-address '192.168.128.68'!")}
-    it { should contain_notify("PTR record for ip-address '192.168.128.69' not creates! Not found declareted define Dns::Zone of 'A', 'B' or 'C' network classes for ip-address '192.168.128.69'!")}
-    it { should contain_notify("PTR record for ip-address '192.168.128.70' not creates! Not found declareted define Dns::Zone of 'A', 'B' or 'C' network classes for ip-address '192.168.128.70'!")}
+    it { should contain_notify("PTR record for IP address '192.168.128.68' not created: No `dns::zone` resource declared for the class A, B, or C subnet of this IP address.")}
+    it { should contain_notify("PTR record for IP address '192.168.128.69' not created: No `dns::zone` resource declared for the class A, B, or C subnet of this IP address.")}
+    it { should contain_notify("PTR record for IP address '192.168.128.70' not created: No `dns::zone` resource declared for the class A, B, or C subnet of this IP address.")}
   end
 
   context 'passing ptr=>first with class A network defined with parameter reverse is false (default)' do

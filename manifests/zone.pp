@@ -189,25 +189,25 @@ define dns::zone (
 
   case $reverse {
     'reverse': {
-      if $name !~ /^((25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){2}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){1}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1})$/ {
+      if "${name}." !~ /^((25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){1,3})$/ {
         fail("Name zone with parameter reverse equal 'reverse' must be included only one, two or three first octets! Example: '192.168'!")
       }
       $zone = join(reverse(split("arpa.in-addr.${name}", '\.')), '.')
     }
     true: {
-      if $name !~ /^((25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){2}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){1}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1})$/ {
+      if "${name}." !~ /^((25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){1,3})$/ {
         fail("Name zone with parameter reverse equal true must be included only reversed one, two or three first octets! Example: '168.192'!")
       }
       $zone = "${name}.in-addr.arpa"
     }
     default: {
       if !is_domain_name($name) {
-        fail("Name zone with parameter reverse equal false must be valid domain name! Example: 'exampe.com'!")
+        fail("Name zone with parameter reverse equal false must be valid domain name! Example: 'example.com'!")
       }
       $zone = $name
       if $name =~ /\.in-addr\.arpa$/ {
-        $name_zone_reverse_true    = regsubst($name, '\.in-addr\.arpa$', '')
-        if $name_zone_reverse_true !~ /^((25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){2}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){1}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1}|(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?){1})$/ {
+        $name_zone_reverse_true = regsubst($name, '\.in-addr\.arpa$', '')
+        if "${name_zone_reverse_true}." !~ /^((25[0-5]\.|2[0-4][0-9]\.|[01]?[0-9][0-9]?\.){1,3})$/ {
           fail("Name zone with parameter reverse equal false must be included only reversed one, two or three first octets and 'in-addr.arpa'! Example: '168.192.in-addr.arpa'!")
         }
       }
