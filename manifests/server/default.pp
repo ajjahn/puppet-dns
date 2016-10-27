@@ -25,10 +25,14 @@ class dns::server::default (
   if $rootdir {
     validate_absolute_path( $rootdir )
   }
-
-  validate_re( $enable_zone_write, '^(yes|no|\s*)$', 'The enable_zone_write value is not type of a string yes / no or empty.' )
-
-  validate_re( $enable_sdb, '^(yes|no|1|0|\s*)$', 'The enable_sdb value is not type of a string yes / no / 1 / 0 or empty.' )
+  
+  if $enable_zone_write {
+    validate_re( $enable_zone_write, '^(yes|no|\s*)$', 'The enable_zone_write value is not type of a string yes / no or empty.' )
+  }
+  
+  if $enable_sdb  {
+    validate_re( $enable_sdb, '^(yes|no|1|0|\s*)$', 'The enable_sdb value is not type of a string yes / no / 1 / 0 or empty.' )
+  }
 
   if $keytab_file {
     validate_absolute_path( $keytab_file )
@@ -45,5 +49,4 @@ class dns::server::default (
     notify  => Class['dns::server::service'],
     require => Package[$::dns::server::params::necessary_packages]
   }
-
 }
