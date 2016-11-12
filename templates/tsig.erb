@@ -2,8 +2,8 @@ key <%= @keyname %>. {
   algorithm <%= @algorithm %>;
   secret "<%= @secret %>";
 };
-<% if server.class == Array -%>
-<% server.each do |host| -%>
+<% if @server.class == Array -%>
+<% @server.each do |host| -%>
 server <%= host -%> {
   keys { <%= @keyname %>. ; };
 };
