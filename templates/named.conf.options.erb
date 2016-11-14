@@ -125,3 +125,24 @@ transfer-source <%= @transfer_source %>;
 <% end -%>
 	auth-nxdomain no;    # conform to RFC1035
 };
+<% if @query_log_enable -%>
+logging {
+
+        channel query_logging {
+                file "/var/cache/bind/named_querylog"
+                versions 10 size 100M;
+                print-time yes;
+                severity debug 1;
+        };
+        category queries {
+                query_logging;
+        };
+
+        channel syslog_errors {
+                syslog user;
+                severity error;
+        };
+        category default { syslog_errors;  };
+        category lame-servers { null; };
+};
+<% end -%>
