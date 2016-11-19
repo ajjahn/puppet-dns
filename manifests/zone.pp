@@ -92,6 +92,9 @@
 #   to it.
 #   Defaults to `false`.
 #
+# [*serial*]
+#   Optional set or time bases auto generated serial numver of zone file
+#
 # [*slave_masters*]
 #   If *zone_type* is set to `slave`, this holds an array or string
 #   containing the IP addresses of the DNS servers from which this slave
@@ -155,6 +158,7 @@ define dns::zone (
   $zone_minimum = '604800',
   $nameservers = [ $::fqdn ],
   $reverse = false,
+  $serial = false,
   $zone_type = 'master',
   $allow_transfer = [],
   $allow_forwarder = [],
@@ -231,7 +235,11 @@ define dns::zone (
     # Generate real zone from stage file through replacement _SERIAL_ template
     # to current timestamp. A real zone file will be updated only at change of
     # the stage file, thanks to this serial is updated only in case of need.
-    $zone_serial = inline_template('<%= Time.now.to_i %>')
+
+    $zone_serial = $serial ? {
+      false   => inline_template('<%= Time.now.to_i %>'),
+      default => $serial
+    }
     exec { "bump-${zone}-serial":
       command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
