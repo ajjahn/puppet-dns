@@ -115,6 +115,12 @@
 #   of the zone for which the slave will continue to respond to DNS
 #   queries for records in this zone.
 #
+# [*zone_file*]
+#   An internal-use-only parameter used to preserve the original zone
+#   filename during transformations for mixed-case zone names or the
+#   `reverse` parameter.  This parameter should never be specified by
+#   a calling module.
+#
 # [*zone_minimum*]
 #   Despite _minimum_ in the parameter name, this is the maximum time
 #   that a _negative_ for this zone (e.g. a host not found response)
@@ -168,7 +174,10 @@ define dns::zone (
   $slave_masters = undef,
   $zone_notify = undef,
   $also_notify = [],
-  $ensure = present
+  $ensure = present,
+  $zone_file = "${dns::server::params::data_dir}/db.${name}",
+# if you add new parameters here, make sure you also add them to the
+# `if $reverse` blocks below
 ) {
 
   $cfg_dir = $dns::server::params::cfg_dir
@@ -186,21 +195,12 @@ define dns::zone (
     fail("The zone_notify must be ${valid_zone_notify}")
   }
 
-  $zone = $reverse ? {
-    'reverse' => join(reverse(split("arpa.in-addr.${name}", '\.')), '.'),
-    true      => "${name}.in-addr.arpa",
-    default   => $name
-  }
-
   validate_string($zone_type)
   $valid_zone_type_array = ['master', 'slave', 'forward', 'delegation-only']
   if !member($valid_zone_type_array, $zone_type) {
     $valid_zone_type_array_str = join($valid_zone_type_array, ',')
     fail("The zone_type must be one of [${valid_zone_type_array}]")
   }
-
-  $zone_file = "${dns::server::params::data_dir}/db.${name}"
-  $zone_file_stage = "${zone_file}.stage"
 
   validate_array($allow_update)
   # Replace when updates allowed
@@ -210,7 +210,71 @@ define dns::zone (
     $zone_replace = false
   }
 
-  if $ensure == absent {
+  # validate $zone_file is located inside $dns::server::params::data_dir
+  # and begins with `db.`.
+  #
+  # Transform $dns::server::params::data_dir into a regex first :P
+  $data_dir_re = regsubst($dns::server::params::data_dir, '(\W)', '\\\1', 'G')
+  validate_re($zone_file, "^${data_dir_re}/db\\.[^/]*\$", 'zone_file is a private parameter and should not be passed in.')
+
+  $zone_file_stage = "${zone_file}.stage"
+
+  $zone = $reverse ? {
+    'reverse' => join(reverse(split("arpa.in-addr.${name}", '\.')), '.'),
+    true      => "${name}.in-addr.arpa",
+    default   => $name
+  }
+
+  if $reverse {
+    # validate that $zone consists of 1 to 3 valid IP octets followed by in-addr.arpa
+    validate_re($zone, '^((25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.){1,3}in-addr.arpa$', 'With reverse != false, zone names must consist of 1 to 3 dot (.) separated numbers in the range 0 - 255.')
+    dns::zone { $zone:
+      ensure          => $ensure,
+      soa             => $soa,
+      soa_email       => $soa_email,
+      zone_ttl        => $zone_ttl,
+      zone_refresh    => $zone_refresh,
+      zone_retry      => $zone_retry,
+      zone_expire     => $zone_expire,
+      zone_minimum    => $zone_minimum,
+      nameservers     => $nameservers,
+      reverse         => false, # make sure we don't infinitely recurse!
+      zone_type       => $zone_type,
+      allow_transfer  => $allow_transfer,
+      allow_forwarder => $allow_forwarder,
+      allow_query     => $allow_query,
+      allow_update    => $allow_update,
+      forward_policy  => $forward_policy,
+      slave_masters   => $slave_masters,
+      zone_notify     => $zone_notify,
+      also_notify     => $also_notify,
+      zone_file       => $zone_file,
+    }
+  } elsif $zone != downcase($zone) {
+    $zone_lower = downcase($zone)
+    dns::zone { $zone_lower:
+      ensure          => $ensure,
+      soa             => $soa,
+      soa_email       => $soa_email,
+      zone_ttl        => $zone_ttl,
+      zone_refresh    => $zone_refresh,
+      zone_retry      => $zone_retry,
+      zone_expire     => $zone_expire,
+      zone_minimum    => $zone_minimum,
+      nameservers     => $nameservers,
+      reverse         => $reverse,
+      zone_type       => $zone_type,
+      allow_transfer  => $allow_transfer,
+      allow_forwarder => $allow_forwarder,
+      allow_query     => $allow_query,
+      allow_update    => $allow_update,
+      forward_policy  => $forward_policy,
+      slave_masters   => $slave_masters,
+      zone_notify     => $zone_notify,
+      also_notify     => $also_notify,
+      zone_file       => $zone_file,
+    }
+  } elsif $ensure == absent {
     file { $zone_file:
       ensure => absent,
     }

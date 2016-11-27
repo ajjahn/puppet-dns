@@ -298,8 +298,32 @@ describe 'dns::zone' do
     let :params do
       { :reverse => true }
     end
-    it { should contain_concat__fragment('named.conf.local.10.23.45.include').with_content(/zone "10\.23\.45\.in-addr\.arpa"/) }
-    it { should contain_concat__fragment('db.10.23.45.soa').with_content(/\$ORIGIN\s+10\.23\.45\.in-addr\.arpa\./) }
+    it { should contain_concat__fragment('named.conf.local.10.23.45.in-addr.arpa.include').with_content(/zone "10\.23\.45\.in-addr\.arpa"/) }
+    it { should contain_concat__fragment('db.10.23.45.in-addr.arpa.soa').with_content(/\$ORIGIN\s+10\.23\.45\.in-addr\.arpa\./) }
+  end
+
+  context 'passing true to reverse with an alphanumeric zone name' do
+    let(:title) { 'invalid.zone' }
+    let :params do
+      { :reverse => true }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
+  end
+
+  context 'passing true to reverse with an invalid octet' do
+    let(:title) { '10.23.456' }
+    let :params do
+      { :reverse => true }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
+  end
+
+  context 'passing true to reverse with too many octets' do
+    let(:title) { '10.23.45.67' }
+    let :params do
+      { :reverse => true }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
   end
 
   context 'passing reverse to reverse' do
@@ -307,8 +331,32 @@ describe 'dns::zone' do
     let :params do
       { :reverse => 'reverse' }
     end
-    it { should contain_concat__fragment('named.conf.local.10.23.45.include').with_content(/zone "45\.23\.10\.in-addr\.arpa"/) }
-    it { should contain_concat__fragment('db.10.23.45.soa').with_content(/\$ORIGIN\s+45\.23\.10\.in-addr\.arpa\./) }
+    it { should contain_concat__fragment('named.conf.local.45.23.10.in-addr.arpa.include').with_content(/zone "45\.23\.10\.in-addr\.arpa"/) }
+    it { should contain_concat__fragment('db.45.23.10.in-addr.arpa.soa').with_content(/\$ORIGIN\s+45\.23\.10\.in-addr\.arpa\./) }
+  end
+
+  context 'passing reverse to reverse with an alphanumeric zone name' do
+    let(:title) { 'invalid.zone' }
+    let :params do
+      { :reverse => 'reverse' }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
+  end
+
+  context 'passing reverse to reverse with an invalid octet' do
+    let(:title) { '10.23.456' }
+    let :params do
+      { :reverse => 'reverse' }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
+  end
+
+  context 'passing reverse to reverse with too many octets' do
+    let(:title) { '10.23.45.67' }
+    let :params do
+      { :reverse => 'reverse' }
+    end
+    it { should raise_error(Puppet::Error, /zone names must consist of/) }
   end
 
   describe 'passing something other than an array to $allow_update ' do
@@ -345,5 +393,27 @@ describe 'dns::zone' do
           with_content(/2001:db8::\/32/)
     }
   end
+
+  describe 'passing a zone_file with an invalid directory' do
+    let(:params) {{ :zone_file => '/tmp/foo' }}
+    it { should raise_error(Puppet::Error, /is a private parameter/) }
+  end
+
+  describe 'passing a zone_file with an invalid filename' do
+    let(:params) {{ :zone_file => '/etc/bind/zones/foo' }}
+    it { should raise_error(Puppet::Error, /is a private parameter/) }
+  end
+
+  describe 'passing a zone_file with a subdirectory of the data directory' do
+    let(:params) {{ :zone_file => '/etc/bind/zones/db.sneaky/foo' }}
+    it { should raise_error(Puppet::Error, /is a private parameter/) }
+  end
+
+  describe 'passing a zone_file with a valid filename' do
+    let(:params) {{ :zone_file => '/etc/bind/zones/db.foo' }}
+    it { should_not raise_error }
+    it { should contain_concat('/etc/bind/zones/db.foo.stage') }
+  end
+
 end
 
