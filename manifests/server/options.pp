@@ -52,6 +52,11 @@
 #            both statistic_channel_port and statistic_channel_ip must be defined
 #            for the statistic api to be enabled
 #
+# [*statistic_channel_allow*]
+#   Array of IPs that are allowed to query the statistics channel.
+#   Default: undef, meaning all IPs that can reach statistic_channel_ip are allowed
+#            to query it
+#
 # [*zone_notify*]
 #   Controls notifications when a zone for which this server is
 #   authoritative changes.  String of yes (send notifications to zone's
@@ -114,6 +119,7 @@ define dns::server::options (
   $allow_query = [],
   $statistic_channel_ip = undef,
   $statistic_channel_port = undef,
+  $statistic_channel_allow = undef,
   $zone_notify = undef,
   $also_notify = [],
   $dnssec_validation = $dns::server::params::default_dnssec_validation,
@@ -152,6 +158,10 @@ define dns::server::options (
 
   if $statistic_channel_ip != undef and (!is_string($statistic_channel_ip) or !is_ip_address($statistic_channel_ip)) {
     fail('The statistic_channel_ip is not an ip string')
+  }
+
+  if $statistic_channel_allow != undef {
+    validate_array($statistic_channel_allow)
   }
 
   validate_array($also_notify)
