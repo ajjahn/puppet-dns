@@ -1,5 +1,5 @@
 zone "<%= @zone %>" {
-type <%= @zone_type %>;
+    type <%= @zone_type %>;
 <% if @zone_notify -%>
     notify <%= @zone_notify %>;
 <% end -%>
@@ -50,5 +50,4 @@ type <%= @zone_type %>;
     <%- end -%>
     };
 <%- end -%>
-
 };
