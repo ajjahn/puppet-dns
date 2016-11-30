@@ -78,7 +78,6 @@
 #   Debian and on RedHat 6 and above.
 #   Note: If *dnssec_enable* is set to false, this option is ignored.
 #
-#
 # [*dnssec_enable*]
 #   Controls whether to enable/disable DNS-SEC support. Boolean.
 #   Default is false on RedHat 5 (for the same reasons as
@@ -98,6 +97,10 @@
 #   The source IP address from which to respond to transfer requests.
 #   Default: undef, meaning the primary IP address of the DNS server,
 #   as determined by BIND.
+#
+# [*data_dir*]
+#   Bind data directory.
+#   Default: /etc/bind/zones
 #
 # === Examples
 #
@@ -122,15 +125,15 @@ define dns::server::options (
   $statistic_channel_allow = undef,
   $zone_notify = undef,
   $also_notify = [],
-  $dnssec_validation = $dns::server::params::default_dnssec_validation,
-  $dnssec_enable = $dns::server::params::default_dnssec_enable,
+  $dnssec_validation = $::dns::server::params::default_dnssec_validation,
+  $dnssec_enable = $::dns::server::params::default_dnssec_enable,
   $no_empty_zones = false,
   $notify_source = undef,
   $transfer_source = undef,
+  $data_dir = $::dns::server::params::data_dir,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $cfg_dir = $::dns::server::params::cfg_dir
-  $data_dir = $::dns::server::params::data_dir
 
   if ! defined(Class['::dns::server']) {
     fail('You must include the ::dns::server base class before using any dns options defined resources')

@@ -71,6 +71,10 @@
 #   reloads the zone file.  See the *allow_forwarder* parameter for how
 #   to include the optional port numbers.
 #
+# [*data_dir*]
+#   Bind data directory.
+#   Default: /etc/bind/zones
+#
 # [*forward_policy*]
 #   Either `first` or `only`.  If the *allow_forwarder* array is not
 #   empty, this setting defines how query forwarding is handled.  With a
@@ -168,7 +172,8 @@ define dns::zone (
   $slave_masters = undef,
   $zone_notify = undef,
   $also_notify = [],
-  $ensure = present
+  $ensure = present,
+  $data_dir = $::dns::server::params::data_dir,
 ) {
 
   $cfg_dir = $dns::server::params::cfg_dir
@@ -199,7 +204,7 @@ define dns::zone (
     fail("The zone_type must be one of [${valid_zone_type_array}]")
   }
 
-  $zone_file = "${dns::server::params::data_dir}/db.${name}"
+  $zone_file = "${data_dir}/db.${name}"
   $zone_file_stage = "${zone_file}.stage"
 
   validate_array($allow_update)
