@@ -10,10 +10,9 @@ define dns::record (
   $dns_class = 'IN',
   $ttl = '',
   $preference = false,
-  $order = 9
+  $order = 9,
+  $data_dir = $::dns::server::params::data_dir,
 ) {
-
-  $data_dir = $dns::server::params::data_dir
 
   $zone_file_stage = "${data_dir}/db.${zone}.stage"
 
