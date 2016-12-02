@@ -1,123 +1,125 @@
 options {
-	directory "<%= @data_dir %>";
+    directory "<%= @data_dir %>";
 
-	// If there is a firewall between you and nameservers you want
-	// to talk to, you may need to fix the firewall to allow multiple
-	// ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+    // If there is a firewall between you and nameservers you want
+    // to talk to, you may need to fix the firewall to allow multiple
+    // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
 
-	// If your ISP provided one or more IP addresses for stable.
-	// nameservers, you probably want to use them as forwarders...
-	// Uncomment the following block, and insert the addresses replacing.
-	// the all-0's placeholder.
+    // If your ISP provided one or more IP addresses for stable.
+    // nameservers, you probably want to use them as forwarders...
+    // Uncomment the following block, and insert the addresses replacing.
+    // the all-0's placeholder.
 
 <% if @forwarders.size == 0 then -%>
     // forwarders {
-	// 	0.0.0.0;
-	// };
+    //     0.0.0.0;
+    // };
 <% else -%>
     forwarders {
     <%- @forwarders.each do |forwarder| -%>
       <%= forwarder -%>;
     <%- end -%>
     };
-<% end -%>
 
+<% end -%>
 <% if @transfers.size != 0 then -%>
     allow-transfer {
     <%- @transfers.each do |transfer| -%>
       <%= transfer -%>;
     <%- end -%>
     };
-<% end -%>
 
+<% end -%>
 <% if @listen_on.size == 0 then -%>
     listen-on { any; };
+
 <% else -%>
     listen-on {
     <%- @listen_on.each do |ipv4_addr| -%>
       <%= ipv4_addr -%>;
     <%- end -%>
     };
-<% end -%>
 
+<% end -%>
 <% if @listen_on_ipv6.empty? then -%>
     listen-on-v6 { any; };
+
 <% else -%>
     listen-on-v6 {
     <%- @listen_on_ipv6.each do |ipv6_addr| -%>
       <%= ipv6_addr -%>;
     <%- end -%>
     };
-<% end -%>
 
+<% end -%>
 <% if @listen_on_port -%>
     port <%= @listen_on_port %>;
-<% end -%>
 
+<% end -%>
 <% if @allow_recursion.size != 0 then -%>
     allow-recursion {
     <%- @allow_recursion.each do |recursion| -%>
       <%= recursion -%>;
     <%- end -%>
     };
-<% end -%>
 
+<% end -%>
 <% if @allow_query.size != 0 then -%>
     allow-query {
     <%- @allow_query.each do |query| -%>
       <%= query -%>;
     <%- end -%>
     };
-<% end -%>
 
+<% end -%>
 <% if @check_names_master -%>
-check-names master <%= @check_names_master %>;
-<% end -%>
+    check-names master <%= @check_names_master %>;
 
+<% end -%>
 <% if @check_names_slave -%>
-check-names slave <%= @check_names_slave %>;
-<% end -%>
+    check-names slave <%= @check_names_slave %>;
 
+<% end -%>
 <% if @check_names_response -%>
-check-names response <%= @check_names_response %>;
-<% end -%>
+    check-names response <%= @check_names_response %>;
 
+<% end -%>
 <% if @zone_notify -%>
-notify <%= @zone_notify %>;
+    notify <%= @zone_notify %>;
 <% end -%>
 <% if @also_notify.size != 0 then -%>
-also-notify {
-    <%- @also_notify.each do |ip| -%>
-    <%= ip -%>;
-    <%- end -%>
-};
-<% end -%>
+    also-notify {
+        <%- @also_notify.each do |ip| -%>
+        <%= ip -%>;
+        <%- end -%>
+    };
 
+<% end -%>
 <% if @no_empty_zones -%>
-empty-zones-enable no;
-<% end -%>
+    empty-zones-enable no;
 
+<% end -%>
 <% if @notify_source -%>
-notify-source <%= @notify_source %>;
-<% end -%>
+    notify-source <%= @notify_source %>;
 
+<% end -%>
 <% if @transfer_source -%>
-transfer-source <%= @transfer_source %>;
-<% end -%>
+    transfer-source <%= @transfer_source %>;
 
-	//========================================================================
-	// If BIND logs error messages about the root key being expired,
-	// you will need to update your keys.  See https://www.isc.org/bind-keys
-	//========================================================================
+<% end -%>
+    //========================================================================
+    // If BIND logs error messages about the root key being expired,
+    // you will need to update your keys.  See https://www.isc.org/bind-keys
+    //========================================================================
 <% if @dnssec_enable -%>
     dnssec-enable yes;
     <%- if @dnssec_validation != 'absent' -%>
-	dnssec-validation <%= @dnssec_validation %>;
+    dnssec-validation <%= @dnssec_validation %>;
     <%- end -%>
 <% else -%>
     dnssec-enable no;
 <% end -%>
-	auth-nxdomain no;    # conform to RFC1035
+    auth-nxdomain no;    # conform to RFC1035
 };
 
 <% if @statistic_channel_ip and @statistic_channel_port -%>

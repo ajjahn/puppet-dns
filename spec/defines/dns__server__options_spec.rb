@@ -180,7 +180,7 @@ describe 'dns::server::options', :type => :define do
     let :params do
       {}
     end
-    it { should contain_file('/etc/bind/named.conf.options').without_content(/^notify /) }
+    it { should contain_file('/etc/bind/named.conf.options').without_content(/^\s*notify /) }
   end
 
   context 'passing a wrong zone_notify setting' do
@@ -194,35 +194,35 @@ describe 'dns::server::options', :type => :define do
     let :params do
       { :zone_notify => 'yes' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/^notify yes;/) }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/^\s*notify yes;/) }
   end
 
   context 'passing no to zone_notify' do
     let :params do
       { :zone_notify => 'no' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/^notify no;/) }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/^\s*notify no;/) }
   end
 
   context 'passing master-only to zone_notify' do
     let :params do
       { :zone_notify => 'master-only' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/^notify master-only;/) }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/^\s*notify master-only;/) }
   end
 
   context 'passing explicit to zone_notify' do
     let :params do
       { :zone_notify => 'explicit' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/^notify explicit;/) }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/^\s*notify explicit;/) }
   end
 
   context 'passing no also_notify setting' do
     let :params do
       {}
     end
-    it { should contain_file('/etc/bind/named.conf.options').without_content(/^also-notify /) }
+    it { should contain_file('/etc/bind/named.conf.options').without_content(/^\s*also-notify /) }
   end
 
   context 'passing a string to also_notify' do
@@ -236,7 +236,7 @@ describe 'dns::server::options', :type => :define do
     let :params do
       { :also_notify => [ '8.8.8.8' ] }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/^also-notify \{/) }
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/^\s*also-notify \{/) }
     it { should contain_file('/etc/bind/named.conf.options').with_content(/8\.8\.8\.8;/) }
   end
 
