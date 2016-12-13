@@ -190,6 +190,51 @@ describe 'dns::zone' do
       end
   end
 
+  context 'with a stub zone' do
+      let :params do
+          { :slave_masters => ['123.123.123.123'],
+            :zone_type => 'stub'
+          }
+      end
+      it 'should have a type stub entry' do
+          should contain_concat__fragment('named.conf.local.test.com.include').
+                     with_content(/type stub/)
+      end
+      it 'should have file entry' do
+          should contain_concat__fragment('named.conf.local.test.com.include').
+                         with_content(/file/)
+      end
+      it 'should have masters entry' do
+          should contain_concat__fragment('named.conf.local.test.com.include').
+                         with_content(/masters.*123.123.123.123 *;/)
+      end
+      it 'should not have allow_tranfer entry' do
+          should_not contain_concat__fragment('named.conf.local.test.com.include').
+                     with_content(/allow-transfer/)
+      end
+      it 'should not have any forward information' do
+          should_not contain_concat__fragment('named.conf.local.test.com.include').
+                         with_content(/forward/)
+      end
+      it 'should have an "absent" zone file concat' do
+          should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+              :ensure => "absent"
+          })
+      end
+  end
+
+  context 'with a stub zone with multiple masters' do
+      let :params do
+          { :slave_masters => ['123.123.123.123', '234.234.234.234'],
+            :zone_type => 'stub'
+          }
+      end
+      it 'should have masters entry with all masters joined by ;' do
+          should contain_concat__fragment('named.conf.local.test.com.include').
+                         with_content(/masters.*123.123.123.123 *;[ \n]*234.234.234.234 *;/)
+      end
+  end
+
   context 'with a master zone' do
       let :params do
           { :allow_transfer => ['8.8.8.8','8.8.4.4'],
