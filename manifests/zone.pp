@@ -100,7 +100,7 @@
 #   Optional set or time bases auto generated serial numver of zone file
 #
 # [*slave_masters*]
-#   If *zone_type* is set to `slave`, this holds an array or string
+#   If *zone_type* is set to `slave` or `stub`, this holds an array or string
 #   containing the IP addresses of the DNS servers from which this slave
 #   transfers the zone.  If a string, the IP addresses must be separated
 #   by semicolons (`;`).
@@ -148,8 +148,9 @@
 #
 # [*zone_type*]
 #   The type of DNS zone being described.  Can be one of `master`, `slave`
-#   (requires *slave_masters* to be set), `delegation-only`, or `forward`
-#   (requires both *allow_forwarder* and *forward_policy* to be set).
+#   (requires *slave_masters* to be set), `stub` (requires *slave_masters*
+#   to be set), `delegation-only`, or `forward` (requires both
+#   *allow_forwarder* and *forward_policy* to be set).
 #   Defaults to `master`.
 #
 define dns::zone (
@@ -198,7 +199,7 @@ define dns::zone (
   }
 
   validate_string($zone_type)
-  $valid_zone_type_array = ['master', 'slave', 'forward', 'delegation-only']
+  $valid_zone_type_array = ['master', 'slave', 'stub', 'forward', 'delegation-only']
   if !member($valid_zone_type_array, $zone_type) {
     $valid_zone_type_array_str = join($valid_zone_type_array, ',')
     fail("The zone_type must be one of [${valid_zone_type_array}]")
