@@ -4,25 +4,18 @@
 #
 # === Parameters
 #
-# [*forwarders*]
-#   Array of forwarders IP addresses. Default: empty
-#
-# [*transfers*]
-#   Array of IP addresses or "none" allowed to transfer. Default: empty
-#
-# [*listen_on*]
-#   Array of IP addresses on which to listen. Default: empty, meaning "any"
-#
-# [*listen_on_ipv6*]
-#   Array of IPv6 addresses on which to listen. Default: empty, meaning "any"
-#
-# [*listen_on_port*]:
-#   UDP/TCP port number to use for receiving and sending traffic.
-#   Default: undefined, meaning 53
-#
 # [*allow_recursion*]
 #   Array of IP addresses which are allowed to make recursive queries.
 #   Default: empty, meaning "localnets; localhost"
+#
+# [*allow_query*]
+#   Array of IP addresses which are allowed to ask ordinary DNS questions.
+#   Default: empty, meaning "any"
+#
+# [*also_notify*]
+#   The list of servers to which additional zone-change notifications
+#   should be sent.
+#   Default: empty, meaning no additional servers
 #
 # [*check_names_master*]
 #   Restrict the character set and syntax of master zones.
@@ -36,9 +29,45 @@
 #   Restrict the character set and syntax of network responses.
 #   Default: undefined, meaning "ignore"
 #
-# [*allow_query*]
-#   Array of IP addresses which are allowed to ask ordinary DNS questions.
-#   Default: empty, meaning "any"
+# [*data_dir*]
+#   Bind data directory.
+#   Default: /etc/bind/zones
+#
+# [*dnssec_validation*]
+#   Controls DNS-SEC validation.  String of "yes", "auto", "no", or
+#   "absent" (to prevent the `dnssec-validation` option from being
+#   included).  Default is "absent" on RedHat 5 (whose default bind
+#   package is too old to include dnssec validation), and "auto" on
+#   Debian and on RedHat 6 and above.
+#   Note: If *dnssec_enable* is set to false, this option is ignored.
+#
+# [*dnssec_enable*]
+#   Controls whether to enable/disable DNS-SEC support. Boolean.
+#   Default is false on RedHat 5 (for the same reasons as
+#   dnssec_validation above), and true on Debian and on RedHat 6
+#   and above.
+#
+# [*forwarders*]
+#   Array of forwarders IP addresses. Default: empty
+#
+# [*listen_on*]
+#   Array of IP addresses on which to listen. Default: empty, meaning "any"
+#
+# [*listen_on_ipv6*]
+#   Array of IPv6 addresses on which to listen. Default: empty, meaning "any"
+#
+# [*listen_on_port*]:
+#   UDP/TCP port number to use for receiving and sending traffic.
+#   Default: undefined, meaning 53
+#
+# [*no_empty_zones*]
+#   Controls whether to enable/disable empty zones. Boolean values.
+#   Default: false, meaning enable empty zones
+#
+# [*notify_source*]
+#   The source IP address from which to send notifies.
+#   Default: undef, meaning the primary IP address of the DNS server,
+#   as determined by BIND.
 #
 # [*statistic_channel_ip*]
 #   String of one ip for which the statistic api is bound.
@@ -57,6 +86,14 @@
 #   Default: undef, meaning all IPs that can reach statistic_channel_ip are allowed
 #            to query it
 #
+# [*transfers*]
+#   Array of IP addresses or "none" allowed to transfer. Default: empty
+#
+# [*transfer_source*]
+#   The source IP address from which to respond to transfer requests.
+#   Default: undef, meaning the primary IP address of the DNS server,
+#   as determined by BIND.
+#
 # [*zone_notify*]
 #   Controls notifications when a zone for which this server is
 #   authoritative changes.  String of yes (send notifications to zone's
@@ -64,47 +101,6 @@
 #   master-only (only send notifications for master zones), or explicit
 #   (send notifications only to also-notify list).
 #   Default: undef, meaning the BIND default of "yes"
-#
-# [*also_notify*]
-#   The list of servers to which additional zone-change notifications
-#   should be sent.
-#   Default: empty, meaning no additional servers
-#
-# [*dnssec_validation*]
-#   Controls DNS-SEC validation.  String of "yes", "auto", "no", or
-#   "absent" (to prevent the `dnssec-validation` option from being
-#   included).  Default is "absent" on RedHat 5 (whose default bind
-#   package is too old to include dnssec validation), and "auto" on
-#   Debian and on RedHat 6 and above.
-#   Note: If *dnssec_enable* is set to false, this option is ignored.
-#
-# [*dnssec_enable*]
-#   Controls whether to enable/disable DNS-SEC support. Boolean.
-#   Default is false on RedHat 5 (for the same reasons as
-#   dnssec_validation above), and true on Debian and on RedHat 6
-#   and above.
-#
-# [*no_empty_zones*]
-#   Controls whether to enable/disable empty zones. Boolean values.
-#   Default: false, meaning enable empty zones
-#
-# [*notify_source*]
-#   The source IP address from which to send notifies.
-#   Default: undef, meaning the primary IP address of the DNS server,
-#   as determined by BIND.
-#
-# [*query_log_enable*]
-#   Controls extended query_log to /var/cache/bind
-#   Otherwise only syslog will used for errors and warnings
-#
-# [*transfer_source*]
-#   The source IP address from which to respond to transfer requests.
-#   Default: undef, meaning the primary IP address of the DNS server,
-#   as determined by BIND.
-#
-# [*data_dir*]
-#   Bind data directory.
-#   Default: /etc/bind/zones
 #
 # === Examples
 #
@@ -114,28 +110,28 @@
 #
 include dns::server::params
 define dns::server::options (
-  $forwarders = [],
-  $transfers = [],
-  $listen_on = [],
-  $listen_on_ipv6 = [],
-  $listen_on_port = undef,
+  $allow_query = [],
   $allow_recursion = [],
+  $also_notify = [],
   $check_names_master = undef,
   $check_names_slave = undef,
   $check_names_response = undef,
-  $allow_query = [],
+  $data_dir = $::dns::server::params::data_dir,
+  $dnssec_validation = $::dns::server::params::default_dnssec_validation,
+  $dnssec_enable = $::dns::server::params::default_dnssec_enable,
+  $forwarders = [],
+  $listen_on = [],
+  $listen_on_ipv6 = [],
+  $listen_on_port = undef,
+  $no_empty_zones = false,
+  $notify_source = undef,
+  $query_log_enable = undef,
   $statistic_channel_ip = undef,
   $statistic_channel_port = undef,
   $statistic_channel_allow = undef,
-  $zone_notify = undef,
-  $also_notify = [],
-  $dnssec_validation = $::dns::server::params::default_dnssec_validation,
-  $dnssec_enable = $::dns::server::params::default_dnssec_enable,
-  $no_empty_zones = false,
-  $notify_source = undef,
+  $transfers = [],
   $transfer_source = undef,
-  $query_log_enable = undef,
-  $data_dir = $::dns::server::params::data_dir,
+  $zone_notify = undef,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $cfg_dir = $::dns::server::params::cfg_dir
