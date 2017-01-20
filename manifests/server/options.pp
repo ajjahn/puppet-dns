@@ -93,6 +93,10 @@
 #   Default: undef, meaning the primary IP address of the DNS server,
 #   as determined by BIND.
 #
+# [*query_log_enable*]
+#   Controls extended query_log to /var/cache/bind
+#   Otherwise only syslog will used for errors and warnings
+#
 # [*transfer_source*]
 #   The source IP address from which to respond to transfer requests.
 #   Default: undef, meaning the primary IP address of the DNS server,
@@ -130,6 +134,7 @@ define dns::server::options (
   $no_empty_zones = false,
   $notify_source = undef,
   $transfer_source = undef,
+  $query_log_enable = undef,
   $data_dir = $::dns::server::params::data_dir,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
