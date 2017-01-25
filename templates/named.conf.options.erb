@@ -132,7 +132,7 @@ statistics-channels {
 logging {
 
         channel query_logging {
-                file "/var/cache/bind/named_querylog"
+                file "<%= @working_dir %>/named_querylog"
                 versions 10 size 100M;
                 print-time yes;
                 severity debug 1;
