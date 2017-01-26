@@ -25,11 +25,12 @@ define dns::tsig (
   $ensure    = present
 ) {
 
+  $cfg_dir   = $dns::server::params::cfg_dir # Used in a template
   validate_string($name)
 
   concat::fragment { "named.conf.local.tsig.${name}.include":
     ensure  => $ensure,
-    target  => '/etc/bind/named.conf.local',
+    target  => "${cfg_dir}/named.conf.local",
     order   => 4,
     content => template("${module_name}/tsig.erb"),
   }
