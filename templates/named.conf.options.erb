@@ -127,3 +127,25 @@ statistics-channels {
     inet <%= @statistic_channel_ip %> port <%= @statistic_channel_port %><% if @statistic_channel_allow -%> allow { <%= @statistic_channel_allow.join('; ') %>; }<% end -%>;
 };
 <% end -%>
+
+<% if @query_log_enable -%>
+logging {
+
+        channel query_logging {
+                file "<%= @working_dir %>/named_querylog"
+                versions 10 size 100M;
+                print-time yes;
+                severity debug 1;
+        };
+        category queries {
+                query_logging;
+        };
+
+        channel syslog_errors {
+                syslog user;
+                severity error;
+        };
+        category default { syslog_errors;  };
+        category lame-servers { null; };
+};
+<% end -%>

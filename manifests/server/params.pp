@@ -6,6 +6,7 @@ class dns::server::params {
       $cfg_dir            = '/etc/bind'
       $cfg_file           = '/etc/bind/named.conf'
       $data_dir           = '/etc/bind/zones'
+      $working_dir        = '/var/cache/bind'
       $root_hint          = "${cfg_dir}/db.root"
       $rfc1912_zones_cfg  = "${cfg_dir}/named.conf.default-zones"
       $rndc_key_file      = "${cfg_dir}/rndc.key"
@@ -30,6 +31,7 @@ class dns::server::params {
       $cfg_dir            = '/etc/named'
       $cfg_file           = '/etc/named.conf'
       $data_dir           = '/var/named'
+      $working_dir        = "${data_dir}/data"
       $root_hint          = "${data_dir}/named.ca"
       $rfc1912_zones_cfg  = '/etc/named.rfc1912.zones'
       $rndc_key_file      = '/etc/named.root.key'
