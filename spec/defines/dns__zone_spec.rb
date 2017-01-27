@@ -5,6 +5,16 @@ describe 'dns::zone' do
   let(:title) { 'test.com' }
   let(:facts) {{ :osfamily => 'Debian', :concat_basedir => '/mock_dir' }}
 
+  describe 'passing camelcase name zone than lowercase name zone to $title ' do
+      let(:title)  { 'TeSt.cOm' }
+      it { should raise_error(/must be lowercase/) }
+  end
+
+  describe 'passing uppercase name zone than lowercase name zone to $title ' do
+      let(:title)  { 'TEST.COM' }
+      it { should raise_error(/must be lowercase/) }
+  end
+
   describe 'passing something other than an array to $allow_query ' do
       let(:params) {{ :allow_query => '127.0.0.1' }}
       it { should raise_error(Puppet::Error, /is not an Array/) }
@@ -336,6 +346,101 @@ describe 'dns::zone' do
     end
     it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/ also-notify \{/) }
     it { should contain_concat__fragment('named.conf.local.test.com.include').with_content(/8\.8\.8\.8;/) }
+  end
+
+  describe 'passing "192.168.notcorrect" to $title with reverse=>"reverse" ' do
+    let(:title)  { '192.168.notcorrect' }
+    let :params do
+      { :reverse => 'reverse' }
+    end
+    it { should raise_error(/Name zone with parameter reverse /) }
+  end
+
+  describe 'passing "168.192.notcorrect" to $title with reverse=>true ' do
+    let(:title)  { '168.192.notcorrect' }
+    let :params do
+      { :reverse => true }
+    end
+    it { should raise_error(/Name zone with parameter reverse /) }
+  end
+
+  describe 'passing "notcorrect.168.192.in-addr.arpa" to $title with reverse=>false ' do
+    let(:title)  { 'notcorrect.168.192.in-addr.arpa' }
+    let :params do
+      { :reverse => false }
+    end
+    it { should raise_error(/Name zone with parameter reverse /) }
+  end
+
+  describe 'passing "192.168" to $title with reverse=>"reverse" and pre_condition dns::zone{ "168.192.in-addr.arpa": reverse => false } (Twin zones)' do
+    let :pre_condition do [
+        'dns::zone { "168.192.in-addr.arpa": reverse => false, }',
+    ] end
+    let(:title)  { '192.168' }
+    let :params do
+      { :reverse => 'reverse' }
+    end
+    it { should raise_error(Puppet::Error, /Duplicate declaration\: Exec\[bump-168\.192\.in-addr\.arpa-serial\] is already declared in file/)}
+  end
+
+  describe 'passing "192.168" to $title with reverse=>"reverse" and pre_condition dns::zone{ "168.192": reverse => true } (Twin zones)' do
+    let :pre_condition do [
+        'dns::zone { "168.192": reverse => true, }',
+    ] end
+    let(:title)  { '192.168' }
+    let :params do
+      { :reverse => 'reverse' }
+    end
+    it { should raise_error(Puppet::Error, /Duplicate declaration\: Exec\[bump-168\.192\.in-addr\.arpa-serial\] is already declared in file/)}
+  end
+
+  describe 'passing "168.192" to $title with reverse=>true and pre_condition dns::zone{ "168.192.in-addr.arpa": reverse => false } (Twin zones)' do
+    let :pre_condition do [
+        'dns::zone { "168.192.in-addr.arpa": reverse => false, }',
+    ] end
+    let(:title)  { '168.192' }
+    let :params do
+      { :reverse => true }
+    end
+    it { should raise_error(Puppet::Error, /Duplicate declaration\: Exec\[bump-168\.192\.in-addr\.arpa-serial\] is already declared in file/)}
+  end
+
+  describe 'passing "168.192" to $title with reverse=>true and pre_condition dns::zone{ "192.168": reverse => "reverse" } (Twin zones)' do
+    let :pre_condition do [
+        'dns::zone { "192.168": reverse => "reverse", }',
+    ] end
+    let(:title)  { '168.192' }
+    let :params do
+      { :reverse => true }
+    end
+    it { should raise_error(Puppet::Error, /Duplicate declaration\: Exec\[bump-168\.192\.in-addr\.arpa-serial\] is already declared in file/)}
+  end
+
+  describe 'passing "168.192.in-addr.arpa" to $title with reverse=>false and pre_condition dns::zone{ "168.192": reverse => true } (Twin zones)' do
+    let :pre_condition do [
+        'dns::zone { "168.192": reverse => true, }',
+    ] end
+    let(:title)  { '168.192.in-addr.arpa' }
+    let :params do
+      { :reverse => false }
+    end
+    it { should raise_error(Puppet::Error, /Duplicate declaration\: Exec\[bump-168\.192\.in-addr\.arpa-serial\] is already declared in file/)}
+  end
+
+  describe 'passing "168.192.in-addr.arpa" to $title with reverse=>false and pre_condition dns::zone{ "192.168": reverse => "reverse" } (Twin zones)' do
+    let :pre_condition do [
+        'dns::zone { "192.168": reverse => "reverse", }',
+    ] end
+    let(:title)  { '168.192.in-addr.arpa' }
+    let :params do
+      { :reverse => false }
+    end
+    it { should raise_error(Puppet::Error, /Duplicate declaration\: Exec\[bump-168\.192\.in-addr\.arpa-serial\] is already declared in file/)}
+  end
+
+  describe 'passing something other than an array to $allow_query ' do
+      let(:params) {{ :allow_query => '127.0.0.1' }}
+      it { should raise_error(Puppet::Error, /is not an Array/) }
   end
 
   context 'passing true to reverse' do

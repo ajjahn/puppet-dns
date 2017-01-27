@@ -8,3 +8,4 @@ pkg
 log/
 spec/fixtures/modules/
 /*.lock
+spec/fixtures/manifests/site.pp

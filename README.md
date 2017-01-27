@@ -47,7 +47,7 @@ node 'server.example.com' {
   }
 
   # Reverse Zone
-  dns::zone { '1.168.192.IN-ADDR.ARPA':
+  dns::zone { '1.168.192.in-addr.arpa':
     soa         => 'ns1.example.com',
     soa_email   => 'admin.example.com',
     nameservers => ['ns1']

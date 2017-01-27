@@ -159,25 +159,25 @@ describe 'dns::record::ptr', :type => :define do
 
   context 'letting the host be defined by the resource name' do
     let :params do {
-        :zone => '0.0.127.IN-ADDR.ARPA',
+        :zone => '0.0.127.in-addr.arpa',
         :title => '1' ,
         :data => 'localhost',
     } end
     it { should_not raise_error }
-    it { should contain_concat__fragment('db.0.0.127.IN-ADDR.ARPA.1,PTR,0.0.127.IN-ADDR.ARPA.record')
+    it { should contain_concat__fragment('db.0.0.127.in-addr.arpa.1,PTR,0.0.127.in-addr.arpa.record')
       .with_content(/^1\s+IN\s+PTR\s+localhost\.$/)
      }
   end
 
   context 'assigning a different host than the resource name' do
     let :params do {
-        :zone => '0.0.127.IN-ADDR.ARPA',
+        :zone => '0.0.127.in-addr.arpa',
         :title => 'foo' ,
         :host => '1' ,
         :data => 'localhost',
     } end
     it { should_not raise_error }
-    it { should contain_concat__fragment('db.0.0.127.IN-ADDR.ARPA.foo,PTR,0.0.127.IN-ADDR.ARPA.record')
+    it { should contain_concat__fragment('db.0.0.127.in-addr.arpa.foo,PTR,0.0.127.in-addr.arpa.record')
       .with_content(/^1\s+IN\s+PTR\s+localhost\.$/)
      }
   end
