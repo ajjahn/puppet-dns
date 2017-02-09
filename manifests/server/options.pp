@@ -116,9 +116,9 @@ define dns::server::options (
   $check_names_master = undef,
   $check_names_slave = undef,
   $check_names_response = undef,
-  $data_dir = $::dns::server::params::data_dir,
-  $dnssec_validation = $::dns::server::params::default_dnssec_validation,
-  $dnssec_enable = $::dns::server::params::default_dnssec_enable,
+  $data_dir = $::dns::server::data_dir,
+  $dnssec_validation = $::dns::server::default_dnssec_validation,
+  $dnssec_enable = $::dns::server::default_dnssec_enable,
   $forwarders = [],
   $listen_on = [],
   $listen_on_ipv6 = [],
@@ -134,7 +134,7 @@ define dns::server::options (
   $zone_notify = undef,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
-  $cfg_dir = $::dns::server::params::cfg_dir
+  $cfg_dir = $::dns::server::cfg_dir
 
   if ! defined(Class['::dns::server']) {
     fail('You must include the ::dns::server base class before using any dns options defined resources')
@@ -197,8 +197,8 @@ define dns::server::options (
 
   file { $title:
     ensure  => present,
-    owner   => $::dns::server::params::owner,
-    group   => $::dns::server::params::group,
+    owner   => $::dns::server::owner,
+    group   => $::dns::server::group,
     mode    => '0644',
     require => [File[$cfg_dir], Class['::dns::server::install']],
     content => template("${module_name}/named.conf.options.erb"),

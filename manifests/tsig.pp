@@ -25,7 +25,7 @@ define dns::tsig (
   $ensure    = present
 ) {
 
-  $cfg_dir   = $dns::server::params::cfg_dir # Used in a template
+  $cfg_dir   = $dns::server::cfg_dir # Used in a template
   validate_string($name)
 
   concat::fragment { "named.conf.local.tsig.${name}.include":
