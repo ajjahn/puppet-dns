@@ -10,25 +10,21 @@
 # The ip address for the ptr record.  Defaults to the resource title.
 #
 # * `$host`
-# The (unqualified) host pointed to by this ptr record.
+# The host pointed to by this ptr record.
 #
 # * `$ttl`
 # The TTL of the records to be created.  Defaults to undefined.
 #
-# * `$zone`
-# The domain of the host pointed to by this ptr record.
-#
 # === Actions
 #
-# Reformats the $ip, $host, $zone parameters to create a `dns::record::ptr` 
+# Reformats the $ip and $host parameters to create a `dns::record::ptr` 
 # resource
 #
 # === Examples
 #
 # @example
 #     dns::record::ptr::by_ip { '192.168.128.42':
-#       host => 'server' ,
-#       zone => 'example.com' ,
+#       host => 'server.example.com' ,
 #     }
 #
 # turns into:
@@ -43,8 +39,7 @@
 # ---
 # @example
 #     dns::record::ptr::by_ip { [ '192.168.128.68', '192.168.128.69', '192.168.128.70' ]:
-#       host => 'multihomed-server' ,
-#       zone => 'example.com' ,
+#       host => 'multihomed-server.example.com' ,
 #     }
 #
 # turns into:
@@ -70,7 +65,6 @@
 
 define dns::record::ptr::by_ip (
   $host,
-  $zone,
   $ttl = undef ,
   $ip = $name ) {
 
@@ -106,6 +100,6 @@ define dns::record::ptr::by_ip (
     host => $octet,
     zone => $reverse_zone,
     ttl  => $ttl ,
-    data => "${host}.${zone}"
+    data => $host,
   }
 }
