@@ -68,7 +68,7 @@ describe 'dns::zone' do
           should contain_concat__fragment('named.conf.local.test.com.include').
           with_content(/2001:db8::\/32/)
       }
-      it { should contain_concat('/etc/bind/zones/db.test.com.stage') }
+      it { should contain_concat('/var/lib/bind/zones/db.test.com.stage') }
       it { should contain_concat__fragment('db.test.com.soa').
           with_content(/_SERIAL_/)
       }
@@ -139,7 +139,7 @@ describe 'dns::zone' do
                          with_content(/forwarders/)
       end
       it 'should have an "absent" zone file concat' do
-          should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+          should contain_concat('/var/lib/bind/zones/db.test.com.stage').with({
               :ensure => "absent"
           })
       end
@@ -172,7 +172,7 @@ describe 'dns::zone' do
                          with_content(/forward/)
       end
       it 'should have an "absent" zone file concat' do
-          should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+          should contain_concat('/var/lib/bind/zones/db.test.com.stage').with({
               :ensure => "absent"
           })
       end
@@ -217,7 +217,7 @@ describe 'dns::zone' do
                          with_content(/forward/)
       end
       it 'should have an "absent" zone file concat' do
-          should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+          should contain_concat('/var/lib/bind/zones/db.test.com.stage').with({
               :ensure => "absent"
           })
       end
@@ -268,7 +268,7 @@ describe 'dns::zone' do
                          with_content(/forwarders/)
       end
       it 'should have a zone file concat' do
-          should contain_concat('/etc/bind/zones/db.test.com.stage').with({
+          should contain_concat('/var/lib/bind/zones/db.test.com.stage').with({
               :ensure => "present"
           })
       end
@@ -365,7 +365,7 @@ describe 'dns::zone' do
     let(:params) {{ :allow_update => [] }}
     it { should_not raise_error }
     it {
-      should contain_concat('/etc/bind/zones/db.test.com.stage').
+      should contain_concat('/var/lib/bind/zones/db.test.com.stage').
           with({ :replace => true })
     }
   end
@@ -374,7 +374,7 @@ describe 'dns::zone' do
     let(:params) {{ :allow_update => ['192.0.2.0', '2001:db8::/32'] }}
     it { should_not raise_error }
     it {
-      should contain_concat('/etc/bind/zones/db.test.com.stage').
+      should contain_concat('/var/lib/bind/zones/db.test.com.stage').
                  with({ :replace => false })
     }
     it {
