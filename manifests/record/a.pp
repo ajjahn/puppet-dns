@@ -20,9 +20,9 @@ define dns::record::a (
   }
 
   if $ptr == 'all' {
-    dns::record::ptr::by_ip { $data: host => $host, zone => $zone }
+    dns::record::ptr::by_ip { $data: host => "${host}.${zone}" }
   } elsif $ptr == 'first' or str2bool($ptr) {
     $ip = inline_template('<%= @data.kind_of?(Array) ? @data.first : @data %>')
-    dns::record::ptr::by_ip { $ip: host => $host, zone => $zone }
+    dns::record::ptr::by_ip { $ip: host => "${host}.${zone}" }
   }
 }
