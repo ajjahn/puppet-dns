@@ -6,7 +6,9 @@ define dns::record::ns (
   $zone,
   $data,
   $ttl  = '',
-  $host = $name ) {
+  $host = $name,
+  $data_dir = $::dns::server::config::data_dir,
+) {
 
   $alias = "${host},${zone},NS,${data}"
 
@@ -27,10 +29,11 @@ define dns::record::ns (
   }
 
   dns::record { $alias:
-    zone   => $zone,
-    host   => $host,
-    ttl    => $ttl,
-    record => 'NS',
-    data   => $data
+    zone     => $zone,
+    host     => $host,
+    ttl      => $ttl,
+    record   => 'NS',
+    data     => $data,
+    data_dir => $data_dir,
   }
 }

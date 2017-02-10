@@ -75,7 +75,9 @@ define dns::record::ptr::by_ip (
   $host,
   $zone = undef,
   $ttl = undef,
-  $ip = $name ) {
+  $ip = $name,
+  $data_dir = $::dns::server::config::data_dir,
+) {
 
   # split the IP address up into three host/zone pairs based on class A, B, or C splits:
   # For IP address A.B.C.D,
@@ -112,9 +114,10 @@ define dns::record::ptr::by_ip (
   }
 
   dns::record::ptr { "${octet}.${reverse_zone}":
-    host => $octet,
-    zone => $reverse_zone,
-    ttl  => $ttl,
-    data => $fqdn,
+    host     => $octet,
+    zone     => $reverse_zone,
+    ttl      => $ttl,
+    data     => $fqdn,
+    data_dir => $data_dir,
   }
 }

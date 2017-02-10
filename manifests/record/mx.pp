@@ -7,7 +7,9 @@ define dns::record::mx (
   $data,
   $ttl        = '',
   $preference = 10,
-  $host       = '@' ) {
+  $host       = '@',
+  $data_dir = $::dns::server::config::data_dir,
+) {
 
   $alias = "${name},${zone},MX,${preference},${data}"
 
@@ -45,6 +47,7 @@ define dns::record::mx (
     record     => 'MX',
     preference => $preference,
     data       => "${data}.",
-    order      => 2
+    order      => 2,
+    data_dir   => $data_dir,
   }
 }
