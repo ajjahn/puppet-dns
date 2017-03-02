@@ -47,6 +47,10 @@
 #   dnssec_validation above), and true on Debian and on RedHat 6
 #   and above.
 #
+# [*forward_policy*]
+#   The forwarding policy to use.  Must be `first` or `only`.
+#   If not defined, the `named` default of `first` will be used.
+#
 # [*forwarders*]
 #   Array of forwarders IP addresses. Default: empty
 #
@@ -128,6 +132,7 @@ define dns::server::options (
   $data_dir = $::dns::server::params::data_dir,
   $dnssec_validation = $::dns::server::params::default_dnssec_validation,
   $dnssec_enable = $::dns::server::params::default_dnssec_enable,
+  $forward_policy = undef,
   $forwarders = [],
   $listen_on = [],
   $listen_on_ipv6 = [],
@@ -144,12 +149,17 @@ define dns::server::options (
   $zone_notify = undef,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
+  $valid_forward_policy = ['first', 'only']
   $cfg_dir = $::dns::server::params::cfg_dir
 
   if ! defined(Class['::dns::server']) {
     fail('You must include the ::dns::server base class before using any dns options defined resources')
   }
 
+  validate_string($forward_policy)
+  if $forward_policy != undef and !member($valid_forward_policy, $forward_policy) {
+    fail("The forward_policy must be ${valid_forward_policy}")
+  }
   validate_array($forwarders)
   validate_array($transfers)
   validate_array($listen_on)

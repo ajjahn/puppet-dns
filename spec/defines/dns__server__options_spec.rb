@@ -385,5 +385,37 @@ describe 'dns::server::options', :type => :define do
     it { should raise_error(Puppet::Error, /is not an absolute/) }
   end
 
+  context 'not passing forward_policy' do
+    it { should contain_file('/etc/bind/named.conf.options').without_content(/ forward /) }
+  end
+
+  context 'passing forward_policy as `only`' do
+    let :params do
+      { :forward_policy => 'only' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/ forward  *only *;/) }
+  end
+
+  context 'passing forward_policy as `first`' do
+    let :params do
+      { :forward_policy => 'first' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/ forward  *first *;/) }
+  end
+
+  context 'passing forward_policy as an invalid string' do
+    let :params do
+      { :forward_policy => 'snozberry' }
+    end
+    it { should raise_error(Puppet::Error, /The forward_policy must be/) }
+  end
+
+  context 'passing forward_policy as an invalid type' do
+    let :params do
+      { :forward_policy => ['first'] }
+    end
+    it { should raise_error(Puppet::Error, /is not a string/) }
+  end
+
 end
 
