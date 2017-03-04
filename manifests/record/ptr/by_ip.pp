@@ -10,13 +10,17 @@
 # The ip address for the ptr record.  Defaults to the resource title.
 #
 # * `$host`
-# The (unqualified) host pointed to by this ptr record.
+# The host pointed to by this ptr record.  If `$zone` is a non-empty
+# domain, it will be appended to the value of `$host` in the `PTR`
+# record; if `$zone` is undefined or empty, then `$host`
+# must include the domain name (but must *not* include any trailing `.`).
 #
 # * `$ttl`
 # The TTL of the records to be created.  Defaults to undefined.
 #
 # * `$zone`
-# The domain of the host pointed to by this ptr record.
+# The domain of the host pointed to by this ptr record, with *no* trailing
+# `.`.  If not defined, `$host` is assumed to be fully-qualified.
 #
 # === Actions
 #
@@ -27,51 +31,50 @@
 #
 # @example
 #     dns::record::ptr::by_ip { '192.168.128.42':
-#       host => 'server' ,
-#       zone => 'example.com' ,
+#       host => 'server',
+#       zone => 'example.com',
 #     }
 #
 # turns into:
 #
 # @example
 #     dns::record::ptr { '42.128.168.192.IN-ADDR.ARPA':
-#       host => '42' ,
-#       zone => '128.168.192.IN-ADDR.ARPA' ,
-#       data => 'server.example.com' ,
+#       host => '42',
+#       zone => '128.168.192.IN-ADDR.ARPA',
+#       data => 'server.example.com',
 #     }
 #
 # ---
 # @example
 #     dns::record::ptr::by_ip { [ '192.168.128.68', '192.168.128.69', '192.168.128.70' ]:
-#       host => 'multihomed-server' ,
-#       zone => 'example.com' ,
+#       host => 'multihomed-server.example.com',
 #     }
 #
 # turns into:
 #
 # @example
 #     dns::record::ptr { '68.128.168.192.IN-ADDR.ARPA':
-#       host => '68' ,
-#       zone => '128.168.192.IN-ADDR.ARPA' ,
-#       data => 'multihomed-server.example.com' ,
+#       host => '68',
+#       zone => '128.168.192.IN-ADDR.ARPA',
+#       data => 'multihomed-server.example.com',
 #
 # @example
 #     dns::record::ptr { '69.128.168.192.IN-ADDR.ARPA':
-#       host => '69' ,
-#       zone => '128.168.192.IN-ADDR.ARPA' ,
-#       data => 'multihomed-server.example.com' ,
+#       host => '69',
+#       zone => '128.168.192.IN-ADDR.ARPA',
+#       data => 'multihomed-server.example.com',
 #
 # @example
 #     dns::record::ptr { '70.128.168.192.IN-ADDR.ARPA':
-#       host => '70' ,
-#       zone => '128.168.192.IN-ADDR.ARPA' ,
-#       data => 'multihomed-server.example.com' ,
+#       host => '70',
+#       zone => '128.168.192.IN-ADDR.ARPA',
+#       data => 'multihomed-server.example.com',
 #     }
 
 define dns::record::ptr::by_ip (
   $host,
-  $zone,
-  $ttl = undef ,
+  $zone = undef,
+  $ttl = undef,
   $ip = $name ) {
 
   # split the IP address up into three host/zone pairs based on class A, B, or C splits:
@@ -102,10 +105,16 @@ define dns::record::ptr::by_ip (
     $octet = $class_c_host
   }
 
+  if $zone != undef and $zone != '' {
+    $fqdn = "${host}.${zone}"
+  } else {
+    $fqdn = $host
+  }
+
   dns::record::ptr { "${octet}.${reverse_zone}":
     host => $octet,
     zone => $reverse_zone,
-    ttl  => $ttl ,
-    data => "${host}.${zone}"
+    ttl  => $ttl,
+    data => $fqdn,
   }
 }
