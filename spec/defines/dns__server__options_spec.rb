@@ -353,5 +353,37 @@ describe 'dns::server::options', :type => :define do
     it { should raise_error(Puppet::Error, /is not an ip/) }
   end
 
+  context 'passing a non-default data directory' do
+    let :params do
+      { :data_dir => '/foo/bar' }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/directory  *"\/foo\/bar"/) }
+  end
+
+  context 'passing a non-absolute data directory' do
+    let :params do
+      { :data_dir => 'foo/bar' }
+    end
+    it { should raise_error(Puppet::Error, /is not an absolute/) }
+  end
+
+  context 'passing a non-default working directory' do
+    let :params do
+      { :working_dir => '/foo/bar',
+        :query_log_enable => true
+      }
+    end
+    it { should contain_file('/etc/bind/named.conf.options').with_content(/\/foo\/bar\/named_querylog/) }
+  end
+
+  context 'passing a non-absolute working directory' do
+    let :params do
+      { :working_dir => 'foo/bar',
+        :query_log_enable => true
+      }
+    end
+    it { should raise_error(Puppet::Error, /is not an absolute/) }
+  end
+
 end
 
