@@ -31,7 +31,7 @@
 #
 # [*data_dir*]
 #   Bind data directory.
-#   Default: /etc/bind/zones
+#   Default: `/etc/bind/zones` in Debian, `/var/named` in RedHat.
 #
 # [*dnssec_validation*]
 #   Controls DNS-SEC validation.  String of "yes", "auto", "no", or
@@ -69,6 +69,11 @@
 #   Default: undef, meaning the primary IP address of the DNS server,
 #   as determined by BIND.
 #
+# [*query_log_enable*]
+#   If `true`, query logging will be turned on and directed to the
+#   `named_querylog` file in the `working_dir` directory.  If `false`
+#   or not defined, query logging will not be configured.
+#
 # [*statistic_channel_ip*]
 #   String of one ip for which the statistic api is bound.
 #   Default: undef, meaning the statistic channel is disable,
@@ -102,6 +107,10 @@
 #   (send notifications only to also-notify list).
 #   Default: undef, meaning the BIND default of "yes"
 #
+# [*working_dir*]
+#   The working directory where the query log will be stored.
+#   Default: `/var/cache/bind` in Debian, `${data_dir}/data` in RedHat
+#
 # === Examples
 #
 #  dns::server::options { '/etc/bind/named.conf.options':
@@ -131,6 +140,7 @@ define dns::server::options (
   $statistic_channel_allow = undef,
   $transfers = [],
   $transfer_source = undef,
+  $working_dir = $::dns::server::params::working_dir,
   $zone_notify = undef,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
@@ -194,6 +204,10 @@ define dns::server::options (
   if $transfer_source != undef and !is_ip_address($transfer_source) {
     fail('The transfer_source is not an ip string')
   }
+
+  # validate these, just in case they're overridden
+  validate_absolute_path($data_dir)
+  validate_absolute_path($working_dir)
 
   file { $title:
     ensure  => present,
