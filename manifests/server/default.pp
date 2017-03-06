@@ -2,8 +2,8 @@
 #
 class dns::server::default (
 
-  $default_file          = $dns::server::params::default_file,
-  $default_template      = $dns::server::params::default_template,
+  $default_file          = $dns::server::default_file,
+  $default_template      = $dns::server::default_template,
 
   $resolvconf            = undef,
   $options               = undef,
@@ -44,12 +44,12 @@ class dns::server::default (
 
   file { $default_file:
     ensure  => present,
-    owner   => $::dns::server::params::owner,
-    group   => $::dns::server::params::group,
+    owner   => $::dns::server::owner,
+    group   => $::dns::server::group,
     mode    => '0644',
     content => template("${module_name}/${default_template}"),
     notify  => Class['dns::server::service'],
-    require => Package[$::dns::server::params::necessary_packages]
+    require => Package[$::dns::server::necessary_packages]
   }
 
 }

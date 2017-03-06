@@ -2,7 +2,7 @@
 #
 define dns::key {
   include dns::server::params
-  $cfg_dir = $dns::server::params::cfg_dir # Used in a template
+  $cfg_dir = $dns::server::cfg_dir # Used in a template
 
   file { "/tmp/${name}-secret.sh":
     ensure  => file,
@@ -39,8 +39,8 @@ define dns::key {
   }
 
   concat { "${cfg_dir}/bind.keys.d/${name}.key":
-    owner  => $dns::server::params::owner,
-    group  => $dns::server::params::group,
+    owner  => $dns::server::owner,
+    group  => $dns::server::group,
     mode   => '0644',
     notify => Class['dns::server::service']
   }

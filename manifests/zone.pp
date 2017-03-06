@@ -174,10 +174,10 @@ define dns::zone (
   $zone_notify = undef,
   $also_notify = [],
   $ensure = present,
-  $data_dir = $::dns::server::params::data_dir,
+  $data_dir = $::dns::server::data_dir,
 ) {
 
-  $cfg_dir = $dns::server::params::cfg_dir
+  $cfg_dir = $dns::server::cfg_dir
 
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
@@ -225,8 +225,8 @@ define dns::zone (
 
     # Create "fake" zone file without zone-serial
     concat { $zone_file_stage:
-      owner   => $dns::server::params::owner,
-      group   => $dns::server::params::group,
+      owner   => $dns::server::owner,
+      group   => $dns::server::group,
       mode    => '0644',
       replace => $zone_replace,
       require => Class['dns::server'],
@@ -251,8 +251,8 @@ define dns::zone (
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
       provider    => posix,
-      user        => $dns::server::params::owner,
-      group       => $dns::server::params::group,
+      user        => $dns::server::owner,
+      group       => $dns::server::group,
       require     => Class['dns::server::install'],
       notify      => Class['dns::server::service'],
     }

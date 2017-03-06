@@ -25,7 +25,7 @@ define dns::acl (
   validate_array($data)
 
   concat::fragment { "named.conf.local.acl.${name}.include":
-    target  => "${dns::server::params::cfg_dir}/named.conf.local",
+    target  => "${dns::server::cfg_dir}/named.conf.local",
     order   => 2,
     content => template("${module_name}/acl.erb"),
   }
