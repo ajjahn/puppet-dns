@@ -69,15 +69,18 @@ define dns::record::txt (
   $zone,
   $data,
   $ttl = '',
-  $host = $name) {
+  $host = $name,
+  $data_dir = $::dns::server::config::data_dir,
+) {
 
   $alias = "${name},TXT,${zone}"
 
   dns::record { $alias:
-    zone   => $zone,
-    host   => $host,
-    ttl    => $ttl,
-    record => 'TXT',
-    data   => $data
+    zone     => $zone,
+    host     => $host,
+    ttl      => $ttl,
+    record   => 'TXT',
+    data     => $data,
+    data_dir => $data_dir,
   }
 }

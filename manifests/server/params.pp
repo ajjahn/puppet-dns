@@ -5,7 +5,7 @@ class dns::server::params {
     'Debian': {
       $cfg_dir            = '/etc/bind'
       $cfg_file           = '/etc/bind/named.conf'
-      $data_dir           = '/etc/bind/zones'
+      $data_dir           = '/var/lib/bind/zones'
       $working_dir        = '/var/cache/bind'
       $root_hint          = "${cfg_dir}/db.root"
       $rfc1912_zones_cfg  = "${cfg_dir}/named.conf.default-zones"
