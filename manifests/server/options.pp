@@ -9,7 +9,7 @@
 #   Default: empty, meaning "localnets; localhost"
 #
 # [*allow_query*]
-#   Array of IP addresses which are allowed to ask ordinary DNS questions.
+#   Array of IP addresses or ACLs which are allowed to ask ordinary DNS questions.
 #   Default: empty, meaning "any"
 #
 # [*also_notify*]
