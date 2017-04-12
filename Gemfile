@@ -23,5 +23,5 @@ group :test do
   gem "rspec-puppet", "~> 2.1"
 
   gem "puppet-syntax"
-  gem "puppetlabs_spec_helper"
+  gem "puppetlabs_spec_helper", "< 2.1.1"
 end
