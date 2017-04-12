@@ -15,9 +15,9 @@ zone "<%= @zone %>" {
 <% end -%>
 <% if @zone_type == 'slave' or @zone_type == 'stub' -%>
 <%- if @slave_masters.is_a?(Array) -%>
-    masters { <%= @slave_masters.join(";") %>;};
+    masters { <%= @slave_masters.join(";") %>; };
 <%- else -%>
-    masters { <%= @slave_masters %>;};
+    masters { <%= @slave_masters %>; };
 <%- end -%>
 <% elsif @zone_type == 'master' -%>
     <%- if @allow_transfer.is_a?(Array) and @allow_transfer.size != 0 -%>
