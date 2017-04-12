@@ -129,7 +129,7 @@ define dns::server::options (
   $check_names_master = undef,
   $check_names_slave = undef,
   $check_names_response = undef,
-  $data_dir = $::dns::server::params::data_dir,
+  $data_dir = $::dns::server::data_dir,
   $dnssec_validation = $::dns::server::params::default_dnssec_validation,
   $dnssec_enable = $::dns::server::params::default_dnssec_enable,
   $forward_policy = undef,
@@ -147,10 +147,10 @@ define dns::server::options (
   $transfer_source = undef,
   $working_dir = $::dns::server::params::working_dir,
   $zone_notify = undef,
+  $cfg_dir = $::dns::server::cfg_dir,
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $valid_forward_policy = ['first', 'only']
-  $cfg_dir = $::dns::server::params::cfg_dir
 
   if ! defined(Class['::dns::server']) {
     fail('You must include the ::dns::server base class before using any dns options defined resources')

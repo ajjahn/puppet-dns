@@ -174,11 +174,9 @@ define dns::zone (
   $zone_notify = undef,
   $also_notify = [],
   $ensure = present,
-  $data_dir = $::dns::server::params::data_dir,
+  $data_dir = $::dns::server::data_dir,
+  $cfg_dir = $::dns::server::cfg_dir,
 ) {
-
-  $cfg_dir = $dns::server::params::cfg_dir
-
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
   if !member(['first', 'only'], $forward_policy) {
