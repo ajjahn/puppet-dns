@@ -160,6 +160,25 @@ dns::zone {
 }
 ```
 
+Create a DNS forwarder and overrule rules with the response-policy. This is supported from BIND 9.8+ 
+
+```puppet
+include dns::server
+
+dns::server::options { '/etc/bind/named.conf.options':
+  forwarders            => ['8.8.8.8', '8.8.4.4'],
+  response_policy_zones => ['rpz'],
+}
+
+dns::zone { 'rpz': }
+
+dns::record::a {
+  'test.example.tld.':
+    zone => 'rpz',
+    data => ['127.0.0.1']
+}
+```
+
 ### Exported resource patterns
 
 ```puppet
