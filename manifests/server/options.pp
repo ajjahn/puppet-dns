@@ -29,6 +29,23 @@
 #   Restrict the character set and syntax of network responses.
 #   Default: undefined, meaning "ignore"
 #
+# [*control_channel_ip*]
+#   String of one ip for which the control api is bound.
+#   Default: undef, meaning the control channel is disable,
+#            both control_channel_port and control_channel_ip must be defined
+#            for the control api to be enabled
+#
+# [*control_channel_port*]
+#   String of one port for which the control api is bound.
+#   Default: undef, meaning the control channel is disable
+#            both control_channel_port and control_channel_ip must be defined
+#            for the control api to be enabled
+#
+# [*control_channel_allow*]
+#   Array of IPs that are allowed to query the controls channel.
+#   Default: undef, meaning all IPs that can reach control_channel_ip are allowed
+#            to query it
+#
 # [*data_dir*]
 #   Bind data directory.
 #   Default: `/etc/bind/zones` in Debian, `/var/named` in RedHat.
@@ -129,6 +146,9 @@ define dns::server::options (
   $check_names_master = undef,
   $check_names_slave = undef,
   $check_names_response = undef,
+  $control_channel_ip = undef,
+  $control_channel_port = undef,
+  $control_channel_allow = undef,
   $data_dir = $::dns::server::params::data_dir,
   $dnssec_validation = $::dns::server::params::default_dnssec_validation,
   $dnssec_enable = $::dns::server::params::default_dnssec_enable,
@@ -186,6 +206,18 @@ define dns::server::options (
 
   if $statistic_channel_allow != undef {
     validate_array($statistic_channel_allow)
+  }
+
+  if $control_channel_port != undef and !is_numeric($control_channel_port) {
+    fail('The control_channel_port is not a number')
+  }
+
+  if $control_channel_ip != undef and (!is_string($control_channel_ip) or !is_ip_address($control_channel_ip)) {
+    fail('The control_channel_ip is not an ip string')
+  }
+
+  if $control_channel_allow != undef {
+    validate_array($control_channel_allow)
   }
 
   validate_array($also_notify)
