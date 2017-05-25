@@ -125,6 +125,18 @@ options {
     dnssec-enable no;
 <% end -%>
     auth-nxdomain no;    # conform to RFC1035
+
+<%- @extra_options.each do |k, v| -%>
+  <%- if v.is_a?(Array) -%>
+    <%= k %> {
+    <%- v.each do |value| -%>
+      <%= value %>;
+    <%- end -%>
+    };
+  <%- else -%>
+    <%= k %> <%= v %>;
+  <%- end -%>
+<%- end -%>
 };
 
 <% if @statistic_channel_ip and @statistic_channel_port -%>
