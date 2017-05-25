@@ -81,6 +81,18 @@
 #   UDP/TCP port number to use for receiving and sending traffic.
 #   Default: undefined, meaning 53
 #
+# [*log_categories*]
+#   Logging categories to use. It is a hash of arrays. Each key of the hash is a category
+#   and its value is the array of options. If `query_log_enable` is set to true, then
+#   this value is ignored.
+#   Default: empty.
+#
+# [*log_channels*]
+#   Logging channels to use. It is a hash of arrays. Each key of the hash is a channel
+#   and its value is the array of options. If `query_log_enable` is set to true, then
+#   this value is ignored.
+#   Default: empty.
+#
 # [*no_empty_zones*]
 #   Controls whether to enable/disable empty zones. Boolean values.
 #   Default: false, meaning enable empty zones
@@ -157,6 +169,8 @@ define dns::server::options (
   $listen_on = [],
   $listen_on_ipv6 = [],
   $listen_on_port = undef,
+  $log_channels = {},
+  $log_categories = {},
   $no_empty_zones = false,
   $notify_source = undef,
   $query_log_enable = undef,
@@ -250,6 +264,9 @@ define dns::server::options (
   # validate these, just in case they're overridden
   validate_absolute_path($data_dir)
   validate_absolute_path($working_dir)
+
+  validate_hash($log_channels)
+  validate_hash($log_categories)
 
   file { $title:
     ensure  => present,
