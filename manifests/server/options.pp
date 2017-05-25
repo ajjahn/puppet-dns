@@ -29,6 +29,10 @@
 #   Restrict the character set and syntax of network responses.
 #   Default: undefined, meaning "ignore"
 #
+# [*controls*]
+#   Array of control options.
+#   Default: empty
+#
 # [*data_dir*]
 #   Bind data directory.
 #   Default: `/etc/bind/zones` in Debian, `/var/named` in RedHat.
@@ -129,6 +133,7 @@ define dns::server::options (
   $check_names_master = undef,
   $check_names_slave = undef,
   $check_names_response = undef,
+  $controls = [],
   $data_dir = $::dns::server::params::data_dir,
   $dnssec_validation = $::dns::server::params::default_dnssec_validation,
   $dnssec_enable = $::dns::server::params::default_dnssec_enable,
@@ -218,6 +223,8 @@ define dns::server::options (
   # validate these, just in case they're overridden
   validate_absolute_path($data_dir)
   validate_absolute_path($working_dir)
+
+  validate_array($controls)
 
   file { $title:
     ensure  => present,

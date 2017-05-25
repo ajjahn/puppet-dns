@@ -133,6 +133,14 @@ statistics-channels {
 };
 <% end -%>
 
+<%- if !@controls.empty? -%>
+controls {
+  <%- @controls.each do |c| -%>
+  <%= c %>;
+  <%- end -%>
+};
+<%- end -%>
+
 <% if @query_log_enable -%>
 logging {
 
