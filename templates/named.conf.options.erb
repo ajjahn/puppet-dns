@@ -134,7 +134,7 @@ statistics-channels {
 <% end -%>
 
 <% if @control_channel_ip and @control_channel_port -%>
-controls-channels {
+controls {
     inet <%= @control_channel_ip %> port <%= @control_channel_port %><% if @control_channel_allow -%> allow { <%= @control_channel_allow.join('; ') %>; }<% end -%>;
 };
 <% end -%>
