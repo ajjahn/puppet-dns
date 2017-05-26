@@ -75,6 +75,11 @@
 #   Bind data directory.
 #   Default: /etc/bind/zones
 #
+# [*default_zone*]
+#   When it is set to `true` the zone is added to the `named.conf.default-zones`
+#   file instead of `named.conf.local` or a view file. Defaults to `false`. This
+#   parameter should not be set to true when `view` parameter is also used.
+#
 # [*forward_policy*]
 #   Either `first` or `only`.  If the *allow_forwarder* array is not
 #   empty, this setting defines how query forwarding is handled.  With a
@@ -113,6 +118,11 @@
 #   The point-of-contact authoritative name server for this zone, in
 #   the form _<username>_`.`_<domainname>_ (_<username>_ may not contain
 #   `.` dots).  Defaults to `root.` followed by the `$::fqdn` fact.
+#
+# [*view*]
+#   The view which this zone belongs to. Defaults to undef (it does not belong to
+#   any view and the configuration is added to named.conf.local. This parameter
+#   should not be used with `default_zone` set to true.
 #
 # [*zone_expire*]
 #   This is the maximum amount of time after the last successful refresh
@@ -175,6 +185,8 @@ define dns::zone (
   $also_notify = [],
   $ensure = present,
   $data_dir = $::dns::server::params::data_dir,
+  $view = undef,
+  $default_zone = false,
 ) {
 
   $cfg_dir = $dns::server::params::cfg_dir
@@ -214,6 +226,16 @@ define dns::zone (
     $zone_replace = true
   } else {
     $zone_replace = false
+  }
+
+  if $view {
+    validate_string($view)
+  }
+
+  validate_bool($default_zone)
+
+  if $view and $default_zone == true {
+    fail('view and default parameters are mutually excluding')
   }
 
   if $ensure == absent {
@@ -264,11 +286,19 @@ define dns::zone (
     }
   }
 
-  # Include Zone in named.conf.local
+  # Include Zone in named.conf.local or view file
+  $target = $default_zone ? {
+    true    => $dns::server::params::rfc1912_zones_cfg,
+    default => $view ? {
+      undef =>  "${cfg_dir}/named.conf.local",
+      '' =>  "${cfg_dir}/named.conf.local",
+      default =>  "${cfg_dir}/view-${view}.conf",
+    }
+  }
   concat::fragment{"named.conf.local.${name}.include":
-    target  => "${cfg_dir}/named.conf.local",
+    target  => $target,
     order   => 3,
-    content => template("${module_name}/zone.erb")
+    content => template("${module_name}/zone.erb"),
   }
 
 }
