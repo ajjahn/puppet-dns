@@ -2,6 +2,8 @@
 //
 
 include "<%= @cfg_dir %>/named.conf.options";
+<%- if @enable_default_zones -%>
 include "<%= @rfc1912_zones_cfg %>";
+<%- end -%>
 include "<%= @rndc_key_file %>";
 include "<%= @cfg_dir %>/named.conf.local";
