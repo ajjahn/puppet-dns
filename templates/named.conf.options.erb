@@ -159,4 +159,22 @@ logging {
         category default { syslog_errors;  };
         category lame-servers { null; };
 };
+<%- elsif !@log_channels.empty? or !@log_categories.empty? -%>
+logging {
+  <%- @log_channels.each do |channel, options| -%>
+    channel <%= channel %> {
+    <%- options.each do |o| -%>
+      <%= o %>;
+    <%- end -%>
+    };
+  <%- end -%>
+
+  <%- @log_categories.each do |category, options| -%>
+    category <%= category %> {
+    <%- options.each do |o| -%>
+      <%= o %>;
+    <%- end -%>
+    };
+  <%- end -%>
+};
 <% end -%>
