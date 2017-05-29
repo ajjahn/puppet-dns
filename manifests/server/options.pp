@@ -144,6 +144,10 @@
 #   The working directory where the query log will be stored.
 #   Default: `/var/cache/bind` in Debian, `${data_dir}/data` in RedHat
 #
+# [*extra_options* ]
+#   Hash with other options that will be included.
+#   Default: empty.
+#
 # === Examples
 #
 #  dns::server::options { '/etc/bind/named.conf.options':
@@ -181,6 +185,7 @@ define dns::server::options (
   $transfer_source = undef,
   $working_dir = $::dns::server::params::working_dir,
   $zone_notify = undef,
+  $extra_options = {},
 ) {
   $valid_check_names = ['fail', 'warn', 'ignore']
   $valid_forward_policy = ['first', 'only']
@@ -267,6 +272,8 @@ define dns::server::options (
 
   validate_hash($log_channels)
   validate_hash($log_categories)
+
+  validate_hash($extra_options)
 
   file { $title:
     ensure  => present,
