@@ -102,7 +102,7 @@ define dns::server::view (
     concat::fragment {"named.conf.local.view.${name}.include":
       target  => "${dns::server::params::cfg_dir}/named.conf.local",
       order   => $order,
-      content => "include \"${dns::server::params::cfg_dir}/view-${name}.conf\";",
+      content => "include \"${dns::server::params::cfg_dir}/view-${name}.conf\";\n",
       require => Concat["${dns::server::params::cfg_dir}/view-${name}.conf"],
     }
 
