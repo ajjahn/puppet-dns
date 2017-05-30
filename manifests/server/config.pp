@@ -57,7 +57,7 @@ class dns::server::config (
   }
 
   # Configure default zones with a concat so we could add more zones in it
-  concat {$rfc1912_zones_cfg:
+  concat {$dns::server::params::rfc1912_zones_cfg:
     owner          => $owner,
     group          => $group,
     mode           => '0644',
@@ -66,7 +66,7 @@ class dns::server::config (
   }
 
   concat::fragment {'default-zones.header':
-    target => $rfc1912_zones_cfg,
+    target => $dns::server::params::rfc1912_zones_cfg,
     order  => '00',
     source => "puppet:///modules/${module_name}/named.conf.default-zones",
   }
