@@ -1,0 +1,31 @@
+// File managed by puppet
+
+view <%= @viewname %> {
+<%- if !@match_clients.empty? -%>
+  match-clients {
+    <%= @match_clients.join(";\n    ") %>;
+  };
+<%- end %>
+<%- if !@match_destinations.empty? -%>
+  match-destinations {
+    <%= @match_destinations.join(";\n    ") %>;
+  };
+<%- end %>
+<%- if @match_recursive_only -%>
+  match-recursive-only <%= @match_recursive_only %>;
+<%- end -%>
+<%- if !@options.empty? -%>
+  <%- @options.each do |k, v| -%>
+    <%- if v.respond_to?('join') -%>
+  <%= k %> {
+    <%= v.join(";\n    ")%>;
+  };
+    <%- else -%>
+  <%= k %> <%= v %>;
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
+
+<%- if @enable_default_zones -%>
+  include "<%= @rfc1912_zones_cfg %>";
+<%- end -%>
