@@ -19,7 +19,7 @@ class dns::server::params {
       $default_dnssec_enable     = true
       $default_dnssec_validation = 'auto'
       case $::operatingsystemmajrelease {
-        '8': {
+        '8', '9': {
           $necessary_packages = ['bind9']
         }
         default: {
