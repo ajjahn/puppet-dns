@@ -14,6 +14,8 @@
 # domain, it will be appended to the value of `$host` in the `PTR`
 # record; if `$zone` is undefined or empty, then `$host`
 # must include the domain name (but must *not* include any trailing `.`).
+# If `$host` is `@` and `$zone` is non-empty, `$zone` will be used by
+# itself in the `PTR` record.
 #
 # * `$ttl`
 # The TTL of the records to be created.  Defaults to undefined.
@@ -108,7 +110,11 @@ define dns::record::ptr::by_ip (
   }
 
   if $zone != undef and $zone != '' {
-    $fqdn = "${host}.${zone}"
+    if $host == '@' {
+      $fqdn = $zone
+    } else {
+      $fqdn = "${host}.${zone}"
+    }
   } else {
     $fqdn = $host
   }

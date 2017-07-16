@@ -42,5 +42,43 @@ describe 'dns::record::ptr::by_ip', :type => :define do
     }) }
   end
 
+  context 'passing a host of `@` and a valid zone' do
+    let :params do {
+        :host      => '@',
+        :zone      => 'example.com',
+    } end
+    it { should_not raise_error }
+    it { should contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with({
+      'host' => '15',
+      'zone' => '2.0.192.IN-ADDR.ARPA',
+      'data' => 'example.com',
+    }) }
+  end
+
+  context 'passing a host of `@` and an empty zone' do
+    let :params do {
+        :host      => '@',
+        :zone      => '',
+    } end
+    it { should_not raise_error }
+    it { should contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with({
+      'host' => '15',
+      'zone' => '2.0.192.IN-ADDR.ARPA',
+      'data' => '@',
+    }) }
+  end
+
+  context 'passing a host of `@` but not passing a zone' do
+    let :params do {
+        :host      => '@',
+    } end
+    it { should_not raise_error }
+    it { should contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with({
+      'host' => '15',
+      'zone' => '2.0.192.IN-ADDR.ARPA',
+      'data' => '@',
+    }) }
+  end
+
 end
 
