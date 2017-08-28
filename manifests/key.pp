@@ -46,7 +46,6 @@ define dns::key {
   }
 
   Concat::Fragment {
-    ensure  => present,
     target  => "${cfg_dir}/bind.keys.d/${name}.key",
     require => [
       Exec["get-secret-from-${name}"],
