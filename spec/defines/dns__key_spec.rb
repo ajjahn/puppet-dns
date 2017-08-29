@@ -18,7 +18,6 @@ describe 'dns::key' do
     it { should contain_file('/etc/bind/bind.keys.d/rspec-key.secret').with_require('Exec[get-secret-from-rspec-key]') }
     it { should contain_concat('/etc/bind/bind.keys.d/rspec-key.key') }
     ['rspec-key.key-header', 'rspec-key.key-secret', 'rspec-key.key-footer'].each do |fragment|
-      it { should contain_concat__fragment(fragment).with_ensure('present') }
       it { should contain_concat__fragment(fragment).with_target('/etc/bind/bind.keys.d/rspec-key.key') }
       it { should contain_concat__fragment(fragment).with_require(['Exec[get-secret-from-rspec-key]', 'File[/etc/bind/bind.keys.d/rspec-key.secret]']) }
     end
@@ -39,7 +38,6 @@ describe 'dns::key' do
     it { should contain_file('/etc/named/bind.keys.d/rspec-key.secret').with_require('Exec[get-secret-from-rspec-key]') }
     it { should contain_concat('/etc/named/bind.keys.d/rspec-key.key') }
     ['rspec-key.key-header', 'rspec-key.key-secret', 'rspec-key.key-footer'].each do |fragment|
-        it { should contain_concat__fragment(fragment).with_ensure('present') }
         it { should contain_concat__fragment(fragment).with_target('/etc/named/bind.keys.d/rspec-key.key') }
         it { should contain_concat__fragment(fragment).with_require(['Exec[get-secret-from-rspec-key]', 'File[/etc/named/bind.keys.d/rspec-key.secret]']) }
     end
