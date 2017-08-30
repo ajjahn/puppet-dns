@@ -18,13 +18,10 @@ class dns::server::params {
       $default_template   = 'default.debian.erb'
       $default_dnssec_enable     = true
       $default_dnssec_validation = 'auto'
-      case $::operatingsystemmajrelease {
-        '8': {
-          $necessary_packages = ['bind9']
-        }
-        default: {
-          $necessary_packages = [ 'bind9', 'dnssec-tools' ]
-        }
+      if versioncmp( $::operatingsystemmajrelease, '8' ) >= 0 {
+        $necessary_packages = ['bind9']
+      } else {
+        $necessary_packages = [ 'bind9', 'dnssec-tools' ]
       }
     }
     'RedHat': {
