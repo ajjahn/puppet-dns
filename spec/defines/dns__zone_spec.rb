@@ -72,7 +72,7 @@ describe 'dns::zone' do
       it { should contain_concat__fragment('db.test.com.soa').
           with_content(/_SERIAL_/)
       }
-      it { should contain_exec('bump-test.com-serial').
+      it { should contain_exec('bump-serial-/var/lib/bind/zones/db.test.com').
           with_refreshonly('true')
       }
   end
@@ -390,5 +390,38 @@ describe 'dns::zone' do
           with_content(/2001:db8::\/32/)
     }
   end
+
+  describe 'passing `internal-test.com` as the title and `test.com` as the zone parameter' do
+    let(:title) { 'internal-test.com' }
+    let(:params) {{ :zone => 'test.com', :zone_type => 'master' }}
+
+    it 'should have a staging zone file called `db.internal-test.com.stage`' do
+      should contain_concat('/var/lib/bind/zones/db.internal-test.com.stage')
+    end
+    it 'should have an ORIGIN of `test.com`' do
+       should contain_concat__fragment('db.internal-test.com.soa').
+                 with_content(/\$ORIGIN\s+test\.com\./)
+    end
+    it 'should have a named.conf concat fragment named after the resource title' do
+       should contain_concat__fragment('named.conf.local.internal-test.com.include')
+    end
+    it 'should have a named.conf concat fragment containing the zone name' do
+       should contain_concat__fragment('named.conf.local.internal-test.com.include').
+                 with_content(/zone \"test.com\"/)
+    end
+  end
+
+  describe 'there should be no errors when defining the same zone twice with different resource titles' do
+    let(:pre_condition) { "
+      dns::zone { 'internal-test.com':
+        ensure    => present,
+        zone      => 'test.com',
+        view      => 'internal',
+        zone_type => 'master',
+      }"
+    }
+    it { should_not raise_error }
+  end
+
 end
 

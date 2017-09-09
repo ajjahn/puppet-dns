@@ -124,6 +124,9 @@
 #   any view and the configuration is added to named.conf.local. This parameter
 #   should not be used with `default_zone` set to true.
 #
+# [*zone*]
+#   The zone to create.  Defaults to the resource title.
+#
 # [*zone_expire*]
 #   This is the maximum amount of time after the last successful refresh
 #   of the zone for which the slave will continue to respond to DNS
@@ -164,6 +167,7 @@
 #   Defaults to `master`.
 #
 define dns::zone (
+  $zone = $name,
   $soa = $::fqdn,
   $soa_email = "root.${::fqdn}",
   $zone_ttl = '604800',
@@ -204,10 +208,12 @@ define dns::zone (
     fail("The zone_notify must be ${valid_zone_notify}")
   }
 
-  $zone = $reverse ? {
-    'reverse' => join(reverse(split("arpa.in-addr.${name}", '\.')), '.'),
-    true      => "${name}.in-addr.arpa",
-    default   => $name
+  # because `$zone` is now a parameter, the calculated zone name
+  # (used in the zone.erb and zone_file.erb templates) is now called $_zone.
+  $_zone = $reverse ? {
+    'reverse' => join(reverse(split("arpa.in-addr.${zone}", '\.')), '.'),
+    true      => "${zone}.in-addr.arpa",
+    default   => $zone
   }
 
   validate_string($zone_type)
@@ -252,7 +258,7 @@ define dns::zone (
       mode    => '0644',
       replace => $zone_replace,
       require => Class['dns::server'],
-      notify  => Exec["bump-${zone}-serial"]
+      notify  => Exec["bump-serial-${zone_file}"]
     }
     concat::fragment{"db.${name}.soa":
       target  => $zone_file_stage,
@@ -268,7 +274,9 @@ define dns::zone (
       false   => inline_template('<%= Time.now.to_i %>'),
       default => $serial
     }
-    exec { "bump-${zone}-serial":
+    # name the exec after the zone file, not the zone, since there may now
+    # be multiple zone files for the same zone.
+    exec { "bump-serial-${zone_file}":
       command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
