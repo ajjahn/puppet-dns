@@ -16,7 +16,9 @@ define dns::record (
 
   $zone_file_stage = "${data_dir}/db.${zone}.stage"
 
-  if "$ttl" !~ /^[0-9SsMmHhDdWw]+$/ and $ttl != '' {
+  # lint:ignore:only_variable_string
+  if "${ttl}" !~ /^[0-9SsMmHhDdWw]+$/ and $ttl != '' {
+  # lint:endignore:only_variable_string
     fail("Define[dns::record]: TTL ${ttl} must be an integer within 0-2147483647 or explicitly specified time units, e.g. 1h30m.")
   }
 
