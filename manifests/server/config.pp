@@ -66,9 +66,9 @@ class dns::server::config (
   }
 
   concat::fragment {'default-zones.header':
-    target => $dns::server::params::rfc1912_zones_cfg,
-    order  => '00',
-    source => "puppet:///modules/${module_name}/named.conf.default-zones",
+    target  => $dns::server::params::rfc1912_zones_cfg,
+    order   => '00',
+    content => template('dns/named.conf.default-zones.erb'),
   }
 
   include dns::server::default
