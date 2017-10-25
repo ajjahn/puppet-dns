@@ -2,7 +2,7 @@
 // prime the server with knowledge of the root servers
 zone "." {
 	type hint;
-	file "/etc/bind/db.root";
+	file "<%= @cfg_dir %>/db.root";
 };
 
 // be authoritative for the localhost forward and reverse zones, and for
@@ -10,21 +10,21 @@ zone "." {
 
 zone "localhost" {
 	type master;
-	file "/etc/bind/db.local";
+	file "<%= @cfg_dir %>/db.local";
 };
 
 zone "127.in-addr.arpa" {
 	type master;
-	file "/etc/bind/db.127";
+	file "<%= @cfg_dir %>/db.127";
 };
 
 zone "0.in-addr.arpa" {
 	type master;
-	file "/etc/bind/db.0";
+	file "<%= @cfg_dir %>/db.0";
 };
 
 zone "255.in-addr.arpa" {
 	type master;
-	file "/etc/bind/db.255";
+	file "<%= @cfg_dir %>/db.255";
 };
 
