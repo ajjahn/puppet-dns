@@ -19,9 +19,9 @@ class dns::server::params {
       $default_dnssec_enable     = true
       $default_dnssec_validation = 'auto'
       if versioncmp( $::operatingsystemmajrelease, '8' ) >= 0 {
-        $necessary_packages = ['bind9']
+        $necessary_packages = [ 'bind9', 'bind9utils' ]
       } else {
-        $necessary_packages = [ 'bind9', 'dnssec-tools' ]
+        $necessary_packages = [ 'bind9', 'bind9utils', 'dnssec-tools' ]
       }
     }
     'RedHat': {
