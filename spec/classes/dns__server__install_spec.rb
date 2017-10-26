@@ -8,7 +8,7 @@ describe 'dns::server::install', :type => :class do
   context "on a Debian OS with default params" do
     let(:facts) {{ :osfamily => 'Debian' }}
     it { should contain_class('dns::server::params') }
-    ['bind9', 'dnssec-tools'].each do |package|
+    ['bind9', 'bind9utils', 'dnssec-tools'].each do |package|
         it do
           should contain_package(package).with({
             'ensure' => 'latest',
@@ -21,7 +21,7 @@ describe 'dns::server::install', :type => :class do
     let(:facts)  {{ :osfamily        => 'Debian'  }}
     let(:params) {{ :ensure_packages => 'present' }}
     it { should contain_class('dns::server::params') }
-    ['bind9', 'dnssec-tools'].each do |package|
+    ['bind9', 'bind9utils', 'dnssec-tools'].each do |package|
         it do
           should contain_package(package).with({
             'ensure' => 'present',

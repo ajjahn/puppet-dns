@@ -10,7 +10,7 @@ describe 'dns::zone' do
       it { should raise_error(Puppet::Error, /is not an Array/) }
   end
 
-  describe 'passing an array to $allow_query' do 
+  describe 'passing an array to $allow_query' do
       let(:params) {{ :allow_query => ['192.0.2.0', '2001:db8::/32'] }}
       it { should_not raise_error }
       it {
@@ -70,7 +70,7 @@ describe 'dns::zone' do
       }
       it { should contain_concat('/var/lib/bind/zones/db.test.com.stage') }
       it { should contain_concat__fragment('db.test.com.soa').
-          with_content(/_SERIAL_/)
+          with_content(/00000000001/)
       }
       it { should contain_exec('bump-test.com-serial').
           with_refreshonly('true')
@@ -106,7 +106,7 @@ describe 'dns::zone' do
       it 'should only have a type delegation-only entry' do
           should contain_concat__fragment('named.conf.local.test.com.include').
                      with_content(/zone \"test.com\" \{\s*type delegation-only;\s*\}/)
-      end 
+      end
   end
 
 
@@ -391,4 +391,3 @@ describe 'dns::zone' do
     }
   end
 end
-
