@@ -16,30 +16,38 @@ class dns::server::default (
 
 ) inherits dns::server::params {
 
-  validate_absolute_path( $default_file )
+  Stdlib::Absolutepath( $default_file )
 
   if $resolvconf != undef {
-    validate_re( $resolvconf, '^(yes|no)$', 'The resolvconf value is not type of a string yes / no.' )
+    assert_type(Pattern[/(^yes|no)$/], $resolvconf) | $a, $b| {
+      fail('The resolvconf value is not type of a string yes / no.' )
+    }
   }
 
   if $rootdir != undef {
-    validate_absolute_path( $rootdir )
+    Stdlib::Absolutepath( $rootdir )
   }
 
   if $enable_zone_write != undef {
-    validate_re( $enable_zone_write, '^(yes|no|\s*)$', 'The enable_zone_write value is not type of a string yes / no or empty.' )
+    assert_type(Pattern[/(^yes|no|\s*)$/], $enable_zone_write) | $a, $b| {
+       fail( 'The enable_zone_writing value is not type of a string yes / no or empty.' )
+    }
   }
 
   if $enable_sdb != undef {
-    validate_re( $enable_sdb, '^(yes|no|1|0|\s*)$', 'The enable_sdb value is not type of a string yes / no / 1 / 0 or empty.' )
+    assert_type(Pattern[/(^yes|no|\s*)$/], $enable_sdb) | $a, $b| {
+       fail( 'The enable_sdb value is not type of a string yes / no or empty.' )
+    }
   }
 
   if $keytab_file != undef {
-    validate_absolute_path( $keytab_file )
+    Stdlib::Absolutepath( $keytab_file )
   }
 
   if $disable_zone_checking != undef {
-    validate_re( $disable_zone_checking, '^(yes|no|\s*)$', 'The disable_zone_checking value is not type of a string yes / no or empty.' )
+    assert_type(Pattern[/(^yes|no|\s*)$/], $disable_zone_checking) | $a, $b| {
+       fail( 'The disable_zone_checking value is not type of a string yes / no or empty.' )
+    }
   }
 
   file { $default_file:

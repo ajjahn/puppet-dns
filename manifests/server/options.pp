@@ -195,15 +195,15 @@ define dns::server::options (
     fail('You must include the ::dns::server base class before using any dns options defined resources')
   }
 
-  validate_string($forward_policy)
+  assert_type(String, $forward_policy)
   if $forward_policy != undef and !member($valid_forward_policy, $forward_policy) {
     fail("The forward_policy must be ${valid_forward_policy}")
   }
-  validate_array($forwarders)
-  validate_array($transfers)
-  validate_array($listen_on)
-  validate_array($listen_on_ipv6)
-  validate_array($allow_recursion)
+  assert_type(Array, $forwarders)
+  assert_type(Array, $transfers)
+  assert_type(Array, $listen_on)
+  assert_type(Array, $listen_on_ipv6)
+  assert_type(Array, $allow_recursion)
 
   if $check_names_master != undef and !member($valid_check_names, $check_names_master) {
     fail("The check name policy check_names_master must be ${valid_check_names}")
@@ -214,7 +214,7 @@ define dns::server::options (
   if $check_names_response != undef and !member($valid_check_names, $check_names_response) {
     fail("The check name policy check_names_response must be ${valid_check_names}")
   }
-  validate_array($allow_query)
+  assert_type(Array, $allow_query)
 
   if $statistic_channel_port != undef and !is_numeric($statistic_channel_port) {
     fail('The statistic_channel_port is not a number')
@@ -225,7 +225,7 @@ define dns::server::options (
   }
 
   if $statistic_channel_allow != undef {
-    validate_array($statistic_channel_allow)
+    assert_type(Array, $statistic_channel_allow)
   }
 
   if $control_channel_port != undef and !is_numeric($control_channel_port) {
@@ -237,10 +237,10 @@ define dns::server::options (
   }
 
   if $control_channel_allow != undef {
-    validate_array($control_channel_allow)
+    assert_type(Array, $control_channel_allow)
   }
 
-  validate_array($also_notify)
+  assert_type(Array, $also_notify)
 
   $valid_zone_notify = ['yes', 'no', 'explicit', 'master-only']
   if $zone_notify != undef and !member($valid_zone_notify, $zone_notify) {
@@ -252,9 +252,9 @@ define dns::server::options (
     fail("The dnssec_validation must be ${valid_dnssec_validation}")
   }
 
-  validate_bool($no_empty_zones)
+  assert_type(Boolean, $no_empty_zones)
 
-  validate_bool($dnssec_enable)
+  assert_type(Boolean, $dnssec_enable)
   if (! $dnssec_enable) and ($dnssec_validation != undef) {
     warning('dnssec_enable is false. dnssec_validation will be ignored.')
   }
@@ -268,8 +268,8 @@ define dns::server::options (
   }
 
   # validate these, just in case they're overridden
-  validate_absolute_path($data_dir)
-  validate_absolute_path($working_dir)
+  Stdlib::Absolutepath($data_dir)
+  Stdlib::Absolutepath($working_dir)
 
   validate_hash($log_channels)
   validate_hash($log_categories)
