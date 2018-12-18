@@ -164,41 +164,47 @@
 #   Defaults to `master`.
 #
 define dns::zone (
-  $soa = $::fqdn,
-  $soa_email = "root.${::fqdn}",
-  $zone_ttl = '604800',
-  $zone_refresh = '604800',
-  $zone_retry = '86400',
-  $zone_expire = '2419200',
-  $zone_minimum = '604800',
-  $nameservers = [ $::fqdn ],
-  $reverse = false,
-  $serial = false,
-  $zone_type = 'master',
-  $allow_transfer = [],
-  $allow_forwarder = [],
-  $allow_query =[],
-  $allow_update =[],
-  $forward_policy = 'first',
-  $slave_masters = undef,
-  $zone_notify = undef,
-  $also_notify = [],
-  $ensure = present,
-  $data_dir = $::dns::server::params::data_dir,
-  $view = undef,
-  $default_zone = false,
+  String $soa = $::fqdn,
+  String $soa_email = "root.${::fqdn}",
+  String $zone_ttl = '604800',
+  String $zone_refresh = '604800',
+  String $zone_retry = '86400',
+  String $zone_expire = '2419200',
+  String $zone_minimum = '604800',
+  Array $nameservers = [ $::fqdn ],
+  Boolean $reverse = false,
+  Boolean $serial = false,
+  String $zone_type = 'master',
+  Optional[Array] $allow_transfer = [],
+  Optional[Array] $allow_forwarder = [],
+  Optional[Array] $allow_query =[],
+  Optional[Array] $allow_update =[],
+  String $forward_policy = 'first',
+  Optional[String] $slave_masters = undef,
+  Optional[String] $zone_notify = undef,
+  Optional[Array] $also_notify = [],
+  String $ensure = present,
+  String $data_dir = $::dns::server::params::data_dir,
+  Optional[String] $view = undef,
+  Boolean $default_zone = false,
 ) {
 
   $cfg_dir = $dns::server::params::cfg_dir
 
-  validate_array($allow_transfer)
-  validate_array($allow_forwarder)
+  #validate_array($allow_transfer)
+  assert_type(Array, $allow_transfer)
+  #validate_array($allow_forwarder)
+  assert_type(Array, $allow_forwarder)
+
   if !member(['first', 'only'], $forward_policy) {
     fail('The forward policy can only be set to either first or only')
   }
-  validate_array($allow_query)
+  #validate_array($allow_query)
+  assert_type(Array, $allow_query)
 
-  validate_array($also_notify)
+  #validate_array($also_notify)
+  assert_type(Array, $also_notify)
+
   $valid_zone_notify = ['yes', 'no', 'explicit', 'master-only']
   if $zone_notify != undef and !member($valid_zone_notify, $zone_notify) {
     fail("The zone_notify must be ${valid_zone_notify}")
@@ -210,7 +216,9 @@ define dns::zone (
     default   => $name
   }
 
-  validate_string($zone_type)
+  #validate_string($zone_type)
+  assert_type(String, $zone_type)
+
   $valid_zone_type_array = ['master', 'slave', 'stub', 'forward', 'delegation-only']
   if !member($valid_zone_type_array, $zone_type) {
     $valid_zone_type_array_str = join($valid_zone_type_array, ',')
@@ -220,7 +228,9 @@ define dns::zone (
   $zone_file = "${data_dir}/db.${name}"
   $zone_file_stage = "${zone_file}.stage"
 
-  validate_array($allow_update)
+  #validate_array($allow_update)
+  assert_type(Array, $allow_update)
+
   # Replace when updates allowed
   if empty($allow_update) {
     $zone_replace = true
@@ -229,10 +239,12 @@ define dns::zone (
   }
 
   if $view {
-    validate_string($view)
+    #validate_string($view)
+    assert_type(String, $view)
   }
 
-  validate_bool($default_zone)
+  #validate_bool($default_zone)
+  assert_type(Boolean, $default_zone)
 
   if $view and $default_zone == true {
     fail('view and default parameters are mutually excluding')

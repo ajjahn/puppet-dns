@@ -155,35 +155,35 @@
 #   }
 #
 define dns::server::options (
-  $allow_query = [],
-  $allow_recursion = [],
-  $also_notify = [],
-  $check_names_master = undef,
-  $check_names_slave = undef,
-  $check_names_response = undef,
-  $control_channel_ip = undef,
-  $control_channel_port = undef,
-  $control_channel_allow = undef,
-  $data_dir = $::dns::server::params::data_dir,
-  $dnssec_validation = $::dns::server::params::default_dnssec_validation,
-  $dnssec_enable = $::dns::server::params::default_dnssec_enable,
-  $forward_policy = undef,
-  $forwarders = [],
-  $listen_on = [],
-  $listen_on_ipv6 = [],
+  Optional[Array] $allow_query = [],
+  Optional[Array] $allow_recursion = [],
+  Optional[Array] $also_notify = [],
+  Optional[String] $check_names_master = undef,
+  Optional[String] $check_names_slave = undef,
+  Optional[String] $check_names_response = undef,
+  Optional[String] $control_channel_ip = undef,
+  Optional[String] $control_channel_port = undef,
+  Optional[String] $control_channel_allow = undef,
+  String $data_dir = $::dns::server::params::data_dir,
+  String $dnssec_validation = $::dns::server::params::default_dnssec_validation,
+  String $dnssec_enable = $::dns::server::params::default_dnssec_enable,
+  Optional[String] $forward_policy = undef,
+  Optional[Array] $forwarders = [],
+  Optional[Array] $listen_on = [],
+  Optional[Array] $listen_on_ipv6 = [],
   $listen_on_port = undef,
   $log_channels = {},
   $log_categories = {},
-  $no_empty_zones = false,
-  $notify_source = undef,
-  $query_log_enable = undef,
-  $statistic_channel_ip = undef,
-  $statistic_channel_port = undef,
-  $statistic_channel_allow = undef,
-  $transfers = [],
-  $transfer_source = undef,
-  $working_dir = $::dns::server::params::working_dir,
-  $zone_notify = undef,
+  Boolean $no_empty_zones = false,
+  Optional[String] $notify_source = undef,
+  Optional[String] $query_log_enable = undef,
+  Optional[String] $statistic_channel_ip = undef,
+  Optional[String] $statistic_channel_port = undef,
+  Optional[String] $statistic_channel_allow = undef,
+  Optional[Array] $transfers = [],
+  Optional[String] $transfer_source = undef,
+  String $working_dir = $::dns::server::params::working_dir,
+  Optional[String] $zone_notify = undef,
   $extra_options = {},
 ) {
   include dns::server::params
@@ -204,6 +204,7 @@ define dns::server::options (
   validate_array($listen_on)
   validate_array($listen_on_ipv6)
   validate_array($allow_recursion)
+
   if $check_names_master != undef and !member($valid_check_names, $check_names_master) {
     fail("The check name policy check_names_master must be ${valid_check_names}")
   }

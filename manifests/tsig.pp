@@ -18,15 +18,16 @@
 # }
 #
 define dns::tsig (
-  $keyname   = $name,
-  $algorithm = 'hmac-md5',
-  $server    = undef,
-  $secret    = undef,
-  $ensure    = present
+  String $keyname          = $name,
+  String $algorithm        = 'hmac-md5',
+  Optional[String] $server = undef,
+  Optional[String] $secret = undef,
+  String $ensure           = present
 ) {
 
   $cfg_dir   = $dns::server::params::cfg_dir # Used in a template
-  validate_string($name)
+  #validate_string($name)
+  assert_type(String, $name)
 
   if $ensure == 'present' {
     concat::fragment { "named.conf.local.tsig.${name}.include":
