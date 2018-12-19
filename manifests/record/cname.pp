@@ -3,17 +3,14 @@
 # Wrapper for dns::record to set a CNAME
 #
 define dns::record::cname (
-  String $zone,
-  String $data,
-  String $ttl = '',
-  String $host = $name,
-  Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
+  $zone,
+  $data,
+  $ttl = '',
+  $host = $name,
+  $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${name},CNAME,${zone}"
-  Stdlib::Fqdn($zone)
-  Stdlib::Host($data)
-  Stdlib::Fqdn($host)
 
   $qualified_data = $data ? {
     '@'     => $data,

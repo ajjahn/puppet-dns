@@ -19,7 +19,6 @@ define dns::record::srv (
   $host = "_${service}._${proto}.${zone}."
 
   Stdlib::Fqdn($zone)
-  Stdlib::Host($data)
   Stdlib::Fqdn($host)
   Stdlib::Port($port)
 
