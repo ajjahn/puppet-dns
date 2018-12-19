@@ -1,8 +1,8 @@
 FROM puppet/puppet-agent
 MAINTAINER peter@pouliot.net
 
-RUN mkdir -p /etc/puppetlabs/code/modules/ipam
-COPY . /etc/puppetlabs/code/modules/ipam/
+RUN mkdir -p /etc/puppetlabs/code/modules/dns
+COPY . /etc/puppetlabs/code/modules/dns/
 COPY Puppetfile /etc/puppetlabs/code/environments/production/Puppetfile
 COPY Dockerfile Dockerfile
 
@@ -14,7 +14,7 @@ RUN \
     && mkdir -p /var/lock/named /var/run/named \
     && puppet module list \
     && puppet module list --tree \
-    && puppet apply --debug --trace --verbose --modulepath=/etc/puppetlabs/code/modules:/etc/puppetlabs/code/environments/production/modules /etc/puppetlabs/code/environments/production/modules/dns/tests/init.pp \
+    && puppet apply --debug --trace --verbose --modulepath=/etc/puppetlabs/code/modules:/etc/puppetlabs/code/environments/production/modules /etc/puppetlabs/code/modules/dns/tests/init.pp
 RUN \
     echo "**** Verifying that the BIND Configuration ****" \
     && /usr/sbin/named-checkconf

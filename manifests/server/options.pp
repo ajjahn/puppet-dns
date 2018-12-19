@@ -167,7 +167,7 @@ define dns::server::options (
   String $data_dir = $::dns::server::params::data_dir,
   String $dnssec_validation = $::dns::server::params::default_dnssec_validation,
   Boolean $dnssec_enable = $::dns::server::params::default_dnssec_enable,
-  Optional[String [1] ] $forward_policy = undef,
+  Optional[ String[1] ] $forward_policy = undef,
   Optional[Array] $forwarders = [],
   Optional[Array] $listen_on = [],
   Optional[Array] $listen_on_ipv6 = [],
@@ -195,8 +195,8 @@ define dns::server::options (
     fail('You must include the ::dns::server base class before using any dns options defined resources')
   }
 
-  assert_type(String, $forward_policy)
   if $forward_policy != undef and !member($valid_forward_policy, $forward_policy) {
+    assert_type(String, $forward_policy)
     fail("The forward_policy must be ${valid_forward_policy}")
   }
   assert_type(Array, $forwarders)
