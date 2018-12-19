@@ -1,421 +1,466 @@
 require 'spec_helper'
 
-describe 'dns::server::options', :type => :define do
+describe 'dns::server::options', type: :define do
   let :pre_condition do
     'class { "::dns::server": }'
   end
 
-  let(:facts) { { :osfamily => 'Debian', :concat_basedir => '/tmp' } }
+  let(:facts) { { osfamily: 'Debian', concat_basedir: '/tmp' } }
 
   let(:title) { '/etc/bind/named.conf.options' }
 
   context 'passing valid array to forwarders' do
     let :params do
-      { :forwarders => [ '8.8.8.8', '4.4.4.4' ] }
+      { forwarders: ['8.8.8.8', '4.4.4.4'] }
     end
-    it { should contain_file('/etc/bind/named.conf.options') }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/8\.8\.8\.8;$/)  }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/4\.4\.4\.4;$/)  }
-    it { should contain_file('/etc/bind/named.conf.options').with_ensure("present")  }
-    it { should contain_file('/etc/bind/named.conf.options').with_owner("bind") }
-    it { should contain_file('/etc/bind/named.conf.options').with_group("bind") }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options') }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{8\.8\.8\.8;$})  }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{4\.4\.4\.4;$})  }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_ensure('present') }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_owner('bind') }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_group('bind') }
   end
 
   context 'passing valid array to transfers' do
     let :params do
-      { :transfers => ['192.168.0.3', '192.168.0.4'] }
+      { transfers: ['192.168.0.3', '192.168.0.4'] }
     end
-    it { should contain_file('/etc/bind/named.conf.options') }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/192\.168\.0\.3;$/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/192\.168\.0\.4;$/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_ensure("present") }
-    it { should contain_file('/etc/bind/named.conf.options').with_owner("bind") }
-    it { should contain_file('/etc/bind/named.conf.options').with_group("bind") }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-transfer/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options') }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{192\.168\.0\.3;$}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{192\.168\.0\.4;$}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_ensure('present') }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_owner('bind') }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_group('bind') }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{allow-transfer}) }
   end
 
   context 'passing a string to forwarders' do
     let :params do
-      { :forwarders => '8.8.8.8' }
+      { forwarders: '8.8.8.8' }
     end
-    it { should raise_error(Puppet::Error, /is not an Array/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'passing a string to transfers' do
     let :params do
-      { :transfers => '192.168.0.3' }
+      { transfers: '192.168.0.3' }
     end
-    it { should raise_error(Puppet::Error, /is not an Array/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'passing valid array to listen_on' do
     let :params do
-      { :listen_on => [ '10.11.12.13', '192.168.1.2' ] }
+      { listen_on: ['10.11.12.13', '192.168.1.2'] }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/10\.11\.12\.13;$/)  }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/192\.168\.1\.2;$/)  }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{10\.11\.12\.13;$})  }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{192\.168\.1\.2;$})  }
   end
 
   context 'passing custom port to listen_on_port' do
     let :params do
-      { :listen_on_port => 5300 }
+      { listen_on_port: 5300 }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/port 5300;/)  }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{port 5300;}) }
   end
 
   context 'passing a string to listen_on' do
     let :params do
-      { :listen_on => '10.9.8.7' }
+      { listen_on: '10.9.8.7' }
     end
-    it { should raise_error(Puppet::Error, /is not an Array/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'when passing valid array to listen_on_ipv6' do
     let :params do
-      { :listen_on_ipv6 => [ '2001:db8:1::1', '2001:db8:2::/124' ] }
+      { listen_on_ipv6: ['2001:db8:1::1', '2001:db8:2::/124'] }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/2001:db8:1::1;$/)  }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/2001:db8:2::\/124;$/)  }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{2001:db8:1::1;$}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(/2001:db8:2::\/124;$/) }
   end
 
   context 'when passing a string to listen_on_ipv6' do
     let :params do
-      { :listen_on_ipv6 => '2001:db8:1::1' }
+      { listen_on_ipv6: '2001:db8:1::1' }
     end
-    it { should raise_error(Puppet::Error, /is not an Array/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'when the listen_on_ipv6 option is not provided' do
     let(:params) { {} }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/listen-on-v6 \{.+?any;.+?\}/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{listen-on-v6 \{.+?any;.+?\}}) }
   end
 
   context 'passing a string to recursion' do
     let :params do
-      { :allow_recursion => '8.8.8.8' }
+      { allow_recursion: '8.8.8.8' }
     end
-    it { should raise_error(Puppet::Error, /is not an Array/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'passing a valid recursion allow range' do
     let :params do
-      { :allow_recursion => ['10.0.0.1'] }
+      { allow_recursion: ['10.0.0.1'] }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/10\.0\.0\.1;$/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-recursion \{$/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{10\.0\.0\.1;$}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{allow-recursion \{$}) }
   end
 
   context 'passing a wrong string to slave name' do
     let :params do
-      { :check_names_slave => '8.8.8.8' }
+      { check_names_slave: '8.8.8.8' }
     end
-    it { should raise_error(Puppet::Error, /The check name policy/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{The check name policy}) }
   end
 
   context 'passing a wrong string to master name' do
     let :params do
-      { :check_names_master => '8.8.8.8' }
+      { check_names_master: '8.8.8.8' }
     end
-    it { should raise_error(Puppet::Error, /The check name policy/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{The check name policy}) }
   end
 
   context 'passing a wrong string to response name' do
     let :params do
-      { :check_names_response => '8.8.8.8' }
+      { check_names_response: '8.8.8.8' }
     end
-    it { should raise_error(Puppet::Error, /The check name policy/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{The check name policy}) }
   end
 
   context 'passing a valid string to a check name' do
     let :params do
-      { :check_names_master => 'warn',
-       :check_names_slave => 'ignore',
-       :check_names_response => 'warn',
-      }
+      { check_names_master: 'warn',
+        check_names_slave: 'ignore',
+        check_names_response: 'warn' }
     end
-    it { should contain_file('/etc/bind/named.conf.options') }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/check-names master warn;/)  }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/check-names slave ignore;$/)  }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/check-names response warn;$/)  }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options') }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{check-names master warn;}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{check-names slave ignore;$}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{check-names response warn;$}) }
   end
 
   context 'passing no string to check name' do
-    it { should contain_file('/etc/bind/named.conf.options').without_content(/check-names master/)}
-    it { should contain_file('/etc/bind/named.conf.options').without_content(/check-names slave/)}
-    it { should contain_file('/etc/bind/named.conf.options').without_content(/check-names response/)}
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{check-names master}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{check-names slave}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{check-names response}) }
   end
 
   context 'passing a string to the allow query' do
     let :params do
-      { :allow_query => '8.8.8.8' }
+      { allow_query: '8.8.8.8' }
     end
-    it { should raise_error(Puppet::Error, /is not an Array/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'passing a valid array to the allow query' do
     let :params do
-      { :allow_query => ['8.8.8.8'] }
+      { allow_query: ['8.8.8.8'] }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/8\.8\.8\.8;/)  }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/allow-query/)  }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{8\.8\.8\.8;})  }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{allow-query})  }
   end
 
   context 'passing no statistic channel ip' do
     let :params do
       {}
     end
-    it { should_not contain_file('/etc/bind/named.conf.options').with_content(/statistics-channels/)  }
+
+    it { is_expected.not_to contain_file('/etc/bind/named.conf.options').with_content(%r{statistics-channels}) }
   end
 
   context 'passing a valid ip and a valid port' do
     let :params do
-      { :statistic_channel_ip => '127.0.0.1',
-        :statistic_channel_port => 12455 }
+      { statistic_channel_ip: '127.0.0.1',
+        statistic_channel_port: 12_455 }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/statistics-channels/)  }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/inet 127\.0\.0\.1 port 12455;/)  }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{statistics-channels})  }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{inet 127\.0\.0\.1 port 12455;}) }
   end
 
   context 'passing no zone_notify setting' do
     let :params do
       {}
     end
-    it { should contain_file('/etc/bind/named.conf.options').without_content(/^\s*notify /) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{^\s*notify }) }
   end
 
   context 'passing a wrong zone_notify setting' do
     let :params do
-      { :zone_notify => 'maybe' }
+      { zone_notify: 'maybe' }
     end
-    it { should raise_error(Puppet::Error, /The zone_notify/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{The zone_notify}) }
   end
 
   context 'passing yes to zone_notify' do
     let :params do
-      { :zone_notify => 'yes' }
+      { zone_notify: 'yes' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/^\s*notify yes;/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{^\s*notify yes;}) }
   end
 
   context 'passing no to zone_notify' do
     let :params do
-      { :zone_notify => 'no' }
+      { zone_notify: 'no' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/^\s*notify no;/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{^\s*notify no;}) }
   end
 
   context 'passing master-only to zone_notify' do
     let :params do
-      { :zone_notify => 'master-only' }
+      { zone_notify: 'master-only' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/^\s*notify master-only;/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{^\s*notify master-only;}) }
   end
 
   context 'passing explicit to zone_notify' do
     let :params do
-      { :zone_notify => 'explicit' }
+      { zone_notify: 'explicit' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/^\s*notify explicit;/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{^\s*notify explicit;}) }
   end
 
   context 'passing no also_notify setting' do
     let :params do
       {}
     end
-    it { should contain_file('/etc/bind/named.conf.options').without_content(/^\s*also-notify /) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{^\s*also-notify }) }
   end
 
   context 'passing a string to also_notify' do
     let :params do
-      { :also_notify => '8.8.8.8' }
+      { also_notify: '8.8.8.8' }
     end
-    it { should raise_error(Puppet::Error, /is not an Array/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'passing a valid array to also_notify' do
     let :params do
-      { :also_notify => [ '8.8.8.8' ] }
+      { also_notify: ['8.8.8.8'] }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/^\s*also-notify \{/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/8\.8\.8\.8;/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{^\s*also-notify \{}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{8\.8\.8\.8;}) }
   end
 
   context 'default value of dnssec_validation on RedHat 5' do
     let :facts do
-      { :osfamily => 'RedHat', :operatingsystemmajrelease => '5', :concat_basedir => '/tmp' }
+      { osfamily: 'RedHat', operatingsystemmajrelease: '5', concat_basedir: '/tmp' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').without_content(/dnssec-validation/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-enable no/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{dnssec-validation}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-enable no}) }
   end
 
   context 'default value of dnssec_validation on RedHat 6' do
     let :facts do
-      { :osfamily => 'RedHat', :operatingsystemmajrelease => '6', :concat_basedir => '/tmp' }
+      { osfamily: 'RedHat', operatingsystemmajrelease: '6', concat_basedir: '/tmp' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation auto/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-enable yes/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-validation auto}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-enable yes}) }
   end
 
   context 'default value of dnssec_validation on Debian' do
     let :facts do
-      { :osfamily => 'Debian', :concat_basedir => '/tmp' }
+      { osfamily: 'Debian', concat_basedir: '/tmp' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation auto/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-enable yes/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-validation auto}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-enable yes}) }
   end
 
   context 'passing `false` to dnssec_enable' do
     let :params do
-      { :dnssec_enable => false}
+      { dnssec_enable: false }
     end
-    it { should contain_file('/etc/bind/named.conf.options').without_content(/dnssec-validation/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-enable no/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{dnssec-validation}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-enable no}) }
   end
 
   context 'passing `absent` to dnssec_validation' do
     let :params do
-      { :dnssec_validation => 'absent' }
+      { dnssec_validation: 'absent' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').without_content(/dnssec-validation/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-enable yes/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{dnssec-validation}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-enable yes}) }
   end
 
   context 'passing `auto` to dnssec_validation' do
     let :params do
-      { :dnssec_validation => 'auto' }
+      { dnssec_validation: 'auto' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation auto/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-enable yes/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-validation auto}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-enable yes}) }
   end
 
   context 'passing `yes` to dnssec_validation' do
     let :params do
-      { :dnssec_validation => 'yes' }
+      { dnssec_validation: 'yes' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation yes/) }
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-enable yes/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-validation yes}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-enable yes}) }
   end
 
   context 'passing `no` to dnssec_validation' do
     let :params do
-      { :dnssec_validation => 'no' }
+      { dnssec_validation: 'no' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/dnssec-validation no/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-validation no}) }
   end
   context 'with not empty zone generation' do
     let :params do
-      { :no_empty_zones => true }
+      { no_empty_zones: true }
     end
 
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/empty-zones-enable no/)  }
-
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{empty-zones-enable no}) }
   end
 
   context 'passing no notify_source' do
     let :params do
       {}
     end
-    it { should_not contain_file('/etc/bind/named.conf.options').with_content(/notify-source/)  }
+
+    it { is_expected.not_to contain_file('/etc/bind/named.conf.options').with_content(%r{notify-source}) }
   end
 
   context 'passing notify_source a valid ip' do
     let :params do
-      { :notify_source => '127.0.0.1' }
+      { notify_source: '127.0.0.1' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/notify-source 127\.0\.0\.1;/)  }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{notify-source 127\.0\.0\.1;}) }
   end
 
   context 'passing notify_source an invalid string' do
     let :params do
-      { :notify_source => 'fooberry' }
+      { notify_source: 'fooberry' }
     end
-    it { should raise_error(Puppet::Error, /is not an ip/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an ip}) }
   end
 
   context 'passing no transfer_source' do
     let :params do
       {}
     end
-    it { should_not contain_file('/etc/bind/named.conf.options').with_content(/transfer-source/)  }
+
+    it { is_expected.not_to contain_file('/etc/bind/named.conf.options').with_content(%r{transfer-source}) }
   end
 
   context 'passing transfer_source a valid ip' do
     let :params do
-      { :transfer_source => '127.0.0.1' }
+      { transfer_source: '127.0.0.1' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/transfer-source 127\.0\.0\.1;/)  }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{transfer-source 127\.0\.0\.1;}) }
   end
 
   context 'passing transfer_source an invalid string' do
     let :params do
-      { :transfer_source => 'fooberry' }
+      { transfer_source: 'fooberry' }
     end
-    it { should raise_error(Puppet::Error, /is not an ip/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an ip}) }
   end
 
   context 'passing a non-default data directory' do
     let :params do
-      { :data_dir => '/foo/bar' }
+      { data_dir: '/foo/bar' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/directory  *"\/foo\/bar"/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(/directory  *"\/foo\/bar"/) }
   end
 
   context 'passing a non-absolute data directory' do
     let :params do
-      { :data_dir => 'foo/bar' }
+      { data_dir: 'foo/bar' }
     end
-    it { should raise_error(Puppet::Error, /is not an absolute/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an absolute}) }
   end
 
   context 'passing a non-default working directory' do
     let :params do
-      { :working_dir => '/foo/bar',
-        :query_log_enable => true
-      }
+      { working_dir: '/foo/bar',
+        query_log_enable: true }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/\/foo\/bar\/named_querylog/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(/\/foo\/bar\/named_querylog/) }
   end
 
   context 'passing a non-absolute working directory' do
     let :params do
-      { :working_dir => 'foo/bar',
-        :query_log_enable => true
-      }
+      { working_dir: 'foo/bar',
+        query_log_enable: true }
     end
-    it { should raise_error(Puppet::Error, /is not an absolute/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an absolute}) }
   end
 
   context 'not passing forward_policy' do
-    it { should contain_file('/etc/bind/named.conf.options').without_content(/ forward /) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{ forward }) }
   end
 
   context 'passing forward_policy as `only`' do
     let :params do
-      { :forward_policy => 'only' }
+      { forward_policy: 'only' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/ forward  *only *;/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{ forward  *only *;}) }
   end
 
   context 'passing forward_policy as `first`' do
     let :params do
-      { :forward_policy => 'first' }
+      { forward_policy: 'first' }
     end
-    it { should contain_file('/etc/bind/named.conf.options').with_content(/ forward  *first *;/) }
+
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{ forward  *first *;}) }
   end
 
   context 'passing forward_policy as an invalid string' do
     let :params do
-      { :forward_policy => 'snozberry' }
+      { forward_policy: 'snozberry' }
     end
-    it { should raise_error(Puppet::Error, /The forward_policy must be/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{The forward_policy must be}) }
   end
 
   context 'passing forward_policy as an invalid type' do
     let :params do
-      { :forward_policy => ['first'] }
+      { forward_policy: ['first'] }
     end
-    it { should raise_error(Puppet::Error, /is not a string/) }
+
+    it { is_expected.to raise_error(Puppet::Error, %r{is not a string}) }
   end
-
 end
-
