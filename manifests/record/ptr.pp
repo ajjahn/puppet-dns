@@ -3,14 +3,18 @@
 # Wrapper for dns::record to set PTRs
 #
 define dns::record::ptr (
-  $zone,
-  $data,
-  $ttl = '',
-  $host = $name,
-  $data_dir = $::dns::server::config::data_dir,
+  String $zone,
+  String $data,
+  String $ttl = '',
+  String $host = $name,
+  Tuple $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${name},PTR,${zone}"
+
+  Stdlib::Fqdn($zone)
+  Stdlib::Host($data)
+  Stdlib::Fqdn($host)
 
   dns::record { $alias:
     zone     => $zone,

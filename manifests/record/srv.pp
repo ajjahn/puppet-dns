@@ -3,20 +3,25 @@
 # Wrapper for dns::zone to set SRV records
 #
 define dns::record::srv (
-  $zone,
-  $service,
-  $pri,
-  $weight,
-  $port,
-  $target,
-  $proto = 'tcp',
-  $ttl = '',
-  $data_dir = $::dns::server::config::data_dir,
+  String $zone,
+  String $service,
+  String $pri,
+  String $weight,
+  String $port,
+  String $target,
+  String $proto = 'tcp',
+  String $ttl = '',
+  String $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${service}:${proto}@${target}:${port},${pri},${weight},SRV,${zone}"
 
   $host = "_${service}._${proto}.${zone}."
+
+  Stdlib::Fqdn($zone)
+  Stdlib::Host($data)
+  Stdlib::Fqdn($host)
+  Stdlib::Port($port)
 
   dns::record { $alias:
     zone     => $zone,
