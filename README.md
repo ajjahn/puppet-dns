@@ -6,8 +6,9 @@ Module for provisioning DNS (bind9)
 
 Supports:
 
+* Debian: 9, 8 
 * Ubuntu: 14.04, 12.04
-* CentOS: 7.x, 6.x
+* CentOS/ScientificLinux/OracleLinux: 7.x, 6.x
 
 Patches to support other operating systems are welcome.
 

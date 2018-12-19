@@ -167,7 +167,7 @@ define dns::server::options (
   String $data_dir = $::dns::server::params::data_dir,
   String $dnssec_validation = $::dns::server::params::default_dnssec_validation,
   Boolean $dnssec_enable = $::dns::server::params::default_dnssec_enable,
-  Optional[String] $forward_policy = undef,
+  Optional[String [1] ] $forward_policy = undef,
   Optional[Array] $forwarders = [],
   Optional[Array] $listen_on = [],
   Optional[Array] $listen_on_ipv6 = [],
