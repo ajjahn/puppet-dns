@@ -172,8 +172,8 @@ define dns::server::options (
   Optional[Array] $listen_on = [],
   Optional[Array] $listen_on_ipv6 = [],
   $listen_on_port = undef,
-  $log_channels = {},
-  $log_categories = {},
+  Optional[Hash] $log_channels = {},
+  Optional[Hash] $log_categories = {},
   Boolean $no_empty_zones = false,
   Optional[String] $notify_source = undef,
   Optional[String] $query_log_enable = undef,
@@ -184,7 +184,7 @@ define dns::server::options (
   Optional[String] $transfer_source = undef,
   String $working_dir = $::dns::server::params::working_dir,
   Optional[String] $zone_notify = undef,
-  $extra_options = {},
+  Optional[Hash] $extra_options = {},
 ) {
   include dns::server::params
   $valid_check_names = ['fail', 'warn', 'ignore']
@@ -196,8 +196,9 @@ define dns::server::options (
   }
 
   if $forward_policy != undef and !member($valid_forward_policy, $forward_policy) {
-    assert_type(String, $forward_policy)
-    fail("The forward_policy must be ${valid_forward_policy}")
+    assert_type(String, $forward_policy) | $a, $b | {
+      fail("The forward_policy must be ${valid_forward_policy}")
+    }
   }
   assert_type(Array, $forwarders)
   assert_type(Array, $transfers)
@@ -271,10 +272,9 @@ define dns::server::options (
   Stdlib::Absolutepath($data_dir)
   Stdlib::Absolutepath($working_dir)
 
-  validate_hash($log_channels)
-  validate_hash($log_categories)
-
-  validate_hash($extra_options)
+  assert_type(Hash, $log_channels)
+  assert_type(Hash, $log_categories)
+  assert_type(Hash, $extra_options)
 
   file { $title:
     ensure  => present,
