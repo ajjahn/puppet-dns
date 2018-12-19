@@ -1,18 +1,18 @@
 # == Class dns::server
 #
 class dns::server (
-  $service = $dns::server::params::service,
+  String $service = $dns::server::params::service,
 
   $necessary_packages = $dns::server::params::necessary_packages,
   $ensure_packages    = $dns::server::params::ensure_packages,
 
-  $cfg_dir  = $dns::server::params::cfg_dir,
-  $cfg_file = $dns::server::params::cfg_file,
-  $data_dir = $dns::server::params::data_dir,
-  $owner    = $dns::server::params::owner,
-  $group    = $dns::server::params::group,
+  String $cfg_dir  = $dns::server::params::cfg_dir,
+  String $cfg_file = $dns::server::params::cfg_file,
+  String $data_dir = $dns::server::params::data_dir,
+  String $owner    = $dns::server::params::owner,
+  String $group    = $dns::server::params::group,
 
-  $enable_default_zones = true,
+  Boolean $enable_default_zones = true,
 ) inherits dns::server::params {
   class { 'dns::server::install':
     necessary_packages => $necessary_packages,
