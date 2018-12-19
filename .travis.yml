@@ -1,41 +1,47 @@
 ---
-language: ruby
-bundler_args: --without development --jobs=3 --retry=3
-
 sudo: false
-
+dist: trusty
+language: ruby
+cache: bundler
+before_install:
+  - bundle -v
+  - rm -f Gemfile.lock
+  - gem update --system
+  - gem --version
+  - bundle -v
+script:
+  - 'bundle exec rake $CHECK'
+bundler_args: --without system_tests
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1
-
+  - 2.5.1
 env:
-  - PUPPET_VERSION="~> 2.7.0"
-  - PUPPET_VERSION="~> 3.1.0"
-  - PUPPET_VERSION="~> 3.2.0"
-  - PUPPET_VERSION="~> 3.3.0"
-  - PUPPET_VERSION="~> 3.4.0"
-  - PUPPET_VERSION="~> 3.5.0"
-
-before_install: rm Gemfile.lock || true
-
-script: bundle exec rake test
-
+  global:
+    - BEAKER_PUPPET_COLLECTION=puppet6 PUPPET_GEM_VERSION="~> 6.0"
 matrix:
-  exclude:
-  - rvm: 1.9.3
-    env: PUPPET_VERSION="~> 2.7.0"
-  - rvm: 2.0.0
-    env: PUPPET_VERSION="~> 2.7.0"
-  - rvm: 2.0.0
-    env: PUPPET_VERSION="~> 3.1.0"
-  - rvm: 2.1
-    env: PUPPET_VERSION="~> 2.7.0"
-  - rvm: 2.1
-    env: PUPPET_VERSION="~> 3.1.0"
-  - rvm: 2.1
-    env: PUPPET_VERSION="~> 3.2.0"
-  - rvm: 2.1
-    env: PUPPET_VERSION="~> 3.3.0"
-  - rvm: 2.1
-    env: PUPPET_VERSION="~> 3.4.0"
+  fast_finish: true
+  include:
+    -
+      env: CHECK="syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop"
+    -
+      env: CHECK=parallel_spec
+    -
+      env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec
+      rvm: 2.4.4
+    -
+      env: PUPPET_GEM_VERSION="~> 4.0" CHECK=parallel_spec
+      rvm: 2.1.9
+branches:
+  only:
+    - master
+    - /^v\d/
+notifications:
+  email: false
+deploy:
+  provider: puppetforge
+  user: puppet
+  password:
+    secure: ""
+  on:
+    tags: true
+    all_branches: true
+    condition: "$DEPLOY_TO_FORGE = yes"

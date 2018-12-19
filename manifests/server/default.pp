@@ -30,13 +30,13 @@ class dns::server::default (
 
   if $enable_zone_write != undef {
     assert_type(Pattern[/(^yes|no|\s*)$/], $enable_zone_write) | $a, $b| {
-       fail( 'The enable_zone_writing value is not type of a string yes / no or empty.' )
+      fail( 'The enable_zone_writing value is not type of a string yes / no or empty.' )
     }
   }
 
   if $enable_sdb != undef {
     assert_type(Pattern[/(^yes|no|\s*)$/], $enable_sdb) | $a, $b| {
-       fail( 'The enable_sdb value is not type of a string yes / no or empty.' )
+      fail( 'The enable_sdb value is not type of a string yes / no or empty.' )
     }
   }
 
@@ -46,7 +46,7 @@ class dns::server::default (
 
   if $disable_zone_checking != undef {
     assert_type(Pattern[/(^yes|no|\s*)$/], $disable_zone_checking) | $a, $b| {
-       fail( 'The disable_zone_checking value is not type of a string yes / no or empty.' )
+      fail( 'The disable_zone_checking value is not type of a string yes / no or empty.' )
     }
   }
 

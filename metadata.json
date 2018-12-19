@@ -7,7 +7,16 @@
   "source": "https://github.com/ajjahn/puppet-dns",
   "project_page": "https://github.com/ajjahn/puppet-dns",
   "issues_url": "https://github.com/ajjahn/puppet-dns/issues",
-  "description": "Module for provisioning DNS (bind9)",
+  "dependencies": [
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">=2.0.0 <6.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=2.4.0 <6.0.0"
+    }
+  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
@@ -24,14 +33,14 @@
       ]
     }
   ],
-  "dependencies": [
+  "requirements": [
     {
-      "name": "puppetlabs/concat",
-      "version_requirement": ">=2.0.0"
-    },
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">=2.4.0 <6.0.0"
+      "name": "puppet",
+      "version_requirement": ">= 4.10.0 < 7.0.0"
     }
-  ]
+  ],
+  "description": "Module for provisioning DNS (bind9)",
+  "pdk-version": "1.8.0",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "1.8.0-0-g0d9da00"
 }
