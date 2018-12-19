@@ -29,7 +29,7 @@ describe 'dns::acl' do
     }
     it {
       is_expected.to contain_concat__fragment('named.conf.local.acl.trusted.include')
-        .with_content(/192.168.0.0\/24;/)
+        .with_content(%r{192.168.0.0\/24;})
     }
   end
 end

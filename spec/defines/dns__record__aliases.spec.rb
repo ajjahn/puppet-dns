@@ -1,5 +1,4 @@
 require 'spec_helper'
-
 describe 'dns::record::aaaa', type: :define do
   let(:facts) { { concat_basedir: '/tmp' } }
 

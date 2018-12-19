@@ -25,7 +25,7 @@ describe 'dns::zone' do
     }
     it {
       is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-        .with_content(/2001:db8::\/32/)
+        .with_content(%r{2001:db8::\/32})
     }
   end
 
@@ -72,7 +72,7 @@ describe 'dns::zone' do
     }
     it {
       is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-        .with_content(/2001:db8::\/32/)
+        .with_content(%r{2001:db8::\/32})
     }
     it { is_expected.to contain_concat('/var/lib/bind/zones/db.test.com.stage') }
     it {
@@ -401,7 +401,7 @@ describe 'dns::zone' do
     }
     it {
       is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-        .with_content(/2001:db8::\/32/)
+        .with_content(%r{2001:db8::\/32})
     }
   end
 end

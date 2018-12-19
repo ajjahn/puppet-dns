@@ -83,7 +83,7 @@ describe 'dns::server::options', type: :define do
     end
 
     it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{2001:db8:1::1;$}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(/2001:db8:2::\/124;$/) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{2001:db8:2::\/124;$}) }
   end
 
   context 'when passing a string to listen_on_ipv6' do
@@ -399,7 +399,7 @@ describe 'dns::server::options', type: :define do
       { data_dir: '/foo/bar' }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(/directory  *"\/foo\/bar"/) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{directory  *"\/foo\/bar"}) }
   end
 
   context 'passing a non-absolute data directory' do
@@ -416,7 +416,7 @@ describe 'dns::server::options', type: :define do
         query_log_enable: true }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(/\/foo\/bar\/named_querylog/) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{\/foo\/bar\/named_querylog}) }
   end
 
   context 'passing a non-absolute working directory' do

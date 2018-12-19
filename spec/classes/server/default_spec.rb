@@ -44,7 +44,7 @@ describe 'dns::server::default' do
       context 'passing wrong value to resolvconf for hit an error' do
         let(:params) { { resolvconf: 'WrongValue' } }
 
-        it { is_expected.to raise_error(/The resolvconf value is not type of a string yes \/ no./) }
+        it { is_expected.to raise_error(%r{The resolvconf value is not type of a string yes \/ no.}) }
       end
     end
   end
@@ -56,7 +56,7 @@ describe 'dns::server::default' do
       context 'passing path `/chroot` to rootdir' do
         let(:params) { { rootdir: '/chroot' } }
 
-        it { is_expected.to contain_file('/etc/sysconfig/named').with_content(/ROOTDIR="\/chroot"/) }
+        it { is_expected.to contain_file('/etc/sysconfig/named').with_content(%r{ROOTDIR="\/chroot"}) }
       end
 
       context 'passing `-u named` to options' do
@@ -116,7 +116,7 @@ describe 'dns::server::default' do
       context 'passing path `/usr/local/samba/private/dns.keytab` to keytab_file' do
         let(:params) { { keytab_file: '/usr/local/samba/private/dns.keytab' } }
 
-        it { is_expected.to contain_file('/etc/sysconfig/named').with_content(/KEYTAB_FILE="\/usr\/local\/samba\/private\/dns.keytab/) }
+        it { is_expected.to contain_file('/etc/sysconfig/named').with_content(%r{KEYTAB_FILE="\/usr\/local\/samba\/private\/dns.keytab}) }
       end
 
       context 'passing `yes` to disable_zone_checking' do
@@ -148,25 +148,25 @@ describe 'dns::server::default' do
       context 'passing wrong value to enable_zone_write for hit an error' do
         let(:params) { { enable_zone_write: 'WrongValue' } }
 
-        it { is_expected.to raise_error(/The enable_zone_write value is not type of a string yes \/ no./) }
+        it { is_expected.to raise_error(%r{The enable_zone_write value is not type of a string yes \/ no.}) }
       end
 
       context 'passing wrong value to enable_sdb for hit an error' do
         let(:params) { { enable_sdb: 'WrongValue' } }
 
-        it { is_expected.to raise_error(/The enable_sdb value is not type of a string yes \/ no \/ 1 \/ 0 or empty./) }
+        it { is_expected.to raise_error(%r{The enable_sdb value is not type of a string yes \/ no \/ 1 \/ 0 or empty.}) }
       end
 
       context 'passing wrong value to keytab_file for hit an error' do
         let(:params) { { keytab_file: 'usr/local/samba/private/dns.keytab' } }
 
-        it { is_expected.to raise_error(/"usr\/local\/samba\/private\/dns.keytab" is not an absolute path./) }
+        it { is_expected.to raise_error(%r{"usr\/local\/samba\/private\/dns.keytab" is not an absolute path.}) }
       end
 
       context 'passing wrong value to disable_zone_checking for hit an error' do
         let(:params) { { disable_zone_checking: 'chroot' } }
 
-        it { is_expected.to raise_error(/The disable_zone_checking value is not type of a string yes \/ no or empty./) }
+        it { is_expected.to raise_error(%r{The disable_zone_checking value is not type of a string yes \/ no or empty.}) }
       end
     end
   end
