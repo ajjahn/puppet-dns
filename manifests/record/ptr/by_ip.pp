@@ -78,7 +78,7 @@ define dns::record::ptr::by_ip (
   String $zone = undef,
   String $ttl = undef,
   String $ip = $name,
-  Tuple  $data_dir = $::dns::server::config::data_dir,
+  Stdlib::Absolutepath  $data_dir = $::dns::server::config::data_dir,
 ) {
 
   Stdlib::Fqdn($host)

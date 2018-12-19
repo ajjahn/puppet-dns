@@ -9,7 +9,7 @@ define dns::record::a (
   String $ttl = '',
   Boolean $ptr = false,
   String $host = $name,
-  Tuple $data_dir = $::dns::server::config::data_dir,
+  Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${name},A,${zone}"

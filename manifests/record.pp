@@ -3,15 +3,15 @@
 # This is a private class to arbitary dns records.
 #
 define dns::record (
-  $zone,
-  $host,
+  String $zone,
+  String $host,
   $data,
-  $record = 'A',
-  $dns_class = 'IN',
-  $ttl = '',
-  $preference = false,
-  $order = 9,
-  $data_dir = $::dns::server::params::data_dir,
+  String $record = 'A',
+  String $dns_class = 'IN',
+  String $ttl = '',
+  Boolean $preference = false,
+  String $order = 9,
+  Stdlib::Absolutepath $data_dir = $::dns::server::params::data_dir,
 ) {
 
   $zone_file_stage = "${data_dir}/db.${zone}.stage"

@@ -8,7 +8,7 @@ define dns::record::mx (
   String $ttl        = '',
   String $preference = 10,
   String $host       = '@',
-  Tuple $data_dir = $::dns::server::config::data_dir,
+  Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${name},${zone},MX,${preference},${data}"

@@ -3,7 +3,7 @@
 class dns::server::config (
   String $cfg_dir              = $dns::server::params::cfg_dir,
   String $cfg_file             = $dns::server::params::cfg_file,
-  String $data_dir             = $dns::server::params::data_dir,
+  Stdlib::Absolutepath $data_dir = $dns::server::params::data_dir,
   String $owner                = $dns::server::params::owner,
   String $group                = $dns::server::params::group,
   Boolean $enable_default_zones = true,

@@ -7,7 +7,7 @@ define dns::record::ptr (
   String $data,
   String $ttl = '',
   String $host = $name,
-  Tuple $data_dir = $::dns::server::config::data_dir,
+  Stdlib:Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${name},PTR,${zone}"
