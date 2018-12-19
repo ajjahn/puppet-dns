@@ -8,9 +8,9 @@ define dns::record (
   $data,
   String $record = 'A',
   String $dns_class = 'IN',
-  String $ttl = '',
+  $ttl = '',
   Boolean $preference = false,
-  String $order = 9,
+  Integer $order = 9,
   Stdlib::Absolutepath $data_dir = $::dns::server::params::data_dir,
 ) {
 
