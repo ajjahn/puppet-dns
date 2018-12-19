@@ -13,6 +13,6 @@ mod 'puppet/dhcp', :latest
 mod 'puppet/staging', :latest
 mod 'puppet/selinux', :latest
 # Currently Using Downstream due to processing issues.
-mod 'ajjahn/dns',
-    :git => 'https://github.com/ppouliot/puppet-dns',
-    :branch => 'master'
+#mod 'ajjahn/dns',
+#    :git => 'https://github.com/ppouliot/puppet-dns',
+#    :branch => 'master'
