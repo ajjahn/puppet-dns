@@ -15,9 +15,9 @@
 # }
 #
 define dns::acl (
-  String $ensure = present,
+  String $ensure  = present,
   String $aclname = $name,
-  Array $data = [],
+  Array $data     = [],
 ) {
   include dns::server::params
 

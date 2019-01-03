@@ -5,8 +5,8 @@
 define dns::record::ns (
   String $zone,
   String $data,
-  String $ttl  = '',
-  String $host = $name,
+  String $ttl      = '',
+  String $host     = $name,
   String $data_dir = $::dns::server::config::data_dir,
 ) {
 

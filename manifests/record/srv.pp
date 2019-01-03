@@ -9,8 +9,8 @@ define dns::record::srv (
   String $weight,
   String $port,
   String $target,
-  String $proto = 'tcp',
-  String $ttl = '',
+  String $proto    = 'tcp',
+  String $ttl      = '',
   String $data_dir = $::dns::server::config::data_dir,
 ) {
 

@@ -6,9 +6,9 @@
 define dns::record::a (
   $zone,
   $data,
-  $ttl = '',
-  $ptr = false,
-  $host = $name,
+  $ttl      = '',
+  $ptr      = false,
+  $host     = $name,
   $data_dir = $::dns::server::config::data_dir,
 ) {
 
