@@ -41,7 +41,7 @@ class dns::server::params {
       $default_file       = '/etc/sysconfig/named'
       $default_template   = 'default.redhat.erb'
 
-      if $::operatingsystemmajrelease =~ /^[1-5]$/ {
+     if $::operatingsystemmajrelease =~ /^[1-5]$/ {
         $default_dnssec_enable     = false
         $default_dnssec_validation = 'absent'
       } else {

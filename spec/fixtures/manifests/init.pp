@@ -1,6 +1,5 @@
 node 'testhost.example.com' {
-
-  include dns::server
+  include ::dns::server
 
   dns::zone { 'example.com':
     soa         => 'ns1.example.com',
