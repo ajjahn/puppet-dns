@@ -5,9 +5,9 @@
 define dns::record::mx (
   String $zone,
   String $data,
-  String $ttl        = '',
-  String $preference = 10,
-  String $host       = '@',
+  String $ttl                    = '',
+  String $preference             = 10,
+  String $host                   = '@',
   Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {
 

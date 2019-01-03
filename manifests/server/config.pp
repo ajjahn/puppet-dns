@@ -1,12 +1,12 @@
 # == Class dns::server
 #
 class dns::server::config (
-  String $cfg_dir              = $dns::server::params::cfg_dir,
-  String $cfg_file             = $dns::server::params::cfg_file,
+  String $cfg_dir                = $dns::server::params::cfg_dir,
+  String $cfg_file               = $dns::server::params::cfg_file,
   Stdlib::Absolutepath $data_dir = $dns::server::params::data_dir,
-  String $owner                = $dns::server::params::owner,
-  String $group                = $dns::server::params::group,
-  Boolean $enable_default_zones = true,
+  String $owner                  = $dns::server::params::owner,
+  String $group                  = $dns::server::params::group,
+  Boolean $enable_default_zones  = true,
 ) inherits dns::server::params {
 
   file { $cfg_dir:

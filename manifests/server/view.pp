@@ -49,10 +49,10 @@ define dns::server::view (
   Optional[Array] $match_clients         = [],
   Optional[Array] $match_destinations    = [],
   Optional[String] $match_recursive_only = undef,
-  $options              = {},
+  $options                               = {},
   String $order                          = '50',
   String $viewname                       = $name,
-  $zones                = {},
+  $zones                                 = {},
 ) {
   include ::dns::server::params
 

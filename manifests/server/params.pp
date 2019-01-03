@@ -3,21 +3,22 @@
 class dns::server::params {
   case $::osfamily {
     'Debian': {
-      $cfg_dir            = '/etc/bind'
-      $cfg_file           = '/etc/bind/named.conf'
-      $data_dir           = '/var/lib/bind/zones'
-      $working_dir        = '/var/cache/bind'
-      $root_hint          = "${cfg_dir}/db.root"
-      $rfc1912_zones_cfg  = "${cfg_dir}/named.conf.default-zones"
-      $rndc_key_file      = "${cfg_dir}/rndc.key"
-      $group              = 'bind'
-      $owner              = 'bind'
-      $package            = 'bind9'
-      $service            = 'bind9'
-      $default_file       = '/etc/default/bind9'
-      $default_template   = 'default.debian.erb'
+      $cfg_dir                   = '/etc/bind'
+      $cfg_file                  = '/etc/bind/named.conf'
+      $data_dir                  = '/var/lib/bind/zones'
+      $working_dir               = '/var/cache/bind'
+      $root_hint                 = "${cfg_dir}/db.root"
+      $rfc1912_zones_cfg         = "${cfg_dir}/named.conf.default-zones"
+      $rndc_key_file             = "${cfg_dir}/rndc.key"
+      $group                     = 'bind'
+      $owner                     = 'bind'
+      $package                   = 'bind9'
+      $service                   = 'bind9'
+      $default_file              = '/etc/default/bind9'
+      $default_template          = 'default.debian.erb'
       $default_dnssec_enable     = true
       $default_dnssec_validation = 'auto'
+
       if versioncmp( $::operatingsystemmajrelease, '6' ) >= 0 {
         $necessary_packages = ['bind9']
       } else {
@@ -39,6 +40,7 @@ class dns::server::params {
       $necessary_packages = [ 'bind', ]
       $default_file       = '/etc/sysconfig/named'
       $default_template   = 'default.redhat.erb'
+
       if $::operatingsystemmajrelease =~ /^[1-5]$/ {
         $default_dnssec_enable     = false
         $default_dnssec_validation = 'absent'

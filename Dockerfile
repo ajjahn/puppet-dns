@@ -14,7 +14,7 @@ RUN \
     && mkdir -p /var/lock/named /var/run/named \
     && puppet module list \
     && puppet module list --tree \
-    && puppet apply --debug --trace --verbose --modulepath=/etc/puppetlabs/code/modules:/etc/puppetlabs/code/environments/production/modules /etc/puppetlabs/code/modules/dns/spec/fixtures/manifests/init.pp
+    && puppet apply --debug --trace --verbose --modulepath=/etc/puppetlabs/code/modules:/etc/puppetlabs/code/environments/production/modules /etc/puppetlabs/code/modules/dns/examples/init.pp
 RUN \
     echo "**** Verifying that the BIND Configuration ****" \
     && /usr/sbin/named-checkconf

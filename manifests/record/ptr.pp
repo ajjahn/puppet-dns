@@ -5,8 +5,8 @@
 define dns::record::ptr (
   $zone,
   $data,
-  $ttl = '',
-  $host = $name,
+  $ttl      = '',
+  $host     = $name,
   $data_dir = $::dns::server::config::data_dir,
 ) {
 

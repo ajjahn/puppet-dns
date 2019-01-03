@@ -6,11 +6,11 @@ define dns::record (
   String $zone,
   String $host,
   $data,
-  String $record = 'A',
-  String $dns_class = 'IN',
-  $ttl = '',
-  Boolean $preference = false,
-  Integer $order = 9,
+  String $record                 = 'A',
+  String $dns_class              = 'IN',
+  $ttl                           = '',
+  Boolean $preference            = false,
+  Integer $order                 = 9,
   Stdlib::Absolutepath $data_dir = $::dns::server::params::data_dir,
 ) {
 
