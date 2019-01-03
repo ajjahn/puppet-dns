@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'dns::server' do
+describe 'dns::server', type: :class do
   context 'By Default' do
     let(:facts) { { osfamily: 'Debian', concat_basedir: '/dne' } }
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'dns::server::service' do
+describe 'dns::server::service', type: :class do
   let(:facts) { { concat_basedir: '/mock_dir' } }
 
   context 'on a supported OS' do

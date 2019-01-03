@@ -31,7 +31,7 @@ class dns::server::config (
   }
 
   file { $cfg_file:
-    ensure  => present,
+    ensure  => file,
     owner   => $owner,
     group   => $group,
     mode    => '0644',
@@ -47,13 +47,13 @@ class dns::server::config (
     owner  => $owner,
     group  => $group,
     mode   => '0644',
-    notify => Class['dns::server::service']
+    notify => Class['dns::server::service'],
   }
 
   concat::fragment{'named.conf.local.header':
     target  => "${cfg_dir}/named.conf.local",
     order   => 1,
-    content => "// File managed by Puppet.\n"
+    content => "// File managed by Puppet.\n",
   }
 
   # Configure default zones with a concat so we could add more zones in it
@@ -71,6 +71,6 @@ class dns::server::config (
     content => template('dns/named.conf.default-zones.erb'),
   }
 
-  include dns::server::default
+  include ::dns::server::default
 
 }

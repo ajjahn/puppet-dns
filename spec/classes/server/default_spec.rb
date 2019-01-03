@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'dns::server::default' do
+describe 'dns::server::default', type: :class do
   context 'on an unsupported OS' do
     it { is_expected.to raise_error(%r{dns::server is incompatible with this osfamily}) }
   end
