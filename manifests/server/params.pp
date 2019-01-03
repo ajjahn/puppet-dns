@@ -18,7 +18,7 @@ class dns::server::params {
       $default_template          = 'default.debian.erb'
       $default_dnssec_enable     = true
       $default_dnssec_validation = 'auto'
-      
+
       if versioncmp( $facts[operatingsystemmajrelease], '8' ) >= 0 {
         $necessary_packages = ['bind9']
       } else {
