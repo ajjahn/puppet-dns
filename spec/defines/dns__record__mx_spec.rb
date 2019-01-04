@@ -13,7 +13,10 @@ describe 'dns::record::mx', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    it { is_expected.to contain_concat__fragment('db.example.com.mxtest,example.com,MX,10,mailserver.example.com.record').with_content(%r{^@\s+IN\s+MX\s+10\s+mailserver\.example\.com\.$}) }
+    it {
+      is_expected.to contain_concat__fragment('db.example.com.mxtest,example.com,MX,10,mailserver.example.com.record')
+        .with_content(%r{/^@\s+IN\s+MX\s+10\s+mailserver\.example\.com\.$/})
+    }
   end
 
   context 'passing an explicit origin and preference' do
@@ -22,13 +25,14 @@ describe 'dns::record::mx', type: :define do
         zone: 'example.com',
         data: 'ittybittymx.example.com',
         host: 'branchoffice',
-        preference: 22,
+        preference: '22',
       }
     end
 
     it { is_expected.not_to raise_error }
     it {
-      is_expected.to contain_concat__fragment('db.example.com.mxtest,example.com,MX,22,ittybittymx.example.com.record').with_content(%r{^branchoffice\s+IN\s+MX\s+22\s+ittybittymx\.example\.com\.$})
+      is_expected.to contain_concat__fragment('db.example.com.mxtest,example.com,MX,22,ittybittymx.example.com.record')
+        .with_content(%r{/^branchoffice\s+IN\s+MX\s+22\s+ittybittymx\.example\.com\.$/})
     }
   end
 
@@ -37,11 +41,11 @@ describe 'dns::record::mx', type: :define do
       {
         zone: 'example.com',
         data: 'badpref.example.com',
-        preference: 65_537,
+        preference: '65537',
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{must be an integer within 0-65536}) }
+    it { is_expected.to raise_error(%r{Puppet::Error, /must be an integer within 0-65536/}) }
   end
 
   context 'passing a wrong (string) preference' do
@@ -53,7 +57,7 @@ describe 'dns::record::mx', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{must be an integer within 0-65536}) }
+    it { is_expected.to raise_error(%r{Puppet::Error, /must be an integer within 0-65536/}) }
   end
 
   context 'passing a wrong (numeric top-level domain) zone' do
@@ -64,18 +68,18 @@ describe 'dns::record::mx', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{must be a valid domain name}) }
+    it { is_expected.to raise_error(%r{Puppet::Error, /must be a valid domain name/}) }
   end
 
   context 'passing a wrong (numeric) zone' do
     let :params do
       {
-        zone: 123,
+        zone: '123',
         data: 'badzone.example.com',
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{must be a valid domain name}) }
+    it { is_expected.to raise_error(%r{Puppet::Error, /must be a valid domain name/}) }
   end
 
   context 'passing a wrong (IP address) zone' do
@@ -86,18 +90,18 @@ describe 'dns::record::mx', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{must be a valid domain name}) }
+    it { is_expected.to raise_error(%r{Puppet::Error, /must be a valid domain name/}) }
   end
 
   context 'passing wrong (numeric) data' do
     let :params do
       {
-        zone: 'example.com',
-        data: 456,
+        zone => 'example.com',
+        data => '456',
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{must be a valid hostname}) }
+    it { is_expected.to raise_error(%r{Puppet::Error, /must be a valid hostname/}) }
   end
 
   context 'passing wrong (IP address) data' do
@@ -108,6 +112,6 @@ describe 'dns::record::mx', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{must be a valid hostname}) }
+    it { is_expected.to raise_error(%r{Puppet::Error, /must be a valid hostname/}) }
   end
 end

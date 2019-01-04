@@ -184,7 +184,7 @@ define dns::zone (
   Optional[String] $zone_notify    = undef,
   Optional[Array] $also_notify     = [],
   String $ensure                   = present,
-  Stdlib::Absolutepath $data_dir   = $::dns::server::params::data_dir,
+  String $data_dir                 = $::dns::server::params::data_dir,
   Optional[String] $view           = undef,
   Boolean $default_zone            = false,
 ) {

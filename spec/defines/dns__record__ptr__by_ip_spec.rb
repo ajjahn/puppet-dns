@@ -2,7 +2,11 @@ require 'spec_helper'
 
 describe 'dns::record::ptr::by_ip', type: :define do
   let(:title) { '192.0.2.15' }
-  let(:facts) { { concat_basedir: '/tmp' } }
+  let :facts do
+    {
+      concat_basedir => '/tmp',
+    }
+  end
 
   context 'passing a valid host and zone' do
     let :params do
@@ -14,9 +18,11 @@ describe 'dns::record::ptr::by_ip', type: :define do
 
     it { is_expected.not_to raise_error }
     it {
-      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with('host' => '15',
-                                                                              'zone' => '2.0.192.IN-ADDR.ARPA',
-                                                                              'data' => 'test1.example.com')
+      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
+        'host' => '15',
+        'zone' => '2.0.192.IN-ADDR.ARPA',
+        'data' => 'test1.example.com',
+      )
     }
   end
 
@@ -30,9 +36,11 @@ describe 'dns::record::ptr::by_ip', type: :define do
 
     it { is_expected.not_to raise_error }
     it {
-      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with('host' => '15',
-                                                                              'zone' => '2.0.192.IN-ADDR.ARPA',
-                                                                              'data' => 'test2.example.com')
+      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
+        'host' => '15',
+        'zone' => '2.0.192.IN-ADDR.ARPA',
+        'data' => 'test2.example.com',
+      )
     }
   end
 
@@ -45,9 +53,11 @@ describe 'dns::record::ptr::by_ip', type: :define do
 
     it { is_expected.not_to raise_error }
     it {
-      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with('host' => '15',
-                                                                              'zone' => '2.0.192.IN-ADDR.ARPA',
-                                                                              'data' => 'test3.example.com')
+      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
+        'host' => '15',
+        'zone' => '2.0.192.IN-ADDR.ARPA',
+        'data' => 'test3.example.com',
+      )
     }
   end
 
@@ -61,9 +71,11 @@ describe 'dns::record::ptr::by_ip', type: :define do
 
     it { is_expected.not_to raise_error }
     it {
-      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with('host' => '15',
-                                                                              'zone' => '2.0.192.IN-ADDR.ARPA',
-                                                                              'data' => 'example.com')
+      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
+        'host' => '15',
+        'zone' => '2.0.192.IN-ADDR.ARPA',
+        'data' => 'example.com',
+      )
     }
   end
 
@@ -77,9 +89,11 @@ describe 'dns::record::ptr::by_ip', type: :define do
 
     it { is_expected.not_to raise_error }
     it {
-      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with('host' => '15',
-                                                                              'zone' => '2.0.192.IN-ADDR.ARPA',
-                                                                              'data' => '@')
+      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
+        'host' => '15',
+        'zone' => '2.0.192.IN-ADDR.ARPA',
+        'data' => '@',
+      )
     }
   end
 
@@ -92,9 +106,11 @@ describe 'dns::record::ptr::by_ip', type: :define do
 
     it { is_expected.not_to raise_error }
     it {
-      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with('host' => '15',
-                                                                              'zone' => '2.0.192.IN-ADDR.ARPA',
-                                                                              'data' => '@')
+      is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
+        'host' => '15',
+        'zone' => '2.0.192.IN-ADDR.ARPA',
+        'data' => '@',
+      )
     }
   end
 end

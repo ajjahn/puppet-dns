@@ -164,7 +164,7 @@ define dns::server::options (
   Optional[String] $control_channel_ip      = undef,
   Optional[String] $control_channel_port    = undef,
   Optional[String] $control_channel_allow   = undef,
-  Stdlib::Absolutepath $data_dir            = $::dns::server::params::data_dir,
+  String $data_dir                          = $::dns::server::params::data_dir,
   String $dnssec_validation                 = $::dns::server::params::default_dnssec_validation,
   Boolean $dnssec_enable                    = $::dns::server::params::default_dnssec_enable,
   Optional[ String[1] ] $forward_policy     = undef,

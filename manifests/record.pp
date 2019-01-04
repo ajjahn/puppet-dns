@@ -11,7 +11,7 @@ define dns::record (
   $ttl                           = '',
   Boolean $preference            = false,
   Integer $order                 = 9,
-  Stdlib::Absolutepath $data_dir = $::dns::server::params::data_dir,
+  String $data_dir = $::dns::server::params::data_dir,
 ) {
 
   $zone_file_stage = "${data_dir}/db.${zone}.stage"

@@ -7,7 +7,7 @@ define dns::record::ns (
   String $data,
   String $ttl      = '',
   String $host     = $name,
-  String $data_dir = $::dns::server::config::data_dir,
+  $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${host},${zone},NS,${data}"
