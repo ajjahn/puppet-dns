@@ -1,20 +1,21 @@
 require 'spec_helper'
 
-describe 'dns::server::install', type: :class do
+describe 'Dns::Server::Install', type: :class do
   context 'on an unsupported OS' do
-    it { is_expected.to raise_error(%r{/dns::server is incompatible with this osfamily/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{dns::server is incompatible with this osfamily}) }
   end
 
   context 'on a Debian OS with default params' do
     let :facts do
       {
         osfamily: 'Debian',
+        os: { family: 'Debian' },
       }
     end
 
     it { is_expected.to contain_class('dns::server::params') }
     ['bind9', 'dnssec-tools'].each do |package|
-      it { is_expected.to contain_package(package).with('ensure' => 'latest') }
+      it { is_expected.to contain_package(package).with_ensure('latest') }
     end
   end
 
@@ -22,6 +23,7 @@ describe 'dns::server::install', type: :class do
     let :facts do
       {
         osfamily: 'Debian',
+        os: { family: 'Debian' },
       }
     end
     let :params do
@@ -32,7 +34,7 @@ describe 'dns::server::install', type: :class do
 
     it { is_expected.to contain_class('dns::server::params') }
     ['bind9', 'dnssec-tools'].each do |package|
-      it { is_expected.to contain_package(package).with('ensure' => 'present') }
+      it { is_expected.to contain_package(package).with_ensure('present') }
     end
   end
 
@@ -40,17 +42,19 @@ describe 'dns::server::install', type: :class do
     let :facts do
       {
         osfamily: 'RedHat',
+        os: { family: 'RedHat' },
       }
     end
 
     it { is_expected.to contain_class('dns::server::params') }
-    it { is_expected.to contain_package('bind').with('ensure' => 'latest') }
+    it { is_expected.to contain_package('bind').with_ensure('latest') }
   end
 
   context 'on a RedHat OS with non-default params' do
     let :facts do
       {
         osfamily: 'RedHat',
+        os: { family: 'RedHat' },
       }
     end
 
@@ -61,6 +65,6 @@ describe 'dns::server::install', type: :class do
     end
 
     it { is_expected.to contain_class('dns::server::params') }
-    it { is_expected.to contain_package('bind').with('ensure' => 'present') }
+    it { is_expected.to contain_package('bind').with_ensure('present') }
   end
 end

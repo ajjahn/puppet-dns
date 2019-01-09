@@ -172,7 +172,7 @@ define dns::zone (
   String $zone_expire              = '2419200',
   String $zone_minimum             = '604800',
   Array $nameservers               = [ $::fqdn ],
-  Boolean $reverse                 = false,
+  $reverse                         = false,
   Boolean $serial                  = false,
   String $zone_type                = 'master',
   Optional[Array] $allow_transfer  = [],
@@ -180,7 +180,7 @@ define dns::zone (
   Optional[Array] $allow_query     = [],
   Optional[Array] $allow_update    = [],
   String $forward_policy           = 'first',
-  Optional[String] $slave_masters  = undef,
+  $slave_masters  = undef,
   Optional[String] $zone_notify    = undef,
   Optional[Array] $also_notify     = [],
   String $ensure                   = present,
@@ -191,18 +191,14 @@ define dns::zone (
 
   $cfg_dir = $dns::server::params::cfg_dir
 
-  #validate_array($allow_transfer)
   assert_type(Array, $allow_transfer)
-  #validate_array($allow_forwarder)
   assert_type(Array, $allow_forwarder)
 
   if !member(['first', 'only'], $forward_policy) {
     fail('The forward policy can only be set to either first or only')
   }
-  #validate_array($allow_query)
   assert_type(Array, $allow_query)
 
-  #validate_array($also_notify)
   assert_type(Array, $also_notify)
 
   $valid_zone_notify = ['yes', 'no', 'explicit', 'master-only']
@@ -216,7 +212,6 @@ define dns::zone (
     default   => $name
   }
 
-  #validate_string($zone_type)
   assert_type(String, $zone_type)
 
   $valid_zone_type_array = ['master', 'slave', 'stub', 'forward', 'delegation-only']
@@ -228,7 +223,6 @@ define dns::zone (
   $zone_file = "${data_dir}/db.${name}"
   $zone_file_stage = "${zone_file}.stage"
 
-  #validate_array($allow_update)
   assert_type(Array, $allow_update)
 
   # Replace when updates allowed
@@ -239,11 +233,9 @@ define dns::zone (
   }
 
   if $view {
-    #validate_string($view)
     assert_type(String, $view)
   }
 
-  #validate_bool($default_zone)
   assert_type(Boolean, $default_zone)
 
   if $view and $default_zone == true {

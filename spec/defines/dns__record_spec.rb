@@ -1,57 +1,45 @@
 require 'spec_helper'
 
-describe 'dns::record', type: :define do
-  let(:title) { 'recordtest' }
+describe 'Dns::Tsig', type: :define do
   let :facts do
     {
-      concat_basedir => '/tmp',
+      osfamily: 'Debian',
+      concat_basedir: '/mock_dir',
     }
   end
+  let(:title) { 'ns3' }
+  let :pre_condition do
+    'class { "::dns::server::config": }'
+  end
 
-  context 'passing a LOC record' do
+  context 'passing valid array to server' do
     let :params do
       {
-        zone: 'example.com',
-        host: 'saturnv',
-        dns_class: 'IN',
-        record: 'LOC',
-        data: '34 42 40.126 N 86 39 21.248 W 203m 10m 100m 10m',
-        ttl: '1h45m10s',
+        server: ['192.168.0.1', '192.168.0.2'],
+        algorithm: 'hmac-md5',
+        secret: 'La/E5CjG9O+os1jq0a2jdA==',
       }
     end
 
     it { is_expected.not_to raise_error }
-    it {
-      is_expected.to contain_concat__fragment('db.example.com.recordtest.record')
-        .with_content(%r{/^saturnv\s+1h45m10s\s+IN\s+LOC\s+34 42 40.126 N 86 39 21.248 W 203m 10m 100m 10m$/})
-    }
+    it { is_expected.to contain_concat__fragment('named.conf.local.tsig.ns3.include') }
+    it { is_expected.to contain_concat__fragment('named.conf.local.tsig.ns3.include').with_content %r{/key ns3\. \{/} }
+    it { is_expected.to contain_concat__fragment('named.conf.local.tsig.ns3.include').with_content %r{/server 192\.168\.0\.1/} }
+    it { is_expected.to contain_concat__fragment('named.conf.local.tsig.ns3.include').with_content %r{/server 192\.168\.0\.2/} }
   end
-  context 'passing a wrong (out-of-range) TTL' do
+
+  context 'passing valid string to server' do
     let :params do
       {
-        zone: 'example.com',
-        host: 'badttl',
-        dns_class: 'IN',
-        record: 'A',
-        data: '172.16.104.1',
-        ttl: '2147483648',
+        server: '192.168.0.1',
+        algorithm: 'hmac-md5',
+        secret: 'La/E5CjG9O+os1jq0a2jdA==',
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /must be an integer within 0-2147483647/}) }
-  end
-  context 'passing a wrong (string) TTL' do
-    let :params do
-      {
-        zone: 'example.com',
-        host: 'textttl',
-        dns_class: 'IN',
-        record: 'A',
-        data: '172.16.104.2',
-        ttl: '4scoreand7years',
-      }
-    end
-
-    it { is_expected.to raise_error(%r{Puppet::Error, /explicitly specified time units/}) }
+    it { is_expected.not_to raise_error }
+    it { is_expected.to contain_concat__fragment('named.conf.local.tsig.ns3.include') }
+    it { is_expected.to contain_concat__fragment('named.conf.local.tsig.ns3.include').with_content %r{/key ns3\. \{/} }
+    it { is_expected.to contain_concat__fragment('named.conf.local.tsig.ns3.include').with_content %r{/server 192\.168\.0\.1/} }
   end
 end

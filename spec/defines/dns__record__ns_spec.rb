@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'dns::record::ns', type: :define do
+describe 'Dns::Record::Ns', type: :define do
   let(:title) { 'example.com' }
   let :facts do
     {
@@ -17,7 +17,7 @@ describe 'dns::record::ns', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    it { is_expected.to contain_concat__fragment('db.example.com.example.com,example.com,NS,ns3.record').with_content(%r{/^example.com\s+IN\s+NS\s+ns3$/}) }
+    it { is_expected.to contain_concat__fragment('db.example.com.example.com,example.com,NS,ns3.record').with_content %r{/^example.com\s+IN\s+NS\s+ns3$/} }
   end
 
   context 'passing an explicit host' do
@@ -32,7 +32,7 @@ describe 'dns::record::ns', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_concat__fragment('db.example.com.delegated-zone,example.com,NS,ns4.jp.example.net..record')
-        .with_content(%r{/^delegated-zone\s+IN\s+NS\s+ns4.jp.example.net\.$/})
+        .with_content %r{/^delegated-zone\s+IN\s+NS\s+ns4.jp.example.net\.$/}
     }
   end
 
@@ -44,7 +44,7 @@ describe 'dns::record::ns', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /must be a valid domain name/}) }
+    it { is_expected.to raise_error %r{Puppet::Error, /must be a valid domain name/} }
   end
 
   context 'passing a wrong (numeric) zone' do
@@ -55,7 +55,7 @@ describe 'dns::record::ns', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /must be a valid domain name/}) }
+    it { is_expected.to raise_error %r{Puppet::Error, /must be a valid domain name/} }
   end
 
   context 'passing a wrong (IP address) zone' do
@@ -66,7 +66,7 @@ describe 'dns::record::ns', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /must be a valid domain name/}) }
+    it { is_expected.to raise_error %r{Puppet::Error, /must be a valid domain name/} }
   end
 
   context 'passing wrong (numeric) data' do
@@ -77,7 +77,7 @@ describe 'dns::record::ns', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /must be a valid hostname/}) }
+    it { is_expected.to raise_error %r{Puppet::Error, /must be a valid hostname/} }
   end
 
   context 'passing wrong (IP address) data' do
@@ -88,6 +88,6 @@ describe 'dns::record::ns', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /must be a valid hostname/}) }
+    it { is_expected.to raise_error %r{Puppet::Error, /must be a valid hostname/} }
   end
 end

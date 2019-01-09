@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'dns::record::txt', type: :define do
+describe 'Dns::Record::Txt', type: :define do
   let(:title) { 'txttest' }
 
   let :facts do
@@ -19,7 +19,7 @@ describe 'dns::record::txt', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    it { is_expected.to contain_concat__fragment('db.example.com.txttest,TXT,example.com.record').with_content(%r{/^txttest\s+IN\s+TXT\s+"testing"$/}) }
+    it { is_expected.to contain_concat__fragment('db.example.com.txttest,TXT,example.com.record').with_content(%r{^txttest\s+IN\s+TXT\s+"testing"$}) }
   end
 
   context 'passing a string that includes a quote character is_expected.to result in the dns module escaping the quote' do
@@ -32,7 +32,7 @@ describe 'dns::record::txt', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    it { is_expected.to contain_concat__fragment('db.example.com.txttest,TXT,example.com.record').with_content(%r{/^txttest\s+IN\s+TXT\s+"this is a \\"test\\""$/}) }
+    it { is_expected.to contain_concat__fragment('db.example.com.txttest,TXT,example.com.record').with_content(%r{^txttest\s+IN\s+TXT\s+"this is a \"test\""$}) }
   end
 
   context 'passing a long string is_expected.to result in the dns module splitting that string into multiple quoted strings' do
@@ -45,6 +45,6 @@ describe 'dns::record::txt', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    it { is_expected.to contain_concat__fragment('db.example.com.txttest,TXT,example.com.record').with_content(%r{/^txttest\s+IN\s+TXT\s+"this is a very.*" ".*very long test"$/}) }
+    it { is_expected.to contain_concat__fragment('db.example.com.txttest,TXT,example.com.record').with_content(%r{^txttest\s+IN\s+TXT\s+"this is a very.*" ".*very long test"$}) }
   end
 end

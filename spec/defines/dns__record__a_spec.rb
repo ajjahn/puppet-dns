@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe 'dns::record::a', type: :define do
+describe 'Dns::Record::A', type: :define do
   let(:title) { 'atest' }
   let :facts do
     {
-      concat_basedir => '/tmp',
+      concat_basedir: '/tmp',
     }
   end
 
@@ -19,7 +19,7 @@ describe 'dns::record::a', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    it { is_expected.to contain_concat__fragment('db.example.com.atest,A,example.com.record').with_content(%r{/^atest\s+IN\s+A\s+192\.168\.128\.42$/}) }
+    it { is_expected.to contain_concat__fragment('db.example.com.atest,A,example.com.record').with_content(%r{^atest\s+IN\s+A\s+192\.168\.128\.42$}) }
     it { is_expected.not_to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.42.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record') }
   end
 
@@ -34,10 +34,10 @@ describe 'dns::record::a', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    it { is_expected.to contain_concat__fragment('db.example.com.atest,A,example.com.record').with_content(%r{/^atest\s+IN\s+A\s+192\.168\.128\.42$/}) }
+    it { is_expected.to contain_concat__fragment('db.example.com.atest,A,example.com.record').with_content %r{^atest\s+IN\s+A\s+192\.168\.128\.42$} }
     it {
       is_expected.to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.42.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^42\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^42\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
   end
 
@@ -52,10 +52,10 @@ describe 'dns::record::a', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    it { is_expected.to contain_concat__fragment('db.example.com.atest,A,example.com.record').with_content(%r{/^atest\s+IN\s+A\s+192\.168\.128\.42$/}) }
+    it { is_expected.to contain_concat__fragment('db.example.com.atest,A,example.com.record').with_content(%r{^atest\s+IN\s+A\s+192\.168\.128\.42$}) }
     it {
       is_expected.to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.42.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^42\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^42\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
   end
 
@@ -72,7 +72,7 @@ describe 'dns::record::a', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_concat__fragment('db.example.com.atest,A,example.com.record')
-        .with_content(%r{/^atest\s+IN\s+A\s+192\.168\.128\.68\natest\s+IN\s+A\s+192\.168\.128\.69\natest\s+IN\s+A\s+192\.168\.128\.70$/})
+        .with_content %r{^atest\s+IN\s+A\s+192\.168\.128\.68\natest\s+IN\s+A\s+192\.168\.128\.69\natest\s+IN\s+A\s+192\.168\.128\.70$}
     }
     it { is_expected.not_to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record') }
   end
@@ -90,11 +90,11 @@ describe 'dns::record::a', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_concat__fragment('db.example.com.atest,A,example.com.record')
-        .with_content(%r{/^atest\s+IN\s+A\s+192\.168\.128\.68\natest\s+IN\s+A\s+192\.168\.128\.69\natest\s+IN\s+A\s+192\.168\.128\.70$/})
+        .with_content %r{^atest\s+IN\s+A\s+192\.168\.128\.68\natest\s+IN\s+A\s+192\.168\.128\.69\natest\s+IN\s+A\s+192\.168\.128\.70$}
     }
     it {
       is_expected.to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^68\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^68\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
   end
 
@@ -111,19 +111,19 @@ describe 'dns::record::a', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_concat__fragment('db.example.com.atest,A,example.com.record')
-        .with_content(%r{/^atest\s+IN\s+A\s+192\.168\.128\.68\natest\s+IN\s+A\s+192\.168\.128\.69\natest\s+IN\s+A\s+192\.168\.128\.70$/})
+        .with_content %r{^atest\s+IN\s+A\s+192\.168\.128\.68\natest\s+IN\s+A\s+192\.168\.128\.69\natest\s+IN\s+A\s+192\.168\.128\.70$}
     }
     it {
       is_expected.to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^68\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^68\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
     it {
       is_expected.to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.69.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^69\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^69\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
     it {
       is_expected.to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.70.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^70\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^70\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
   end
 
@@ -145,7 +145,7 @@ describe 'dns::record::a', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_concat__fragment('db.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^68\.128\.168\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^68\.128\.168\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
   end
 
@@ -167,7 +167,7 @@ describe 'dns::record::a', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_concat__fragment('db.168.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^68\.128\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^68\.128\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
   end
 
@@ -190,7 +190,7 @@ describe 'dns::record::a', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^68\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^68\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
   end
 
@@ -213,7 +213,7 @@ describe 'dns::record::a', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_concat__fragment('db.168.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^68\.128\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^68\.128\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
   end
 
@@ -236,7 +236,7 @@ describe 'dns::record::a', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^68\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^68\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
   end
 
@@ -259,7 +259,7 @@ describe 'dns::record::a', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^68\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^68\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
   end
 
@@ -283,7 +283,7 @@ describe 'dns::record::a', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_concat__fragment('db.128.168.192.IN-ADDR.ARPA.68.128.168.192.IN-ADDR.ARPA,PTR,128.168.192.IN-ADDR.ARPA.record')
-        .with_content(%r{/^68\s+IN\s+PTR\s+atest\.example\.com\.$/})
+        .with_content %r{^68\s+IN\s+PTR\s+atest\.example\.com\.$}
     }
   end
 end

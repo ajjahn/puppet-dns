@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe 'dns::server::options', type: :define do
+describe 'Dns::Server::Options', type: :define do
   let :pre_condition do
     'class { "::dns::server": }'
   end
 
   let :facts do
     {
-      osfamily => 'Debian',
-      concat_basedir => '/tmp',
+      osfamily: 'Debian',
+      concat_basedir: '/tmp',
     }
   end
 
@@ -21,12 +21,14 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options') }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/8\.8\.8\.8;$/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/4\.4\.4\.4;$/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_ensure('present') }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_owner('bind') }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_group('bind') }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .with_content(%r{8.8.8.8;$})
+        .with_content(%r{4.4.4.4;$})
+        .with_ensure('present')
+        .with_owner('bind')
+        .with_group('bind')
+    }
   end
 
   context 'passing valid array to transfers' do
@@ -36,13 +38,15 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options') }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/192\.168\.0\.3;$/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/192\.168\.0\.4;$/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_ensure('present') }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_owner('bind') }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_group('bind') }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/allow-transfer/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .with_content(%r{192.168.0.3;$})
+        .with_content(%r{192.168.0.4;$})
+        .with_ensure('present')
+        .with_owner('bind')
+        .with_group('bind')
+        .with_content(%r{allow-transfer})
+    }
   end
 
   context 'passing a string to forwarders' do
@@ -72,8 +76,11 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/10\.11\.12\.13;$/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/192\.168\.1\.2;$/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .with_content(%r{10.11.12.13;$})
+        .with_content(%r{192.168.1.2;$})
+    }
   end
 
   context 'passing custom port to listen_on_port' do
@@ -83,7 +90,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/port 5300;/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{port 5300;}) }
   end
 
   context 'passing a string to listen_on' do
@@ -103,8 +110,11 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/2001:db8:1::1;$/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/2001:db8:2::\/124;$/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .with_content(%r{2001:db8:1::1;$})
+        .with_content(%r{2001:db8:2::/124;$})
+    }
   end
 
   context 'when passing a string to listen_on_ipv6' do
@@ -124,7 +134,7 @@ describe 'dns::server::options', type: :define do
 
     it {
       is_expected.to contain_file('/etc/bind/named.conf.options')
-        .with_content(%r{/listen-on-v6 \{.+?any;.+?\}/})
+        .with_content(%r{listen-on-v6 \{.+?any;.+?\}})
     }
   end
 
@@ -145,8 +155,11 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/10\.0\.0\.1;$/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/allow-recursion \{$/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .with_content(%r{10.0.0.1;$})
+        .with_content(%r{allow-recursion \{$})
+    }
   end
 
   context 'passing a wrong string to slave name' do
@@ -188,16 +201,21 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options') }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/check-names master warn;/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/check-names slave ignore;$/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/check-names response warn;$/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .with_content(%r{check-names master warn;})
+        .with_content(%r{check-names slave ignore;$})
+        .with_content(%r{check-names response warn;$})
+    }
   end
 
   context 'passing no string to check name' do
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{/check-names master/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{/check-names slave/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{/check-names response/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .without_content(%r{check-names master})
+        .without_content(%r{check-names slave})
+        .without_content(%r{check-names response})
+    }
   end
 
   context 'passing a string to the allow query' do
@@ -217,8 +235,11 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/8\.8\.8\.8;/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/allow-query/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .with_content(%r{8.8.8.8;})
+        .with_content(%r{allow-query})
+    }
   end
 
   context 'passing no statistic channel ip' do
@@ -226,7 +247,7 @@ describe 'dns::server::options', type: :define do
       {}
     end
 
-    it { is_expected.not_to contain_file('/etc/bind/named.conf.options').with_content(%r{/statistics-channels/}) }
+    it { is_expected.not_to contain_file('/etc/bind/named.conf.options').with_content(%r{statistics-channels}) }
   end
 
   context 'passing a valid ip and a valid port' do
@@ -237,8 +258,8 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/statistics-channels/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/inet 127\.0\.0\.1 port 12455;/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{statistics-channels}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{inet 127.0.0.1 port 12455;}) }
   end
 
   context 'passing no zone_notify setting' do
@@ -246,7 +267,7 @@ describe 'dns::server::options', type: :define do
       {}
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{/^\s*notify /}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{^\s*notify }) }
   end
 
   context 'passing a wrong zone_notify setting' do
@@ -266,7 +287,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/^\s*notify yes;/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{^\s*notify yes;}) }
   end
 
   context 'passing no to zone_notify' do
@@ -276,7 +297,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/^\s*notify no;/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{^\s*notify no;}) }
   end
 
   context 'passing master-only to zone_notify' do
@@ -287,7 +308,7 @@ describe 'dns::server::options', type: :define do
     end
 
     it {
-      is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/^\s*notify master-only;/})
+      is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{^\s*notify master-only;})
     }
   end
 
@@ -298,7 +319,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/^\s*notify explicit;/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{^\s*notify explicit;}) }
   end
 
   context 'passing no also_notify setting' do
@@ -306,7 +327,7 @@ describe 'dns::server::options', type: :define do
       {}
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{/^\s*also-notify /}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{^\s*also-notify }) }
   end
 
   context 'passing a string to also_notify' do
@@ -326,21 +347,24 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/^\s*also-notify \{/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/8\.8\.8\.8;/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{^\s*also-notify \{}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{8\.8\.8\.8;}) }
   end
 
   context 'default value of dnssec_validation on RedHat 5' do
     let :facts do
       {
-        osfamily => 'RedHat',
-        operatingsystemmajrelease => '5',
-        concat_basedir => '/tmp',
+        osfamily: 'RedHat',
+        operatingsystemmajrelease: '5',
+        concat_basedir: '/tmp',
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{/dnssec-validation/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-enable no/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .without_content(%r{dnssec-validation})
+        .with_content(%r{dnssec-enable no})
+    }
   end
 
   context 'default value of dnssec_validation on RedHat 6' do
@@ -348,12 +372,15 @@ describe 'dns::server::options', type: :define do
       {
         osfamily: 'RedHat',
         operatingsystemmajrelease: '6',
-        concat_basedir => '/tmp',
+        concat_basedir: '/tmp',
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-validation auto/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-enable yes/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .with_content(%r{dnssec-validation auto})
+        .with_content(%r{dnssec-enable yes})
+    }
   end
 
   context 'default value of dnssec_validation on Debian' do
@@ -364,8 +391,11 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-validation auto/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-enable yes/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .with_content(%r{dnssec-validation auto})
+        .with_content(%r{dnssec-enable yes})
+    }
   end
 
   context 'passing `false` to dnssec_enable' do
@@ -375,8 +405,11 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{/dnssec-validation/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-enable no/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .without_content(%r{dnssec-validation})
+        .with_content(%r{dnssec-enable no})
+    }
   end
 
   context 'passing `absent` to dnssec_validation' do
@@ -386,8 +419,11 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{/dnssec-validation/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-enable yes/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .without_content(%r{dnssec-validation})
+        .with_content(%r{dnssec-enable yes})
+    }
   end
 
   context 'passing `auto` to dnssec_validation' do
@@ -397,8 +433,11 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-validation auto/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-enable yes/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .with_content(%r{dnssec-validation auto})
+        .with_content(%r{dnssec-enable yes})
+    }
   end
 
   context 'passing `yes` to dnssec_validation' do
@@ -408,8 +447,11 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-validation yes/}) }
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-enable yes/}) }
+    it {
+      is_expected.to contain_file('/etc/bind/named.conf.options')
+        .with_content(%r{dnssec-validation yes})
+        .with_content(%r{dnssec-enable yes})
+    }
   end
 
   context 'passing `no` to dnssec_validation' do
@@ -419,7 +461,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/dnssec-validation no/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{dnssec-validation no}) }
   end
   context 'with not empty zone generation' do
     let :params do
@@ -428,7 +470,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/empty-zones-enable no/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{empty-zones-enable no}) }
   end
 
   context 'passing no notify_source' do
@@ -436,7 +478,7 @@ describe 'dns::server::options', type: :define do
       {}
     end
 
-    it { is_expected.not_to contain_file('/etc/bind/named.conf.options').with_content(%r{/notify-source/}) }
+    it { is_expected.not_to contain_file('/etc/bind/named.conf.options').with_content(%r{notify-source}) }
   end
 
   context 'passing notify_source a valid ip' do
@@ -446,7 +488,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/notify-source 127\.0\.0\.1;/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{notify-source 127.0.0.1;}) }
   end
 
   context 'passing notify_source an invalid string' do
@@ -464,7 +506,7 @@ describe 'dns::server::options', type: :define do
       {}
     end
 
-    it { is_expected.not_to contain_file('/etc/bind/named.conf.options').with_content(%r{/transfer-source/}) }
+    it { is_expected.not_to contain_file('/etc/bind/named.conf.options').with_content(%r{transfer-source}) }
   end
 
   context 'passing transfer_source a valid ip' do
@@ -474,7 +516,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/transfer-source 127\.0\.0\.1;/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{transfer-source 127.0.0.1;}) }
   end
 
   context 'passing transfer_source an invalid string' do
@@ -494,7 +536,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/directory  *"\/foo\/bar"/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{directory  *"\/foo\/bar"}) }
   end
 
   context 'passing a non-absolute data directory' do
@@ -515,7 +557,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/\/foo\/bar\/named_querylog/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{\/foo\/bar\/named_querylog}) }
   end
 
   context 'passing a non-absolute working directory' do
@@ -530,7 +572,7 @@ describe 'dns::server::options', type: :define do
   end
 
   context 'not passing forward_policy' do
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{/ forward /}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').without_content(%r{ forward }) }
   end
 
   context 'passing forward_policy as `only`' do
@@ -540,7 +582,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/ forward  *only *;/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{ forward  *only *;}) }
   end
 
   context 'passing forward_policy as `first`' do
@@ -550,7 +592,7 @@ describe 'dns::server::options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/ forward  *first *;/}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{ forward  *first *;}) }
   end
 
   context 'passing forward_policy as an invalid string' do

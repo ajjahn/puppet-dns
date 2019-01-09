@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe 'dns::record::ptr::by_ip', type: :define do
+describe 'Dns::Record::Ptr::By_ip', type: :define do
   let(:title) { '192.0.2.15' }
   let :facts do
     {
-      concat_basedir => '/tmp',
+      concat_basedir: '/tmp',
     }
   end
 

@@ -1,10 +1,12 @@
 require 'spec_helper'
 
-describe 'dns::record::aliases' do
+describe 'Dns::Record::Aliases', type: :define do
+  let(:pre_condition) { 'include dns::server::params' }
+
   describe 'dns::record::aaaa', type: :define do
     let :facts do
       {
-        concat_basedir => '/tmp',
+        concat_basedir: '/tmp',
       }
     end
 
@@ -43,7 +45,7 @@ describe 'dns::record::aliases' do
   describe 'dns::record::a', type: :define do
     let :facts do
       {
-        concat_basedir => '/tmp',
+        concat_basedir: '/tmp',
       }
     end
 
@@ -82,7 +84,7 @@ describe 'dns::record::aliases' do
   describe 'dns::record::cname', type: :define do
     let :facts do
       {
-        concat_basedir => '/tmp',
+        concat_basedir: '/tmp',
       }
     end
 
@@ -121,7 +123,7 @@ describe 'dns::record::aliases' do
   describe 'dns::record::mx', type: :define do
     let :facts do
       {
-        concat_basedir => '/tmp',
+        concat_basedir: '/tmp',
       }
     end
 
@@ -162,7 +164,7 @@ describe 'dns::record::aliases' do
   describe 'dns::record::ns', type: :define do
     let :facts do
       {
-        concat_basedir => '/tmp',
+        concat_basedir: '/tmp',
       }
     end
 
@@ -201,7 +203,7 @@ describe 'dns::record::aliases' do
   describe 'dns::record::ptr', type: :define do
     let :facts do
       {
-        concat_basedir => '/tmp',
+        concat_basedir: '/tmp',
       }
     end
 
@@ -241,7 +243,7 @@ describe 'dns::record::aliases' do
   describe 'dns::record::txt', type: :define do
     let :facts do
       {
-        concat_basedir => '/tmp',
+        concat_basedir: '/tmp',
       }
     end
 

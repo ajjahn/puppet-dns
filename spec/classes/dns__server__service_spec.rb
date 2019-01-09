@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'dns::server::service' do
+describe 'Dns::Server::Service', type: :class do
   let :facts do
     {
       concat_basedir: '/mock_dir',
@@ -11,6 +11,7 @@ describe 'dns::server::service' do
     let :facts do
       {
         osfamily: 'Debian',
+        os: { family: 'Debian' },
       }
     end
 
@@ -20,10 +21,11 @@ describe 'dns::server::service' do
   context 'on an unsupported OS' do
     let :facts do
       {
-        osfamily => 'Solaris',
+        osfamily: 'Solaris',
+        os: { family: 'Solaris' },
       }
     end
 
-    it { is_expected.to raise_error(%r{/dns::server is incompatible with this osfamily: Solaris/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{dns::server is incompatible with this osfamily: Solaris}) }
   end
 end
