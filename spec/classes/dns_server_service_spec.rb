@@ -1,6 +1,8 @@
 require 'spec_helper'
 
-describe 'Dns::Server::Service', type: :class do
+RSpec.describe 'Dns::Server::Service', type: :class do
+  let(:pre_condition) { 'include ::dns::server::install' }
+  let(:post_condition) { 'include ::dns::server::config' }
   let :facts do
     {
       concat_basedir: '/mock_dir',

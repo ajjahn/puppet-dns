@@ -1,4 +1,7 @@
 require 'spec_helper'
 
-describe 'dns' do
+RSpec.describe 'Dns', type: :class do
+  context 'By Default' do
+    it { is_expected.to compile }
+  end
 end

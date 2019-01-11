@@ -2,6 +2,14 @@ require 'spec_helper'
 
 describe 'Dns::Server::Install', type: :class do
   context 'on an unsupported OS' do
+    let :facts do
+      {
+        osfamily: 'Solaris',
+        os: { family: 'Solaris' },
+        concat_basedir: '/dne',
+      }
+    end
+
     it { is_expected.to raise_error(Puppet::Error, %r{dns::server is incompatible with this osfamily}) }
   end
 

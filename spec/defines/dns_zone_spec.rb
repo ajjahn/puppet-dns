@@ -33,11 +33,11 @@ describe 'Dns::Zone', type: :define do
     }
     it {
       is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-        .with_content(%r{192\.0\.2\.0;})
+        .with_content(%r{192.0.2.0;})
     }
     it {
       is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-        .with_content(%r{2001:db8::\/32})
+        .with_content(%r{2001:db8::/32})
     }
   end
   describe 'passing something other than an array to $allow_transfer' do
@@ -73,7 +73,7 @@ describe 'Dns::Zone', type: :define do
     }
     it {
       is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-        .with_content(%r{192\.0\.2\.0})
+        .with_content(%r{192.0.2.0})
     }
     it {
       is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
@@ -136,7 +136,7 @@ describe 'Dns::Zone', type: :define do
 
     it 'is_expected.to only have a type delegation-only entry' do
       is_expected.to contain_concat__fragment('named.conf.local.test.com.include')
-        .with_content(%r{zone \"test.com\" \{\s*type delegation-only;\s*\}})
+        .with_content(%r{zone "test.com" \{\s*type delegation-only;\s*\}})
     end
   end
   context 'with a forward zone' do
@@ -381,7 +381,7 @@ describe 'Dns::Zone', type: :define do
     end
 
     it { is_expected.to contain_concat__fragment('named.conf.local.test.com.include').with_content(%r{ also-notify \{}) }
-    it { is_expected.to contain_concat__fragment('named.conf.local.test.com.include').with_content(%r{8\.8\.8\.8;}) }
+    it { is_expected.to contain_concat__fragment('named.conf.local.test.com.include').with_content(%r{8.8.8.8;}) }
   end
   context 'passing true to reverse' do
     let(:title) { '10.23.45' }
@@ -391,8 +391,8 @@ describe 'Dns::Zone', type: :define do
       }
     end
 
-    it { is_expected.to contain_concat__fragment('named.conf.local.10.23.45.include').with_content(%r{zone "10\.23\.45\.in-addr\.arpa"}) }
-    it { is_expected.to contain_concat__fragment('db.10.23.45.soa').with_content(%r{\$ORIGIN\s+10\.23\.45\.in-addr\.arpa\.}) }
+    it { is_expected.to contain_concat__fragment('named.conf.local.10.23.45.include').with_content(%r{zone "10.23.45.in-addr.arpa"}) }
+    it { is_expected.to contain_concat__fragment('db.10.23.45.soa').with_content(%r{\$ORIGIN\s+10.23.45.in-addr.arpa.}) }
   end
   context 'passing reverse to reverse' do
     let(:title) { '10.23.45' }
@@ -402,8 +402,8 @@ describe 'Dns::Zone', type: :define do
       }
     end
 
-    it { is_expected.to contain_concat__fragment('named.conf.local.10.23.45.include').with_content(%r{zone "45\.23\.10\.in-addr\.arpa"}) }
-    it { is_expected.to contain_concat__fragment('db.10.23.45.soa').with_content(%r{\$ORIGIN\s+45\.23\.10\.in-addr\.arpa\.}) }
+    it { is_expected.to contain_concat__fragment('named.conf.local.10.23.45.include').with_content(%r{zone "45.23.10.in-addr.arpa"}) }
+    it { is_expected.to contain_concat__fragment('db.10.23.45.soa').with_content(%r{\$ORIGIN\s+45.23.10.in-addr.arpa.}) }
   end
   describe 'passing something other than an array to $allow_update ' do
     let :params do

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Dns::Acl', type: :define do
   let(:title) { 'trusted' }
-  let(:pre_condition) { 'include dns::server::params' }
+  # let(:pre_condition) { 'include dns::server::params' }
   let :facts do
     {
       concat_basedir: '/tmp',
@@ -17,7 +17,8 @@ describe 'Dns::Acl', type: :define do
       }
     end
 
-    it { is_expected.to raise_error %r{is not an Array} }
+    # it { is_expected.to raise_error(Puppet::Error, /is not an Array/) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects an Array}) }
   end
   context 'passing an array to data' do
     let :params do

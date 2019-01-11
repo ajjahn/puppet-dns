@@ -1,4 +1,4 @@
 ---
 osfamily: Debian
-operatingsystem: Ubuntu
-operatingsystemmajrelease: 18.04 
+operatingsystem: Debian
+operatingsystemmajrelease: 7

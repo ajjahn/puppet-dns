@@ -1,15 +1,25 @@
 require 'spec_helper'
 
 describe 'Dns::Server::Default', type: :class do
-  let(:pre_condition) { 'include dns::server::params' }
+  let(:pre_condition) { 'include ::dns::server::params' }
+  let(:post_condition) { 'include ::dns::server::service' }
 
   context 'on an unsupported OS' do
-    it { is_expected.to raise_error(%r{/dns::server is incompatible with this osfamily/}) }
+    let :facts do
+      {
+        osfamily: 'Solaris',
+        os: { family: 'Solaris' },
+        concat_basedir: '/dne',
+      }
+    end
+
+    it { is_expected.to raise_error(Puppet::Error, %r{dns::server is incompatible with this osfamily}) }
   end
   context 'by default on debian' do
     let :facts do
       {
         osfamily: 'Debian',
+        os: { family: 'Debian' },
         concat_basedir: '/tmp',
       }
     end
@@ -18,7 +28,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `no` to resolvconf' do
         let :params do
           {
-            'resolvconf' =>  'no',
+            resolvconf: 'no',
           }
         end
 
@@ -27,7 +37,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `yes` to resolvconf' do
         let :params do
           {
-            'resolvconf' =>  'yes',
+            resolvconf: 'yes',
           }
         end
 
@@ -36,7 +46,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `-u bind -4` to options' do
         let :params do
           {
-            'options' => '-u bind -4',
+            options: '-u bind -4',
           }
         end
 
@@ -45,7 +55,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `-u bind -6` to options' do
         let :params do
           {
-            'options' =>  '-u bind -6',
+            options: '-u bind -6',
           }
         end
 
@@ -59,11 +69,11 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing wrong value to resolvconf for hit an error' do
         let :params do
           {
-            'resolvconf' => 'WrongValue',
+            resolvconf: 'WrongValue',
           }
         end
 
-        it { is_expected.to raise_error(Puppet::Error, %r{/The resolvconf value is not type of a string yes \/ no./}) }
+        it { is_expected.to raise_error(Puppet::Error, %r{The resolvconf value is not type of a string yes \/ no.}) }
       end
     end
   end
@@ -79,7 +89,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing path `/chroot` to rootdir' do
         let :params do
           {
-            'rootdir' => '/chroot',
+            rootdir: '/chroot',
           }
         end
 
@@ -88,7 +98,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `-u named` to options' do
         let :params do
           {
-            'options' => '-u named',
+            options: '-u named',
           }
         end
 
@@ -97,7 +107,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `yes` to enable_zone_write' do
         let :params do
           {
-            'enable_zone_write' => 'yes',
+            enable_zone_write: 'yes',
           }
         end
 
@@ -106,7 +116,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `no` to enable_zone_write' do
         let :params do
           {
-            'enable_zone_write' => 'no',
+            enable_zone_write: 'no',
           }
         end
 
@@ -115,7 +125,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `yes` to enable_sdb' do
         let :params do
           {
-            'enable_sdb' => 'yes',
+            enable_sdb: 'yes',
           }
         end
 
@@ -124,7 +134,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `no` to enable_sdb' do
         let :params do
           {
-            'enable_sdb' => 'no',
+            enable_sdb: 'no',
           }
         end
 
@@ -133,7 +143,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `1` to enable_sdb' do
         let :params do
           {
-            'enable_sdb' => '1',
+            enable_sdb: '1',
           }
         end
 
@@ -142,7 +152,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `0` to enable_sdb' do
         let :params do
           {
-            'enable_sdb' => '0',
+            enable_sdb: '0',
           }
         end
 
@@ -151,7 +161,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `yes` to disable_named_dbus' do
         let :params do
           {
-            'disable_named_dbus' => 'yes',
+            disable_named_dbus: 'yes',
           }
         end
 
@@ -160,7 +170,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `no` to disable_named_dbus' do
         let :params do
           {
-            'disable_named_dbus' => 'no',
+            disable_named_dbus: 'no',
           }
         end
 
@@ -169,7 +179,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing path `/usr/local/samba/private/dns.keytab` to keytab_file' do
         let :params do
           {
-            'keytab_file' => '/usr/local/samba/private/dns.keytab',
+            keytab_file: '/usr/local/samba/private/dns.keytab',
           }
         end
 
@@ -178,7 +188,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `yes` to disable_zone_checking' do
         let :params do
           {
-            'disable_zone_checking' => 'yes',
+            disable_zone_checking: 'yes',
           }
         end
 
@@ -187,7 +197,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing `no` to disable_zone_checking' do
         let :params do
           {
-            'disable_zone_checking' => 'no',
+            disable_zone_checking: 'no',
           }
         end
 
@@ -201,7 +211,7 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing wrong value to rootdir for hit an error' do
         let :params do
           {
-            'rootdir' => 'chroot',
+            rootdir: 'chroot',
           }
         end
 
@@ -210,38 +220,38 @@ describe 'Dns::Server::Default', type: :class do
       context 'passing wrong value to enable_zone_write for hit an error' do
         let :params do
           {
-            'enable_zone_write' => 'WrongValue',
+            enable_zone_write: 'WrongValue',
           }
         end
 
-        it { is_expected.to raise_error(Puppet::Error, %r{/The enable_zone_write value is not type of a string yes \/ no./}) }
+        it { is_expected.to raise_error(Puppet::Error, %r{The enable_zone_write value is not type of a string yes \/ no.}) }
       end
       context 'passing wrong value to enable_sdb for hit an error' do
         let :params do
           {
-            'enable_sdb' => 'WrongValue',
+            enable_sdb: 'WrongValue',
           }
         end
 
-        it { is_expected.to raise_error(Puppet::Error, %r{/The enable_sdb value is not type of a string yes \/ no \/ 1 \/ 0 or empty./}) }
+        it { is_expected.to raise_error(Puppet::Error, %r{The enable_sdb value is not type of a string yes \/ no \/ 1 \/ 0 or empty.}) }
       end
       context 'passing wrong value to keytab_file for hit an error' do
         let :params do
           {
-            'keytab_file' => 'usr/local/samba/private/dns.keytab',
+            keytab_file: 'usr/local/samba/private/dns.keytab',
           }
         end
 
-        it { is_expected.to raise_error(Puppet::Error, %r{/'usr\/local\/samba\/private\/dns.keytab' is not an absolute path./}) }
+        it { is_expected.to raise_error(Puppet::Error, %r{'/usr/local/samba/private/dns.keytab' is not an absolute path.}) }
       end
       context 'passing wrong value to disable_zone_checking for hit an error' do
         let :params do
           {
-            'disable_zone_checking' => 'chroot',
+            disable_zone_checking: 'chroot',
           }
         end
 
-        it { is_expected.to raise_error(Puppet::Error, %r{/The disable_zone_checking value is not type of a string yes \/ no or empty./}) }
+        it { is_expected.to raise_error(Puppet::Error, %r{The disable_zone_checking value is not type of a string yes \/ no or empty.}) }
       end
     end
   end

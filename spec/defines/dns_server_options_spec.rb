@@ -1,23 +1,19 @@
 require 'spec_helper'
 
 describe 'Dns::Server::Options', type: :define do
-  let :pre_condition do
-    'class { "::dns::server": }'
-  end
-
+  let(:pre_condition) { 'include ::dns::server' }
   let :facts do
     {
       osfamily: 'Debian',
       concat_basedir: '/tmp',
     }
   end
-
   let(:title) { '/etc/bind/named.conf.options' }
 
   context 'passing valid array to forwarders' do
     let :params do
       {
-        forwarders => ['8.8.8.8', '4.4.4.4'],
+        forwarders: ['8.8.8.8', '4.4.4.4'],
       }
     end
 
@@ -34,7 +30,7 @@ describe 'Dns::Server::Options', type: :define do
   context 'passing valid array to transfers' do
     let :params do
       {
-        transfers => ['192.168.0.3', '192.168.0.4'],
+        transfers: ['192.168.0.3', '192.168.0.4'],
       }
     end
 
@@ -52,21 +48,21 @@ describe 'Dns::Server::Options', type: :define do
   context 'passing a string to forwarders' do
     let :params do
       {
-        forwarders => '8.8.8.8',
+        forwarders: '8.8.8.8',
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not an Array/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'passing a string to transfers' do
     let :params do
       {
-        transfers => '192.168.0.3',
+        transfers: '192.168.0.3',
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not an Array/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'passing valid array to listen_on' do
@@ -100,7 +96,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not an Array/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'when passing valid array to listen_on_ipv6' do
@@ -124,7 +120,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not an Array/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'when the listen_on_ipv6 option is not provided' do
@@ -145,7 +141,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not an Array/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'passing a valid recursion allow range' do
@@ -169,7 +165,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /The check name policy/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{The check name policy}) }
   end
 
   context 'passing a wrong string to master name' do
@@ -179,7 +175,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /The check name policy/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{The check name policy}) }
   end
 
   context 'passing a wrong string to response name' do
@@ -189,7 +185,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /The check name policy/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{The check name policy}) }
   end
 
   context 'passing a valid string to a check name' do
@@ -225,7 +221,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not an Array/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'passing a valid array to the allow query' do
@@ -277,7 +273,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /The zone_notify/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{The zone_notify}) }
   end
 
   context 'passing yes to zone_notify' do
@@ -337,7 +333,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not an Array/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
   end
 
   context 'passing a valid array to also_notify' do
@@ -498,7 +494,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not an ip/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an ip}) }
   end
 
   context 'passing no transfer_source' do
@@ -526,7 +522,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not an ip/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an ip}) }
   end
 
   context 'passing a non-default data directory' do
@@ -536,7 +532,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{directory  *"\/foo\/bar"}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{directory  *"/foo/bar"}) }
   end
 
   context 'passing a non-absolute data directory' do
@@ -546,7 +542,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not an absolute/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an absolute}) }
   end
 
   context 'passing a non-default working directory' do
@@ -557,7 +553,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{\/foo\/bar\/named_querylog}) }
+    it { is_expected.to contain_file('/etc/bind/named.conf.options').with_content(%r{/foo/bar/named_querylog}) }
   end
 
   context 'passing a non-absolute working directory' do
@@ -568,7 +564,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not an absolute/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not an absolute}) }
   end
 
   context 'not passing forward_policy' do
@@ -602,7 +598,7 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /The forward_policy must be/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{The forward_policy must be}) }
   end
 
   context 'passing forward_policy as an invalid type' do
@@ -612,6 +608,6 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, /is not a string/}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{is not a string}) }
   end
 end
