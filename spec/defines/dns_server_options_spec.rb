@@ -52,7 +52,8 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
 
   context 'passing a string to transfers' do
@@ -62,7 +63,8 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
 
   context 'passing valid array to listen_on' do
@@ -96,7 +98,8 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
 
   context 'when passing valid array to listen_on_ipv6' do
@@ -120,7 +123,8 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
 
   context 'when the listen_on_ipv6 option is not provided' do
@@ -141,7 +145,8 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
 
   context 'passing a valid recursion allow range' do
@@ -221,7 +226,8 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
 
   context 'passing a valid array to the allow query' do
@@ -333,7 +339,8 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
 
   context 'passing a valid array to also_notify' do
@@ -608,6 +615,6 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not a string}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or String}) }
   end
 end

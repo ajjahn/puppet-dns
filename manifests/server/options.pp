@@ -269,8 +269,8 @@ define dns::server::options (
   }
 
   # validate these, just in case they're overridden
-  Stdlib::Absolutepath($data_dir)
-  Stdlib::Absolutepath($working_dir)
+  assert_type(String, $data_dir)
+  assert_type(String, $working_dir)
 
   assert_type(Hash, $log_channels)
   assert_type(Hash, $log_categories)
