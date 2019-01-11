@@ -6,7 +6,7 @@ define dns::record::mx (
   String $zone,
   String $data,
   String $ttl                    = '',
-  String $preference             = 10,
+  Integer $preference            = 10,
   String $host                   = '@',
   Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {
@@ -15,7 +15,7 @@ define dns::record::mx (
 
   Stdlib::Fqdn($zone)
   Stdlib::Host($data)
-  Stdlib::Fqdn($host)
+  assert_type(String, $host)
 
   if !is_domain_name($zone) or $zone =~ /^[0-9\.]+$/ {
     fail("Define[dns::record::mx]: MX zone ${zone} must be a valid domain name.")

@@ -17,7 +17,8 @@ describe 'Dns::Zone', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
   describe 'passing an array to $allow_query' do
     let :params do
@@ -47,7 +48,8 @@ describe 'Dns::Zone', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
   describe 'passing something other than an array to $allow_forwarder' do
     let :params do
@@ -56,7 +58,8 @@ describe 'Dns::Zone', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
   describe 'passing an array to $allow_transfer and $allow_forwarder' do
     let(:params) do
@@ -367,11 +370,12 @@ describe 'Dns::Zone', type: :define do
   context 'passing a string to also_notify' do
     let :params do
       {
-        also_notify: ['8.8.8.8'],
+        also_notify: '8.8.8.8',
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
   context 'passing a valid array to also_notify' do
     let :params do
@@ -390,9 +394,8 @@ describe 'Dns::Zone', type: :define do
         reverse: 'true',
       }
     end
-
-    it { is_expected.to contain_concat__fragment('named.conf.local.10.23.45.include').with_content(%r{zone "10.23.45.in-addr.arpa"}) }
-    it { is_expected.to contain_concat__fragment('db.10.23.45.soa').with_content(%r{\$ORIGIN\s+10.23.45.in-addr.arpa.}) }
+    it { is_expected.to contain_concat__fragment('named.conf.local.10.23.45.include').with_content(%r{zone "10\.23\.45\.IN-ADDR\.ARPA"}) }
+    it { is_expected.to contain_concat__fragment('db.10.23.45.soa').with_content(%r{\$ORIGIN\s+10\.23\.45\.IN-ADDR\.ARPA\.}) }
   end
   context 'passing reverse to reverse' do
     let(:title) { '10.23.45' }
@@ -402,8 +405,8 @@ describe 'Dns::Zone', type: :define do
       }
     end
 
-    it { is_expected.to contain_concat__fragment('named.conf.local.10.23.45.include').with_content(%r{zone "45.23.10.in-addr.arpa"}) }
-    it { is_expected.to contain_concat__fragment('db.10.23.45.soa').with_content(%r{\$ORIGIN\s+45.23.10.in-addr.arpa.}) }
+    it { is_expected.to contain_concat__fragment('named.conf.local.10.23.45.include').with_content(%r{zone "45.23.10.IN-ADDR.ARPA"}) }
+    it { is_expected.to contain_concat__fragment('db.10.23.45.soa').with_content(%r{\$ORIGIN\s+45.23.10.IN-ADDR.ARPA.}) }
   end
   describe 'passing something other than an array to $allow_update ' do
     let :params do
@@ -412,7 +415,8 @@ describe 'Dns::Zone', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an Array}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects a value of type Undef or Array}) }
   end
   describe 'passing an empty array to $allow_update' do
     let :params do

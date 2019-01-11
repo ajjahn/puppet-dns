@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe 'Dns::Record::Aliases', type: :define do
-  let(:pre_condition) { 'include dns::server::params' }
-
   describe 'dns::record::aaaa', type: :define do
     let :facts do
       {

@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe 'Dns::Record::Ptr::By_ip', type: :define do
   let(:title) { '192.0.2.15' }
+  let(:pre_condition) { 'include ::dns::server' }
   let :facts do
     {
       concat_basedir: '/tmp',

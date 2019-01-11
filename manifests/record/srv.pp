@@ -18,10 +18,6 @@ define dns::record::srv (
 
   $host = "_${service}._${proto}.${zone}."
 
-  Stdlib::Fqdn($zone)
-  Stdlib::Fqdn($host)
-  Stdlib::Port($port)
-
   dns::record { $alias:
     zone     => $zone,
     host     => $host,

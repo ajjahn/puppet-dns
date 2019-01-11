@@ -275,9 +275,9 @@ describe 'Dns::Record::A', type: :define do
     end
     let :pre_condition do
       [
-        'dns::zone { "192.IN-ADDR.ARPA": }',
-        'dns::zone { "168.192.IN-ADDR.ARPA": }',
-        'dns::zone { "128.168.192.IN-ADDR.ARPA": }',
+        'dns::zone{ "192.IN-ADDR.ARPA": }',
+        'dns::zone{ "168.192.IN-ADDR.ARPA": }',
+        'dns::zone{ "128.168.192.IN-ADDR.ARPA": }',
       ]
     end
 
