@@ -29,7 +29,7 @@ describe 'dns::record', type: :define do
         dns_class: 'IN',
         record: 'A',
         data: '172.16.104.1',
-        ttl: '2147483648',
+        ttl: 2147483648,
       }
     end
 

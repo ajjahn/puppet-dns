@@ -26,7 +26,7 @@ describe 'Dns::Record::Mx', type: :define do
         zone: 'example.com',
         data: 'ittybittymx.example.com',
         host: 'branchoffice',
-        preference: '22',
+        preference: 22,
       }
     end
 
@@ -42,7 +42,7 @@ describe 'Dns::Record::Mx', type: :define do
       {
         zone: 'example.com',
         data: 'badpref.example.com',
-        preference: '65537',
+        preference: 65537,
       }
     end
 
