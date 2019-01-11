@@ -9,7 +9,7 @@ define dns::record (
   String $record                 = 'A',
   String $dns_class              = 'IN',
   $ttl                           = '',
-  Boolean $preference            = false,
+  $preference                    = false,
   Integer $order                 = 9,
   String $data_dir = $::dns::server::params::data_dir,
 ) {

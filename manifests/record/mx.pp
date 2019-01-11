@@ -6,15 +6,15 @@ define dns::record::mx (
   String $zone,
   String $data,
   String $ttl                    = '',
-  Integer $preference            = 10,
+  $preference                    = 10,
   String $host                   = '@',
   Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${name},${zone},MX,${preference},${data}"
 
-  Stdlib::Fqdn($zone)
-  Stdlib::Host($data)
+  assert_type(String, $zone)
+  assert_type(String, $data)
   assert_type(String, $host)
 
   if !is_domain_name($zone) or $zone =~ /^[0-9\.]+$/ {

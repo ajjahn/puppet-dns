@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Dns::Record::Mx', type: :define do
   let(:title) { 'mxtest' }
-  let(:pre_condition) { 'include ::dns::server::config' }
+  let(:pre_condition) { 'include ::dns::server' }
   let(:facts) { { concat_basedir: '/tmp' } }
 
   context 'passing an implicit origin' do
