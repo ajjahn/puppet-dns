@@ -51,7 +51,7 @@ describe 'Dns::Record::Ns', type: :define do
   context 'passing a wrong (numeric) zone' do
     let :params do
       {
-        zone: 789,
+        zone: '789',
         data: 'badzone.example.com',
       }
     end
@@ -74,7 +74,7 @@ describe 'Dns::Record::Ns', type: :define do
     let :params do
       {
         zone: 'example.com',
-        data: 443,
+        data: '443',
       }
     end
 

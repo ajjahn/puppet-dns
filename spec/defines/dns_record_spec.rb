@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'dns::record', type: :define do
   let(:title) { 'recordtest' }
   let(:facts) { { concat_basedir: '/tmp' } }
-  let(:pre_condition) { 'include ::dns::server::params' }
+  let(:pre_condition) { 'include ::dns::server' }
 
   context 'passing a LOC record' do
     let :params do
@@ -29,7 +29,7 @@ describe 'dns::record', type: :define do
         dns_class: 'IN',
         record: 'A',
         data: '172.16.104.1',
-        ttl: 2147483648,
+        ttl: 2_147_483_648,
       }
     end
 

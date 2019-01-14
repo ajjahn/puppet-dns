@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Dns::Server::Default', type: :class do
   let(:pre_condition) { 'include ::dns::server::params' }
-  let(:post_condition) { 'include ::dns::server::service' }
+  let(:post_condition) { 'include ::dns::server' }
 
   context 'on an unsupported OS' do
     let :facts do
@@ -50,7 +50,7 @@ describe 'Dns::Server::Default', type: :class do
           }
         end
 
-        it { is_expected.to contain_file('/etc/default/bind9').with_content(%r{OPTIONS='-u bind -4'}) }
+        it { is_expected.to contain_file('/etc/default/bind9').with_content(%r{OPTIONS="-u bind -4"}) }
       end
       context 'passing `-u bind -6` to options' do
         let :params do
@@ -59,7 +59,7 @@ describe 'Dns::Server::Default', type: :class do
           }
         end
 
-        it { is_expected.to contain_file('/etc/default/bind9').with_content(%r{OPTIONS='-u bind -6'}) }
+        it { is_expected.to contain_file('/etc/default/bind9').with_content(%r{OPTIONS="-u bind -6"}) }
       end
       context 'requires bind9 and dnssec-tools package' do
         it { is_expected.to contain_file('/etc/default/bind9').with('require' => ['Package[bind9]', 'Package[dnssec-tools]']) }
@@ -73,7 +73,7 @@ describe 'Dns::Server::Default', type: :class do
           }
         end
 
-        it { is_expected.to raise_error(Puppet::Error, %r{The resolvconf value is not type of a string yes \/ no.}) }
+        it { is_expected.to raise_error(%r{The resolvconf value is not type of a string yes \/ no.}) }
       end
     end
   end
@@ -93,7 +93,7 @@ describe 'Dns::Server::Default', type: :class do
           }
         end
 
-        it { is_expected.to contain_file('/etc/sysconfig/named').with_content(%r{ROOTDIR='/chroot'}) }
+        it { is_expected.to contain_file('/etc/sysconfig/named').with_content(%r{ROOTDIR="\/chroot"}) }
       end
       context 'passing `-u named` to options' do
         let :params do
@@ -102,7 +102,7 @@ describe 'Dns::Server::Default', type: :class do
           }
         end
 
-        it { is_expected.to contain_file('/etc/sysconfig/named').with_content(%r{OPTIONS='-u named'}) }
+        it { is_expected.to contain_file('/etc/sysconfig/named').with_content(%r{OPTIONS="-u named"}) }
       end
       context 'passing `yes` to enable_zone_write' do
         let :params do
@@ -183,7 +183,7 @@ describe 'Dns::Server::Default', type: :class do
           }
         end
 
-        it { is_expected.to contain_file('/etc/sysconfig/named').with_content(%r{KEYTAB_FILE='/usr/local/samba/private/dns.keytab}) }
+        it { is_expected.to contain_file('/etc/sysconfig/named').with_content(%r{KEYTAB_FILE="\/usr\/local\/samba\/private\/dns.keytab}) }
       end
       context 'passing `yes` to disable_zone_checking' do
         let :params do
@@ -204,7 +204,7 @@ describe 'Dns::Server::Default', type: :class do
         it { is_expected.to contain_file('/etc/sysconfig/named').with_content(%r{DISABLE_ZONE_CHECKING=no}) }
       end
       context 'requires bind package' do
-        it { is_expected.to contain_file('/etc/sysconfig/named').with('require' => 'Package[bind]') }
+        it { is_expected.to contain_file('/etc/sysconfig/named').with_require('[Package[bind]{:name=>"bind"}]') }
       end
     end
     context 'passing wrong values and paths' do
@@ -215,7 +215,7 @@ describe 'Dns::Server::Default', type: :class do
           }
         end
 
-        it { is_expected.to raise_error(Puppet::Error, %r{/'chroot' is not an absolute path./}) }
+        it { is_expected.to raise_error(%r{"chroot" is not an absolute path.}) }
       end
       context 'passing wrong value to enable_zone_write for hit an error' do
         let :params do
@@ -224,7 +224,7 @@ describe 'Dns::Server::Default', type: :class do
           }
         end
 
-        it { is_expected.to raise_error(Puppet::Error, %r{The enable_zone_write value is not type of a string yes \/ no.}) }
+        it { is_expected.to raise_error(%r{The enable_zone_write value is not type of a string yes \/ no.}) }
       end
       context 'passing wrong value to enable_sdb for hit an error' do
         let :params do
@@ -233,7 +233,7 @@ describe 'Dns::Server::Default', type: :class do
           }
         end
 
-        it { is_expected.to raise_error(Puppet::Error, %r{The enable_sdb value is not type of a string yes \/ no \/ 1 \/ 0 or empty.}) }
+        it { is_expected.to raise_error(%r{The enable_sdb value is not type of a string yes \/ no \/ 1 \/ 0 or empty.}) }
       end
       context 'passing wrong value to keytab_file for hit an error' do
         let :params do
@@ -242,7 +242,7 @@ describe 'Dns::Server::Default', type: :class do
           }
         end
 
-        it { is_expected.to raise_error(Puppet::Error, %r{'/usr/local/samba/private/dns.keytab' is not an absolute path.}) }
+        it { is_expected.to raise_error(%r{"usr\/local\/samba\/private\/dns.keytab" is not an absolute path.}) }
       end
       context 'passing wrong value to disable_zone_checking for hit an error' do
         let :params do
@@ -251,7 +251,7 @@ describe 'Dns::Server::Default', type: :class do
           }
         end
 
-        it { is_expected.to raise_error(Puppet::Error, %r{The disable_zone_checking value is not type of a string yes \/ no or empty.}) }
+        it { is_expected.to raise_error(%r{The disable_zone_checking value is not type of a string yes \/ no or empty.}) }
       end
     end
   end

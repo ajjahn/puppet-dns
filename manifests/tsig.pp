@@ -18,11 +18,11 @@
 # }
 #
 define dns::tsig (
-  String $keyname          = $name,
-  String $algorithm        = 'hmac-md5',
-  Optional[String] $server = undef,
-  Optional[String] $secret = undef,
-  String $ensure           = present
+  String $keyname = $name,
+  $algorithm = 'hmac-md5',
+  $server = undef,
+  $secret = undef,
+  $ensure = 'present',
 ) {
 
   $cfg_dir   = $dns::server::params::cfg_dir # Used in a template

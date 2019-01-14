@@ -18,7 +18,9 @@ class dns::server::params {
       $default_template          = 'default.debian.erb'
       $default_dnssec_enable     = true
       $default_dnssec_validation = 'auto'
+      # lint:ignore:only_variable_string
       if versioncmp( "${::operatingsystemmajrelease}", '8' ) >= 0 {
+      # lint:endignore
         $necessary_packages = ['bind9']
       } else {
         $necessary_packages = [ 'bind9', 'dnssec-tools' ]
@@ -39,7 +41,9 @@ class dns::server::params {
       $necessary_packages = [ 'bind', ]
       $default_file       = '/etc/sysconfig/named'
       $default_template   = 'default.redhat.erb'
+      # lint:ignore:only_variable_string
       if "${::operatingsystemmajrelease}" =~ /^[1-5]$/ {
+      # lint:endignore
         $default_dnssec_enable     = false
         $default_dnssec_validation = 'absent'
       } else {

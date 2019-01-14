@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe 'Dns::Key', type: :define do
   let(:title) { 'rspec-key' }
+  let(:pre_condition) { 'include ::dns::server' }
+  # let(:post_condition) { 'include ::dns::tsig' }
   let(:default_facts) { { concat_basedir: '/tmp' } }
 
   context 'On a Debian OS' do
@@ -10,7 +12,7 @@ describe 'Dns::Key', type: :define do
     end
 
     it { is_expected.to contain_file('/tmp/rspec-key-secret.sh').with_notify('Exec[dnssec-keygen-rspec-key]') }
-    it { is_expected.to contain_exec('dnssec-keygen-rspec-key').with_command(%r{/USER rspec-key$/}) }
+    it { is_expected.to contain_exec('dnssec-keygen-rspec-key').with_command(%r{USER rspec-key$}) }
     it {
       is_expected.to contain_exec('get-secret-from-rspec-key')
         .with_command('/tmp/rspec-key-secret.sh')
@@ -35,10 +37,10 @@ describe 'Dns::Key', type: :define do
     end
 
     it { is_expected.to contain_file('/tmp/rspec-key-secret.sh').with_notify('Exec[dnssec-keygen-rspec-key]') }
-    it { is_expected.to contain_exec('dnssec-keygen-rspec-key').with_command(%r{/USER rspec-key$/}) }
+    it { is_expected.to contain_exec('dnssec-keygen-rspec-key').with_command(%r{USER rspec-key$}) }
     it {
       is_expected.to contain_exec('get-secret-from-rspec-key')
-        .with_command(%r{'/tmp/rspec-key-secret.sh'})
+        .with_command('/tmp/rspec-key-secret.sh')
         .with_creates('/etc/named/bind.keys.d/rspec-key.secret')
         .with_require(['Exec[dnssec-keygen-rspec-key]', 'File[/etc/named/bind.keys.d]', 'File[/tmp/rspec-key-secret.sh]'])
     }

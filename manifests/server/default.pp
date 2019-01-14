@@ -2,20 +2,20 @@
 #
 class dns::server::default (
 
-  $default_file                = $dns::server::params::default_file,
+  $default_file = $dns::server::params::default_file,
   $default_template            = $dns::server::params::default_template,
   Optional[String] $resolvconf = undef,
-  Optional[Array] $options     = undef,
-  Optional[String] $rootdir    = undef,
+  $options = undef,
+  $rootdir = undef,
   $enable_zone_write           = undef,
   $enable_sdb                  = undef,
   $disable_named_dbus          = undef,
-  $keytab_file                 = undef,
+  $keytab_file = undef,
   $disable_zone_checking       = undef,
 
 ) inherits dns::server::params {
 
-  Stdlib::Absolutepath( $default_file )
+  validate_absolute_path( $default_file )
 
   if $resolvconf != undef {
     assert_type(Pattern[/(^yes|no)$/], $resolvconf) | $a, $b| {
@@ -24,7 +24,7 @@ class dns::server::default (
   }
 
   if $rootdir != undef {
-    Stdlib::Absolutepath( $rootdir )
+    validate_absolute_path( $rootdir )
   }
 
   if $enable_zone_write != undef {
@@ -40,7 +40,7 @@ class dns::server::default (
   }
 
   if $keytab_file != undef {
-    Stdlib::Absolutepath( $keytab_file )
+    validate_absolute_path( $keytab_file )
   }
 
   if $disable_zone_checking != undef {

@@ -74,14 +74,12 @@
 #     }
 
 define dns::record::ptr::by_ip (
-  String $host,
-  String $zone                    = undef,
-  $ttl                            = undef,
-  String $ip                      = $name,
-  Stdlib::Absolutepath  $data_dir = $::dns::server::config::data_dir,
+  $host,
+  $zone = undef,
+  $ttl = undef,
+  $ip = $name,
+  $data_dir = $::dns::server::config::data_dir,
 ) {
-
-  Stdlib::Fqdn($host)
 
   # split the IP address up into three host/zone pairs based on class A, B, or C splits:
   # For IP address A.B.C.D,

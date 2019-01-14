@@ -20,9 +20,9 @@ describe 'Dns::Record::Ptr::By_ip', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
-        'host' => '15',
-        'zone' => '2.0.192.IN-ADDR.ARPA',
-        'data' => 'test1.example.com',
+        host: '15',
+        zone: '2.0.192.IN-ADDR.ARPA',
+        data: 'test1.example.com',
       )
     }
   end
@@ -38,9 +38,9 @@ describe 'Dns::Record::Ptr::By_ip', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
-        'host' => '15',
-        'zone' => '2.0.192.IN-ADDR.ARPA',
-        'data' => 'test2.example.com',
+        host: '15',
+        zone: '2.0.192.IN-ADDR.ARPA',
+        data: 'test2.example.com',
       )
     }
   end
@@ -55,9 +55,9 @@ describe 'Dns::Record::Ptr::By_ip', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
-        'host' => '15',
-        'zone' => '2.0.192.IN-ADDR.ARPA',
-        'data' => 'test3.example.com',
+        host: '15',
+        zone: '2.0.192.IN-ADDR.ARPA',
+        data: 'test3.example.com',
       )
     }
   end
@@ -73,9 +73,9 @@ describe 'Dns::Record::Ptr::By_ip', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
-        'host' => '15',
-        'zone' => '2.0.192.IN-ADDR.ARPA',
-        'data' => 'example.com',
+        host: '15',
+        zone: '2.0.192.IN-ADDR.ARPA',
+        data: 'example.com',
       )
     }
   end
@@ -91,9 +91,9 @@ describe 'Dns::Record::Ptr::By_ip', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
-        'host' => '15',
-        'zone' => '2.0.192.IN-ADDR.ARPA',
-        'data' => '@',
+        host: '15',
+        zone: '2.0.192.IN-ADDR.ARPA',
+        data: '@',
       )
     }
   end
@@ -108,9 +108,9 @@ describe 'Dns::Record::Ptr::By_ip', type: :define do
     it { is_expected.not_to raise_error }
     it {
       is_expected.to contain_dns__record__ptr('15.2.0.192.IN-ADDR.ARPA').with(
-        'host' => '15',
-        'zone' => '2.0.192.IN-ADDR.ARPA',
-        'data' => '@',
+        host: '15',
+        zone: '2.0.192.IN-ADDR.ARPA',
+        data: '@',
       )
     }
   end

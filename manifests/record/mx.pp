@@ -5,10 +5,10 @@
 define dns::record::mx (
   String $zone,
   String $data,
-  String $ttl                    = '',
-  Integer $preference            = 10,
-  String $host                   = '@',
-  Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
+  String $ttl = '',
+  Integer $preference = 10,
+  String $host = '@',
+  $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${name},${zone},MX,${preference},${data}"
