@@ -19,6 +19,16 @@ pipeline {
                 sh 'pdk validate'
             }
         }
+        stage ('Use the Puppet Development Kit Test Unit for Module Unit Testing) {
+            when {
+              expression {
+                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+              }
+            }
+            steps {
+                sh 'pdk test -d unit'
+            }
+        }
         stage ('Checkout and build puppet-dns in Docker to validate code as well as changes across OSes.') {
             when {
               expression {

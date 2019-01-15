@@ -15,7 +15,7 @@ class dns::server::default (
 
 ) inherits dns::server::params {
 
-  validate_absolute_path( $default_file )
+  validate_absolute_path($default_file)
 
   if $resolvconf != undef {
     assert_type(Pattern[/(^yes|no)$/], $resolvconf) | $a, $b| {
