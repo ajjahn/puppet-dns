@@ -164,10 +164,11 @@ define dns::server::options (
   Optional[String] $control_channel_ip      = undef,
   Optional[String] $control_channel_port    = undef,
   Optional[String] $control_channel_allow   = undef,
-  $data_dir = $::dns::server::params::data_dir,
+  #Stdlib::Absolutepath $data_dir            = $::dns::server::params::data_dir,
+  String $data_dir                          = $::dns::server::params::data_dir,
   String $dnssec_validation                 = $::dns::server::params::default_dnssec_validation,
   Boolean $dnssec_enable                    = $::dns::server::params::default_dnssec_enable,
-  Optional[ String[1] ] $forward_policy     = undef,
+  Optional[String] $forward_policy          = undef,
   Optional[Array] $forwarders               = [],
   Optional[Array] $listen_on                = [],
   Optional[Array] $listen_on_ipv6           = [],
@@ -195,12 +196,14 @@ define dns::server::options (
   if ! defined(Class['::dns::server']) {
     fail('You must include the ::dns::server base class before using any dns options defined resources')
   }
-
-  if $forward_policy != undef and !member($valid_forward_policy, $forward_policy) {
-    assert_type(String, $forward_policy) | $a, $b | {
-      fail("The forward_policy must be ${valid_forward_policy}")
-    }
+  if $forward_policy != undef {
+    assert_type(String, $forward_policy)
   }
+  #validate_string($forward_policy)
+  if $forward_policy != undef and !member($valid_forward_policy, $forward_policy) {
+    fail("The forward_policy must be ${valid_forward_policy}")
+  }
+
   assert_type(Array, $forwarders)
   assert_type(Array, $transfers)
   assert_type(Array, $listen_on)
@@ -270,8 +273,8 @@ define dns::server::options (
   }
 
   # validate these, just in case they're overridden
-  assert_type(String, $data_dir)
-  assert_type(String, $working_dir)
+  validate_absolute_path($data_dir)
+  validate_absolute_path($working_dir)
 
   assert_type(Hash, $log_channels)
   assert_type(Hash, $log_categories)

@@ -46,7 +46,7 @@ describe 'Dns::Record::Mx', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, 'must be an integer within 0-65536'}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{must be an integer within 0-65536}) }
   end
 
   context 'passing a wrong (string) preference' do
@@ -58,7 +58,8 @@ describe 'Dns::Record::Mx', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, 'must be an integer within 0-65536'}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{must be an integer within 0-65536}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{expects an Integer value, got String}) }
   end
 
   context 'passing a wrong (numeric top-level domain) zone' do
@@ -69,7 +70,7 @@ describe 'Dns::Record::Mx', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, 'must be a valid domain name'}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{must be a valid domain name}) }
   end
 
   context 'passing a wrong (numeric) zone' do
@@ -80,7 +81,7 @@ describe 'Dns::Record::Mx', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, 'must be a valid domain name'}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{must be a valid domain name}) }
   end
 
   context 'passing a wrong (IP address) zone' do
@@ -91,18 +92,18 @@ describe 'Dns::Record::Mx', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, 'must be a valid domain name'}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{must be a valid domain name}) }
   end
 
   context 'passing wrong (numeric) data' do
     let :params do
       {
-        zone => 'example.com',
-        data => '456',
+        zone: 'example.com',
+        data: '456',
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, 'must be a valid hostname'}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{must be a valid hostname}) }
   end
 
   context 'passing wrong (IP address) data' do
@@ -113,6 +114,6 @@ describe 'Dns::Record::Mx', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(%r{Puppet::Error, 'must be a valid hostname'}) }
+    it { is_expected.to raise_error(Puppet::Error, %r{must be a valid hostname}) }
   end
 end

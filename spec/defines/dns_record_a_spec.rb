@@ -186,8 +186,8 @@ describe 'Dns::Record::A', type: :define do
 
     let(:pre_condition) do
       [
-         'include ::dns::server',
-         'dns::zone { "128.168.192.IN-ADDR.ARPA": }',
+        'include ::dns::server',
+        'dns::zone { "128.168.192.IN-ADDR.ARPA": }',
       ]
     end
 

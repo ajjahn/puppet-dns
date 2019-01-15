@@ -3,15 +3,15 @@
 class dns::server::default (
 
   $default_file = $dns::server::params::default_file,
-  $default_template            = $dns::server::params::default_template,
+  $default_template = $dns::server::params::default_template,
   Optional[String] $resolvconf = undef,
   $options = undef,
-  $rootdir = undef,
-  $enable_zone_write           = undef,
-  $enable_sdb                  = undef,
-  $disable_named_dbus          = undef,
-  $keytab_file = undef,
-  $disable_zone_checking       = undef,
+  Optional[String] $rootdir = undef,
+  Optional[String] $enable_zone_write = undef,
+  Optional[String] $enable_sdb = undef,
+  $disable_named_dbus = undef,
+  Optional[String] $keytab_file = undef,
+  Optional[String] $disable_zone_checking = undef,
 
 ) inherits dns::server::params {
 
