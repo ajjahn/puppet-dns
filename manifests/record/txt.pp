@@ -66,11 +66,11 @@
 #
 
 define dns::record::txt (
-  $zone,
+  Variant[Stdlib::Compat::String, String] $zone,
   $data,
-  $ttl      = '',
-  $host     = $name,
-  $data_dir = $::dns::server::config::data_dir,
+  String $ttl = '',
+  Stdlib::Host $host = $name,
+  Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${name},TXT,${zone}"

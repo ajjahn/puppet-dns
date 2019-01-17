@@ -3,11 +3,11 @@
 # Wrapper of dns::record to set AAAA records
 #
 define dns::record::aaaa (
-  $zone,
-  $data,
-  $ttl      = '',
-  $host     = $name,
-  $data_dir = $::dns::server::config::data_dir,
+  Variant[Stdlib::Host, Tuple] $zone,
+  Variant[Stdlib::Host, String] $host = $name,
+  Variant[String, Tuple] $data,
+  String $ttl = '',
+  Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${name},AAAA,${zone}"

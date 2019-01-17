@@ -164,8 +164,9 @@ define dns::server::options (
   Optional[String] $control_channel_ip      = undef,
   Optional[String] $control_channel_port    = undef,
   Optional[String] $control_channel_allow   = undef,
-  #Stdlib::Absolutepath $data_dir            = $::dns::server::params::data_dir,
-  String $data_dir                          = $::dns::server::params::data_dir,
+  Stdlib::Absolutepath $data_dir            = $::dns::server::params::data_dir,
+  # string only works for old type
+  # String $data_dir                          = $::dns::server::params::data_dir,
   String $dnssec_validation                 = $::dns::server::params::default_dnssec_validation,
   Boolean $dnssec_enable                    = $::dns::server::params::default_dnssec_enable,
   Optional[String] $forward_policy          = undef,
@@ -184,7 +185,9 @@ define dns::server::options (
   Optional[String] $statistic_channel_allow = undef,
   Optional[Array] $transfers                = [],
   Optional[String] $transfer_source         = undef,
-  String $working_dir                       = $::dns::server::params::working_dir,
+  Stdlib::Absolutepath $working_dir         = $::dns::server::params::working_dir,
+  # string only works for old type
+  # String $working_dir                       = $::dns::server::params::working_dir,
   Optional[String] $zone_notify             = undef,
   Optional[Hash] $extra_options             = {},
 ) {
@@ -273,8 +276,8 @@ define dns::server::options (
   }
 
   # validate these, just in case they're overridden
-  validate_absolute_path($data_dir)
-  validate_absolute_path($working_dir)
+  # validate_absolute_path($data_dir)
+  # validate_absolute_path($working_dir)
 
   assert_type(Hash, $log_channels)
   assert_type(Hash, $log_categories)

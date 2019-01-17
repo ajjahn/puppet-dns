@@ -549,7 +549,8 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an absolute}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an absolute}) }
+    it { is_expected.to raise_error(Puppet::Error) }
   end
 
   context 'passing a non-default working directory' do
@@ -571,7 +572,8 @@ describe 'Dns::Server::Options', type: :define do
       }
     end
 
-    it { is_expected.to raise_error(Puppet::Error, %r{is not an absolute}) }
+    # it { is_expected.to raise_error(Puppet::Error, %r{is not an absolute}) }
+    it { is_expected.to raise_error(Puppet::Error) }
   end
 
   context 'not passing forward_policy' do

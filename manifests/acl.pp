@@ -21,9 +21,7 @@ define dns::acl (
 ) {
   include dns::server::params
 
-  #validate_string($aclname)
   assert_type(String, $aclname)
-  #validate_array($data)
   assert_type(Array, $data)
 
   concat::fragment { "named.conf.local.acl.${name}.include":

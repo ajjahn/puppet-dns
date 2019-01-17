@@ -19,14 +19,14 @@
 #
 define dns::tsig (
   String $keyname = $name,
-  $algorithm = 'hmac-md5',
-  $server = undef,
-  $secret = undef,
-  $ensure = 'present',
+  String $algorithm = 'hmac-md5',
+  Variant[Undef, String, Array] $server = undef,
+  Variant[Undef, String] $secret = undef,
+  String $ensure = 'present',
 ) {
 
   $cfg_dir   = $dns::server::params::cfg_dir # Used in a template
-  #validate_string($name)
+
   assert_type(String, $name)
 
   if $ensure == 'present' {

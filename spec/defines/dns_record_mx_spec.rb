@@ -59,7 +59,7 @@ describe 'Dns::Record::Mx', type: :define do
     end
 
     # it { is_expected.to raise_error(Puppet::Error, %r{must be an integer within 0-65536}) }
-    it { is_expected.to raise_error(Puppet::Error, %r{expects an Integer value, got String}) }
+    it { is_expected.to raise_error(Puppet::Error) }
   end
 
   context 'passing a wrong (numeric top-level domain) zone' do

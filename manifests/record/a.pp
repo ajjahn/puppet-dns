@@ -4,12 +4,12 @@
 # also setting a PTR at the same time.
 #
 define dns::record::a (
-  $zone,
-  $data,
-  $ttl      = '',
-  $ptr      = false,
-  $host     = $name,
-  $data_dir = $::dns::server::config::data_dir,
+  Variant[Stdlib::Host, Tuple] $zone,
+  Variant[Stdlib::Host, String] $host = $name,
+  Variant[String, Tuple] $data,
+  String $ttl = '',
+  Variant[Boolean, Enum['true', 'false', 'all', 'first']] $ptr = false,
+  Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${name},A,${zone}"
