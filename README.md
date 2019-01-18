@@ -194,8 +194,9 @@ node 'ns1.xkyle.com' {
 ## Authors
 
 Note: This module is a merge of the work from the following authors:
-* [ajjahn](https://github.com/ajjahn/puppet-dns)
+* [ajjahn](https://github.com/ajjahn)
 * [Danzilio](https://github.com/danzilio)
+* [ppouliot](https://github.com/ppouliot)
 * [solarkennedy](https://github.com/solarkennedy)
 
 ## License
