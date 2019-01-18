@@ -13,7 +13,7 @@ describe 'dns::record::ns', type: :define do
     let :params do
       {
         zone: 'example.com',
-        data: 'baz.example.com',
+        data: 'baz.example.com.',
       }
     end
 
@@ -22,7 +22,7 @@ describe 'dns::record::ns', type: :define do
     # For some reason this fails and I haven't quite figured out why.
     # it {
     #   is_expected.to contain_concat__fragment('db.example.com.foo,NS,example.com.record')
-    #     .with_content(%r{^foo\s+IN\s+NS\s+baz\.example\.com\.$})
+    #    .with_content(%r{^foo\s+IN\s+NS\s+baz\.example\.com\.$})
     # }
   end
   context 'assigning a different host than the resource name' do
@@ -31,7 +31,7 @@ describe 'dns::record::ns', type: :define do
       {
         zone: 'example.com',
         host: 'bar',
-        data: 'baz.example.com',
+        data: 'baz.example.com.',
       }
     end
 

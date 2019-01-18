@@ -7,12 +7,8 @@ class dns::server::default (
   Optional[String] $resolvconf = undef,
   $options = undef,
   Optional[Variant[Undef, String, Stdlib::Absolutepath]] $rootdir = undef,
-  # Moving to String will validate RSPEC
-  # Optional[String] $rootdir = undef,
-  # Optional[String] $enable_zone_write = undef,
   Optional[Variant[Undef, String, Enum['yes','no']]] $enable_zone_write = undef,
   Optional[String] $enable_sdb = undef,
-  # $disable_named_dbus = undef,
   Optional[Variant[Undef, String, Enum['yes','no']]] $disable_named_dbus = undef,
   Optional[String] $keytab_file = undef,
   Optional[String] $disable_zone_checking = undef,
@@ -20,7 +16,7 @@ class dns::server::default (
 ) inherits dns::server::params {
   # TODO: Fix validation of absolutepath
   # validate_legacy(String[Stdlib::Absolutepath], $default_file)
-  # validate_absolute_path($default_file)
+  #  validate_absolute_path($default_file)
   # if ($default_file) =~ Stdlib::Absolutepath) {
   #  fail("String values aren't allowed")
   #}
