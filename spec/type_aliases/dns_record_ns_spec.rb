@@ -18,8 +18,7 @@ describe 'dns::record::ns', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    # TODO: 
-    # For some reason this fails and I haven't quite figured out why.
+    # TODO: For some reason this fails and I haven't quite figured out why.
     # it {
     #   is_expected.to contain_concat__fragment('db.example.com.foo,NS,example.com.record')
     #    .with_content(%r{^foo\s+IN\s+NS\s+baz\.example\.com\.$})
@@ -36,8 +35,7 @@ describe 'dns::record::ns', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    # TODO: 
-    # For some reason this fails and I haven't quite figured out why.
+    # TODO: For some reason this fails and I haven't quite figured out why.
     # it {
     #   is_expected.to contain_concat__fragment('db.example.com.foo,NS,example.com.record')
     #     .with_content(%r{^bar\s+IN\s+NS\s+baz\.example\.com\.$})

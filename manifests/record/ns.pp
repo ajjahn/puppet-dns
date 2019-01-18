@@ -3,9 +3,9 @@
 # Wrapper of dns::record to set NS records
 #
 define dns::record::ns (
+  Variant[String, Tuple] $data,
   Stdlib::Fqdn $zone,
   Stdlib::Host $host = $name,
-  Variant[String, Tuple] $data,
   String $ttl = '',
   Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {

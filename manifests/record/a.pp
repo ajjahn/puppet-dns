@@ -4,11 +4,11 @@
 # also setting a PTR at the same time.
 #
 define dns::record::a (
+  Variant[String, Tuple] $data,
   Variant[Stdlib::Host, Tuple] $zone,
   Variant[Stdlib::Host, String] $host = $name,
-  Variant[String, Tuple] $data,
   String $ttl = '',
-  Variant[Boolean, Enum['true', 'false', 'all', 'first']] $ptr = false,
+  Variant[Boolean, Enum['true', 'false', 'all', 'first']] $ptr = false, # lint:ignore:quoted_booleans
   Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {
 

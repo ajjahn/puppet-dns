@@ -18,8 +18,7 @@ describe 'dns::record::mx', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    # TODO: 
-    # For some reason this fails and I haven't quite figured out why.
+    # TODO: For some reason this fails and I haven't quite figured out why.
     # Disable to make RSpec Tests work
     # it {
     #  is_expected.to contain_concat__fragment('db.example.com.foo,MX,example.com.record')
@@ -38,8 +37,7 @@ describe 'dns::record::mx', type: :define do
     end
 
     it { is_expected.not_to raise_error }
-    # TODO: 
-    # For some reason this fails and I haven't quite figured out why.
+    # TODO: For some reason this fails and I haven't quite figured out why.
     # Disable to make RSpec Tests work
     # it {
     #  is_expected.to contain_concat__fragment('db.example.com.foo,MX,example.com.record')

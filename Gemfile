@@ -30,8 +30,9 @@ group :development do
 end
 
 group :acceptance do
-  gem 'beaker', '~>4.0'
+  gem 'beaker'
   gem 'beaker-rspec'
+#  gem 'beaker-vagrant'
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']
