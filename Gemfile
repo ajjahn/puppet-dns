@@ -27,12 +27,26 @@ group :development do
   gem "puppet-module-posix-dev-r#{minor_version}",     require: false, platforms: [:ruby]
   gem "puppet-module-win-default-r#{minor_version}",   require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "puppet-module-win-dev-r#{minor_version}",       require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "github_changelog_generator",                    require: false, git: 'https://github.com/skywinder/github-changelog-generator', ref: '20ee04ba1234e9e83eb2ffb5056e23d641c7a018' if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')
+
+end
+group :system_tests do
+  gem "puppet-module-posix-system-r#{minor_version}", require: false, platforms: [:ruby]
+  gem "puppet-module-win-system-r#{minor_version}",   require: false, platforms: [:mswin, :mingw, :x64_mingw]
 end
 
 group :acceptance do
-  gem 'beaker'
+  gem 'optimist'
+  gem 'beaker', '~>4.0'
+  gem 'beaker-puppet'
+  gem 'beaker-docker'
+  gem 'beaker-module_install_helper'
+  gem 'beaker-puppet_install_helper'
+  gem 'beaker-pe'
   gem 'beaker-rspec'
-#  gem 'beaker-vagrant'
+  gem 'beaker-task_helper'
+  gem 'beaker-vagrant', '0.5.0'
+  gem 'vagrant-wrapper'
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']

@@ -1,10 +1,10 @@
 HOSTS:
-  debian-78-x64:
+  ubuntu-1604-x64:
     roles:
       - agent
       - default
-    platform: debian-7-amd64
-    box: puppetlabs/debian-7.8-64-nocm
+    platform: ubuntu-1604-amd64
+    box: puppetlabs/ubuntu-16.04-64-nocm
     hypervisor: vagrant
 CONFIG:
   log_level: verbose

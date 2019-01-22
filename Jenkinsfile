@@ -9,6 +9,8 @@ pipeline {
     environment {
         BUILD_TAG = "${env.BUILD_TAG}".replaceAll('%2F','_')
         BRANCH = "${env.BRANCH_NAME}".replaceAll('/','_')
+        BEAKER_PUPPET_COLLECTION = "puppet6"
+        BEAKER_PUPPET_VERSION = "6"
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '30'))
@@ -29,40 +31,24 @@ pipeline {
                 sh 'pdk test -d unit'
             }
         }
-        stage ('Checkout and build puppet-dns in Docker to validate code as well as changes across OSes.') {
+        stage ('Use the Puppet Development Kit To run Beaker Acceptance Tests) {
             when {
               expression {
                 currentBuild.result == null || currentBuild.result == 'SUCCESS' 
               }
             }
             steps {
-                dir("${env.WORKSPACE}") {
-                    sh 'docker build -t ppouliot/puppet-dns .'
-                }
-            } 
+                sh 'pdk bundle exec rake beaker:default'
+            }
         }
-        stage ('Checkout and build puppet-dns in Vagrant to assemble a functional IPAM cluster') {
+        stage ('Cleanup Acceptance Tests after successful build.') {
             when {
               expression {
                 currentBuild.result == null || currentBuild.result == 'SUCCESS' 
               }
             }
             steps {
-                dir("${env.WORKSPACE}") {
-
-                    sh 'vagrant up'
-                }
-            } 
-        }
-        
-        stage ('Cleanup vagrant after successful build.') {
-            when {
-              expression {
-                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
-              }
-            }
-            steps {
-                sh 'vagrant destroy -f'
+                sh 'pdk bundle exec rake module:clean'
             }
         }
 

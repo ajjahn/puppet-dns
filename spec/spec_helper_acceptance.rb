@@ -1,32 +1,27 @@
-require 'beaker-rspec/spec_helper'
-require 'beaker-rspec/helpers/serverspec'
-require 'pry'
+require 'beaker-rspec'
+require 'beaker-puppet'
+require 'beaker/puppet_install_helper'
+require 'beaker/module_install_helper'
+require 'beaker-task_helper'
 
-unless ENV['BEAKER_provision'] == 'no'
-  hosts.each do |host|
-    # Install Puppet
-    if host.is_pe?
-      install_pe
-    else
-      install_puppet
-    end
-  end
-end
+logger.error("LOADED MYYYYYYYYYY Spec Acceptance Helper")
+
+# install_puppet_on(hosts, options)
+run_puppet_install_helper_on(hosts)
+configure_type_defaults_on(hosts)
+install_ca_certs unless pe_install?
+# install_puppet_agent_on(hosts)
+# install_bolt_on(hosts)
+#install_module_on(hosts)
+#install_module_dependencies_on(hosts)
 
 RSpec.configure do |c|
-  # Project root
-  proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-
   # Readable test descriptions
   c.formatter = :documentation
 
   # Configure all nodes in nodeset
   c.before :suite do
-    # Install module and dependencies
-    puppet_module_install(source: proj_root, module_name: 'dns')
-    hosts.each do |host|
-      on host, puppet('module', 'install', 'puppetlabs-stdlib'), acceptable_exit_codes: [0, 1]
-      on host, puppet('module', 'install', 'puppetlabs-concat'), acceptable_exit_codes: [0, 1]
-    end
+    install_module_on(hosts)
+    install_module_dependencies_on(hosts)
   end
 end
