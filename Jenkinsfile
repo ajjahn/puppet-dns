@@ -52,6 +52,7 @@ pipeline {
             steps {
                 sh 'pdk bundle exec rake beaker:default'
             }
+        }
         stage ('Cleanup Acceptance Tests after successful build.') {
             when {
               expression {
