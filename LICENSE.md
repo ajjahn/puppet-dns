@@ -1,6 +1,7 @@
 The MIT License
 
 Copyright (c) 2018-2019 Peter J. Pouliot, peter@pouliot.net
+
 Copyright (c) 2012-2017 Adam Jahn, David Danzilio, Kyle Anderson
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
