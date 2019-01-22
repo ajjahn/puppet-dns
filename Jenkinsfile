@@ -33,6 +33,16 @@ pipeline {
             }
         }
 
+        stage ('Use the Puppet Development Kit To run Rake/Rspec Unit Tests') {
+            when {
+              expression {
+                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+              }
+            }
+            steps {
+                sh 'pdk bundle exec rake test'
+            }
+        }
         stage ('Use the Puppet Development Kit To run Beaker Acceptance Tests') {
             when {
               expression {
@@ -42,7 +52,6 @@ pipeline {
             steps {
                 sh 'pdk bundle exec rake beaker:default'
             }
-        }
         stage ('Cleanup Acceptance Tests after successful build.') {
             when {
               expression {
