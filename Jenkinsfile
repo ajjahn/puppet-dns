@@ -78,7 +78,7 @@ pipeline {
         }
         stage ('Build Puppet module files') {
             steps {
-                sh 'pdk bundle exec rake module:build'
+                sh 'pdk bundle exec rake build:pdk'
             }
         }
 
