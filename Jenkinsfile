@@ -18,7 +18,7 @@ pipeline {
     stages {
         stage ('Use the Puppet Development Bundle Install to install missing gem dependencies') {
             steps {
-                sh 'pdk bundle install'
+                sh 'pdk bundle install 2> /dev/null'
             }
         }
 
@@ -32,6 +32,7 @@ pipeline {
                 sh 'pdk validate'
             }
         }
+
         stage ('Use the Puppet Development Kit Test Unit for Module Unit Testing') {
             when {
               expression {
@@ -53,6 +54,7 @@ pipeline {
                 sh 'pdk bundle exec rake test'
             }
         }
+
         stage ('Use the Puppet Development Kit To run Beaker Acceptance Tests') {
             when {
               expression {
@@ -63,6 +65,7 @@ pipeline {
                 sh 'pdk bundle exec rake beaker:default'
             }
         }
+ 
         stage ('Cleanup Acceptance Tests after successful build.') {
             when {
               expression {
