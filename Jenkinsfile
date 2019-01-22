@@ -31,6 +31,7 @@ pipeline {
                 sh 'pdk test -d unit'
             }
         }
+
         stage ('Use the Puppet Development Kit To run Beaker Acceptance Tests) {
             when {
               expression {
@@ -41,6 +42,7 @@ pipeline {
                 sh 'pdk bundle exec rake beaker:default'
             }
         }
+
         stage ('Cleanup Acceptance Tests after successful build.') {
             when {
               expression {
