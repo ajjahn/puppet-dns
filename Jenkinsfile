@@ -21,7 +21,8 @@ pipeline {
                 sh 'pdk validate'
             }
         }
-        stage ('Use the Puppet Development Kit Test Unit for Module Unit Testing) {
+  
+        stage ('Use the Puppet Development Kit Test Unit for Module Unit Testing') {
             when {
               expression {
                 currentBuild.result == null || currentBuild.result == 'SUCCESS' 
@@ -32,7 +33,7 @@ pipeline {
             }
         }
 
-        stage ('Use the Puppet Development Kit To run Beaker Acceptance Tests) {
+        stage ('Use the Puppet Development Kit To run Beaker Acceptance Tests') {
             when {
               expression {
                 currentBuild.result == null || currentBuild.result == 'SUCCESS' 
@@ -42,7 +43,6 @@ pipeline {
                 sh 'pdk bundle exec rake beaker:default'
             }
         }
-
         stage ('Cleanup Acceptance Tests after successful build.') {
             when {
               expression {
@@ -53,8 +53,6 @@ pipeline {
                 sh 'pdk bundle exec rake module:clean'
             }
         }
-
-
         stage ('Organize files') {
             steps {
                 sh ''
