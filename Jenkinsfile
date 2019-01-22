@@ -66,7 +66,7 @@ pipeline {
             }
         }
  
-        stage ('Cleanup Acceptance Tests after successful build.') {
+        stage ('Cleanup Acceptance Tests after successful build, and prepare for release.') {
             when {
               expression {
                 currentBuild.result == null || currentBuild.result == 'SUCCESS' 
@@ -76,20 +76,39 @@ pipeline {
                 sh 'pdk bundle exec rake module:clean'
             }
         }
-        stage ('Organize files') {
+        stage ('Build Puppet module files') {
             steps {
-                sh ''
+                sh 'pdk bundle exec rake module:build'
+            }
+        }
+
+        stage ('Tag puppet module files') {
+            steps {
+                sh 'pdk bundle exec rake module:tag'
+            }
+        }
+
+        stage ('Push puppet module files') {
+            steps {
+                sh 'pdk bundle exec rake module:push'
+            }
+        }
+
+        stage ('Bump version and Commit puppet module files') {
+            steps {
+                sh 'pdk bundle exec rake module:bump_commit'
             }
         }
 
         stage ('Code signing') {
             steps {
-                sh ''
+                sh 'echo "Do we need to add Code Signing for puppet modules?"'
             }
         }
+
         stage ('Upload to GitHub') {
             steps {
-                sh ''
+                sh 'git push origin'
             }
         }
 
