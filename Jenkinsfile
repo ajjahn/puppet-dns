@@ -16,12 +16,22 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '30'))
     }
     stages {
+        stage ('Use the Puppet Development Bundle Install to install missing gem dependencies') {
+            steps {
+                sh 'pdk bundle install'
+            }
+        }
+
         stage ('Use the Puppet Development Kit Validation to Check for Linting Errors') {
+            when {
+              expression {
+                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+              }
+            }
             steps {
                 sh 'pdk validate'
             }
         }
-  
         stage ('Use the Puppet Development Kit Test Unit for Module Unit Testing') {
             when {
               expression {
