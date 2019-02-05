@@ -76,6 +76,8 @@ pipeline {
                 sh 'pdk bundle exec rake module:clean'
             }
         }
+// Comment out remaining bits untill we figure out the exact process we want here
+/*
         stage ('Build Puppet module files') {
             steps {
                 sh 'pdk bundle exec rake build:pdk'
@@ -111,6 +113,6 @@ pipeline {
                 sh 'git push origin'
             }
         }
-
+*/
     } 
 }
