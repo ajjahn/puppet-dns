@@ -51,7 +51,7 @@ pipeline {
               }
             }
             steps {
-                sh 'pdk bundle exec rake test'
+                sh 'pdk bundle exec rake spec'
             }
         }
 
