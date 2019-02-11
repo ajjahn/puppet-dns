@@ -1,4 +1,5 @@
-# == Class dns::member
+# @summary
+#    Class dns::member
 #
 define dns::member ($domain, $hostname, $ipaddress) {
   dns::record::a { $hostname:

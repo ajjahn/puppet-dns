@@ -1,7 +1,5 @@
 ---
-require: 
-  - rubocop-rspec
-  - rubocop-i18n
+require: rubocop-rspec
 AllCops:
   DisplayCopNames: true
   TargetRubyVersion: '2.1'

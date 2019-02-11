@@ -1,4 +1,5 @@
-# == Class define::key
+# @summary
+#     Class define::key
 #
 define dns::key {
   include dns::server::params

@@ -1,6 +1,7 @@
 # == Define dns::record
 #
-# This is a private class to arbitary dns records.
+# @api private
+#    This is a private class to arbitary dns records.
 #
 define dns::record (
   Variant[String, Tuple] $zone,

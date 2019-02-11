@@ -1,21 +1,24 @@
-# defined type allows you to declare a BIND TSIG.
+# @summary
+#     defined type allows you to declare a BIND TSIG.
 #
-# Parameters:
+# @param [String] ensure
+#     ensure the persence or absence of the acl.
+# @param [String] keyname
+#     the name given to the TSIG KEY. This must be unique.
+#     This defaults to the namevar.
+# @param [String] algorithm
+#     Defined algorithm of the key (default: hmac-md5)
+# @param [String] server
+#     related string or array of ip addresses to this key
+# @param [String] secret
+#     shared secret of the key
 #
-# $ensure = ensure the persence or absence of the acl.
-# $keyname = the name given to the TSIG KEY. This must be unique. This defaults to
-#   the namevar.
-# $algorithm = Defined algorithm of the key (default: hmac-md5)
-# $server = related string or array of ip addresses to this key
-# $secret = shared secret of the key
-#
-# Usage:
-#
-# dns::tsig { 'ns3':
-#   ensure => present,
-#   algorithm => "hmac-md5"
-#   secret    => "dTIxGBPjkT/8b6BYHTUA=="
-# }
+# @example
+#     dns::tsig { 'ns3':
+#       ensure    => present,
+#       algorithm => "hmac-md5"
+#       secret    => "dTIxGBPjkT/8b6BYHTUA=="
+#     }
 #
 define dns::tsig (
   String $keyname = $name,
