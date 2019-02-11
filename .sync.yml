@@ -1,0 +1,17 @@
+---
+
+Gemfile:
+  required:
+    ':acceptance':
+      - gem: 'rspec-puppet-facts'
+      - gem: 'optimist'
+      - gem: 'beaker'
+      - gem: 'beaker-puppet'
+      - gem: 'beaker-docker'
+      - gem: 'beaker-module_install_helper'
+      - gem: 'beaker-puppet_install_helper'
+      - gem: 'beaker-pe'
+      - gem: 'beaker-rspec'
+      - gem: 'beaker-task_helper'
+      - gem: 'beaker-vagrant'
+      - gem: 'vagrant-wrapper'
