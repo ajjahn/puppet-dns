@@ -3,18 +3,18 @@
 # Wrapper of dns::record to set NS records
 #
 define dns::record::ns (
-  $zone,
-  $data,
-  $ttl  = '',
-  $host = $name,
-  $data_dir = $::dns::server::config::data_dir,
+  Variant[String, Tuple] $data,
+  Stdlib::Fqdn $zone,
+  Stdlib::Host $host = $name,
+  String $ttl = '',
+  Stdlib::Absolutepath $data_dir = $::dns::server::config::data_dir,
 ) {
 
   $alias = "${host},${zone},NS,${data}"
 
-  validate_string($zone)
-  validate_string($data)
-  validate_string($host)
+  validate_legacy(String, 'validate_string', $zone)
+  validate_legacy(String, 'validate_string', $data)
+  validate_legacy(String, 'validate_string', $host)
 
   if !is_domain_name($zone) or $zone =~ /^[0-9\.]+$/ {
     fail("Define[dns::record::ns]: NS zone ${zone} must be a valid domain name.")

@@ -110,6 +110,7 @@ define dns::record::ptr::by_ip (
   }
 
   if $zone != undef and $zone != '' {
+    Stdlib::Fqdn($zone)
     if $host == '@' {
       $fqdn = $zone
     } else {

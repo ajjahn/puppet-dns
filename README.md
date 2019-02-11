@@ -6,8 +6,9 @@ Module for provisioning DNS (bind9)
 
 Supports:
 
+* Debian: 9, 8 
 * Ubuntu: 14.04, 12.04
-* CentOS: 7.x, 6.x
+* CentOS/ScientificLinux/OracleLinux: 7.x, 6.x
 
 Patches to support other operating systems are welcome.
 
@@ -193,8 +194,9 @@ node 'ns1.xkyle.com' {
 ## Authors
 
 Note: This module is a merge of the work from the following authors:
-* [ajjahn](https://github.com/ajjahn/puppet-dns)
+* [ajjahn](https://github.com/ajjahn)
 * [Danzilio](https://github.com/danzilio)
+* [ppouliot](https://github.com/ppouliot)
 * [solarkennedy](https://github.com/solarkennedy)
 
 ## License

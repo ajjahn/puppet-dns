@@ -1,4 +1,5 @@
-# == Class define::key
+# @summary
+#     Class define::key
 #
 define dns::key {
   include dns::server::params
@@ -15,7 +16,7 @@ define dns::key {
     command     => "/usr/sbin/dnssec-keygen -a HMAC-MD5 -r /dev/urandom -b 128 -n USER ${name}",
     cwd         => "${cfg_dir}/bind.keys.d",
     require     => [
-      Package['dnssec-tools'],
+      Package[$dns::server::params::necessary_packages],
       File["${cfg_dir}/bind.keys.d"],
     ],
     refreshonly => true,

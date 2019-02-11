@@ -44,15 +44,15 @@
 #   Defaults to empty (no zone is added).
 #
 define dns::server::view (
-  $ensure               = 'present',
-  $enable_default_zones = true,
-  $match_clients        = [],
-  $match_destinations   = [],
-  $match_recursive_only = undef,
-  $options              = {},
-  $order                = '50',
-  $viewname             = $name,
-  $zones                = {},
+  String $ensure                         = 'present',
+  Boolean $enable_default_zones          = true,
+  Optional[Array] $match_clients         = [],
+  Optional[Array] $match_destinations    = [],
+  Optional[String] $match_recursive_only = undef,
+  $options                               = {},
+  String $order                          = '50',
+  String $viewname                       = $name,
+  $zones                                 = {},
 ) {
   include ::dns::server::params
 
@@ -61,17 +61,17 @@ define dns::server::view (
   if !member($valid_ensure, $ensure) {
     fail("ensure parameter must be ${valid_ensure}")
   }
-  validate_bool($enable_default_zones)
-  validate_array($match_clients)
-  validate_array($match_destinations)
+  assert_type(Boolean, $enable_default_zones)
+  assert_type(Array, $match_clients)
+  assert_type(Array, $match_destinations)
   if $match_recursive_only {
     if !member($valid_yes_no, $match_recursive_only) {
       fail("match_recursive_only parameter must be ${valid_yes_no}")
     }
   }
   validate_hash($options)
-  validate_string($order)
-  validate_string($viewname)
+  assert_type(String, $order)
+  assert_type(String, $viewname)
   validate_hash($zones)
 
   $rfc1912_zones_cfg = $dns::server::params::rfc1912_zones_cfg

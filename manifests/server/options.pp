@@ -154,39 +154,44 @@
 #    forwarders => [ '8.8.8.8', '8.8.4.4' ],
 #   }
 #
-include dns::server::params
 define dns::server::options (
-  $allow_query = [],
-  $allow_recursion = [],
-  $also_notify = [],
-  $check_names_master = undef,
-  $check_names_slave = undef,
-  $check_names_response = undef,
-  $control_channel_ip = undef,
-  $control_channel_port = undef,
-  $control_channel_allow = undef,
-  $data_dir = $::dns::server::params::data_dir,
-  $dnssec_validation = $::dns::server::params::default_dnssec_validation,
-  $dnssec_enable = $::dns::server::params::default_dnssec_enable,
-  $forward_policy = undef,
-  $forwarders = [],
-  $listen_on = [],
-  $listen_on_ipv6 = [],
-  $listen_on_port = undef,
-  $log_channels = {},
-  $log_categories = {},
-  $no_empty_zones = false,
-  $notify_source = undef,
+  Optional[Array] $allow_query              = [],
+  Optional[Array] $allow_recursion          = [],
+  Optional[Array] $also_notify              = [],
+  Optional[String] $check_names_master      = undef,
+  Optional[String] $check_names_slave       = undef,
+  Optional[String] $check_names_response    = undef,
+  Optional[String] $control_channel_ip      = undef,
+  Optional[String] $control_channel_port    = undef,
+  Optional[String] $control_channel_allow   = undef,
+  Stdlib::Absolutepath $data_dir            = $::dns::server::params::data_dir,
+  # string only works for old type
+  # String $data_dir                          = $::dns::server::params::data_dir,
+  String $dnssec_validation                 = $::dns::server::params::default_dnssec_validation,
+  Boolean $dnssec_enable                    = $::dns::server::params::default_dnssec_enable,
+  Optional[String] $forward_policy          = undef,
+  Optional[Array] $forwarders               = [],
+  Optional[Array] $listen_on                = [],
+  Optional[Array] $listen_on_ipv6           = [],
+  $listen_on_port                           = undef,
+  Optional[Hash] $log_channels              = {},
+  Optional[Hash] $log_categories            = {},
+  Boolean $no_empty_zones                   = false,
+  Optional[String] $notify_source           = undef,
+  # Optional[ String [1] ] $query_log_enable        = undef,
   $query_log_enable = undef,
-  $statistic_channel_ip = undef,
-  $statistic_channel_port = undef,
-  $statistic_channel_allow = undef,
-  $transfers = [],
-  $transfer_source = undef,
-  $working_dir = $::dns::server::params::working_dir,
-  $zone_notify = undef,
-  $extra_options = {},
+  Optional[String] $statistic_channel_ip    = undef,
+  Optional[String] $statistic_channel_port  = undef,
+  Optional[String] $statistic_channel_allow = undef,
+  Optional[Array] $transfers                = [],
+  Optional[String] $transfer_source         = undef,
+  Stdlib::Absolutepath $working_dir         = $::dns::server::params::working_dir,
+  # string only works for old type
+  # String $working_dir                       = $::dns::server::params::working_dir,
+  Optional[String] $zone_notify             = undef,
+  Optional[Hash] $extra_options             = {},
 ) {
+  include dns::server::params
   $valid_check_names = ['fail', 'warn', 'ignore']
   $valid_forward_policy = ['first', 'only']
   $cfg_dir = $::dns::server::params::cfg_dir
@@ -194,16 +199,20 @@ define dns::server::options (
   if ! defined(Class['::dns::server']) {
     fail('You must include the ::dns::server base class before using any dns options defined resources')
   }
-
-  validate_string($forward_policy)
+  if $forward_policy != undef {
+    assert_type(String, $forward_policy)
+  }
+  #validate_string($forward_policy)
   if $forward_policy != undef and !member($valid_forward_policy, $forward_policy) {
     fail("The forward_policy must be ${valid_forward_policy}")
   }
-  validate_array($forwarders)
-  validate_array($transfers)
-  validate_array($listen_on)
-  validate_array($listen_on_ipv6)
-  validate_array($allow_recursion)
+
+  assert_type(Array, $forwarders)
+  assert_type(Array, $transfers)
+  assert_type(Array, $listen_on)
+  assert_type(Array, $listen_on_ipv6)
+  assert_type(Array, $allow_recursion)
+
   if $check_names_master != undef and !member($valid_check_names, $check_names_master) {
     fail("The check name policy check_names_master must be ${valid_check_names}")
   }
@@ -213,7 +222,7 @@ define dns::server::options (
   if $check_names_response != undef and !member($valid_check_names, $check_names_response) {
     fail("The check name policy check_names_response must be ${valid_check_names}")
   }
-  validate_array($allow_query)
+  assert_type(Array, $allow_query)
 
   if $statistic_channel_port != undef and !is_numeric($statistic_channel_port) {
     fail('The statistic_channel_port is not a number')
@@ -224,7 +233,7 @@ define dns::server::options (
   }
 
   if $statistic_channel_allow != undef {
-    validate_array($statistic_channel_allow)
+    assert_type(Array, $statistic_channel_allow)
   }
 
   if $control_channel_port != undef and !is_numeric($control_channel_port) {
@@ -236,10 +245,10 @@ define dns::server::options (
   }
 
   if $control_channel_allow != undef {
-    validate_array($control_channel_allow)
+    assert_type(Array, $control_channel_allow)
   }
 
-  validate_array($also_notify)
+  assert_type(Array, $also_notify)
 
   $valid_zone_notify = ['yes', 'no', 'explicit', 'master-only']
   if $zone_notify != undef and !member($valid_zone_notify, $zone_notify) {
@@ -251,9 +260,9 @@ define dns::server::options (
     fail("The dnssec_validation must be ${valid_dnssec_validation}")
   }
 
-  validate_bool($no_empty_zones)
+  assert_type(Boolean, $no_empty_zones)
 
-  validate_bool($dnssec_enable)
+  assert_type(Boolean, $dnssec_enable)
   if (! $dnssec_enable) and ($dnssec_validation != undef) {
     warning('dnssec_enable is false. dnssec_validation will be ignored.')
   }
@@ -267,13 +276,12 @@ define dns::server::options (
   }
 
   # validate these, just in case they're overridden
-  validate_absolute_path($data_dir)
-  validate_absolute_path($working_dir)
+  # validate_absolute_path($data_dir)
+  # validate_absolute_path($working_dir)
 
-  validate_hash($log_channels)
-  validate_hash($log_categories)
-
-  validate_hash($extra_options)
+  assert_type(Hash, $log_channels)
+  assert_type(Hash, $log_categories)
+  assert_type(Hash, $extra_options)
 
   file { $title:
     ensure  => present,

@@ -1,8 +1,7 @@
 fixtures:
   forge_modules:
     stdlib: "puppetlabs/stdlib"
-    concat:
-      repo: "puppetlabs/concat"
-      ref: "2.2.0"
+    translate: "puppetlabs/translate"
+    concat: "puppetlabs/concat"
   symlinks:
     dns: "#{source_dir}"
