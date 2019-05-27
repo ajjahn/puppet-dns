@@ -218,6 +218,7 @@ define dns::zone (
   }
 
   $zone_file = "${data_dir}/db.${name}"
+  $zone_file_temp = "${zone_file}.temp"
   $zone_file_stage = "${zone_file}.stage"
 
   validate_array($allow_update)
@@ -269,13 +270,28 @@ define dns::zone (
       default => $serial
     }
     exec { "bump-${zone}-serial":
-      command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
+      command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file_temp}",
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
       provider    => posix,
       user        => $dns::server::params::owner,
       group       => $dns::server::params::group,
       require     => Class['dns::server::install'],
+    }
+    ~>
+    exec { "test-${zone}-serial":
+      command     => "/usr/sbin/named-checkzone ${name} ${zone_file_temp}",
+      path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+      refreshonly => true,
+    }
+    ~>
+    exec { "apply-${zone}-serial":
+      command     => "mv ${zone_file_temp} ${zone_file}",
+      path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+      refreshonly => true,
+      provider    => posix,
+      user        => $dns::server::params::owner,
+      group       => $dns::server::params::group,
       notify      => Class['dns::server::service'],
     }
   } else {
