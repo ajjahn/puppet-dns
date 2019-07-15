@@ -18,6 +18,12 @@ class dns::server::params {
       $default_template   = 'default.debian.erb'
       $default_dnssec_enable     = true
       $default_dnssec_validation = 'auto'
+      $rfc1912_zones = [
+        { 'localhost'        => '/etc/bind/db.local' },
+        { '127.in-addr.arpa' => '/etc/bind/db.127' },
+        { '0.in-addr.arpa'   => '/etc/bind/db.0' },
+        { '255.in-addr.arpa' => '/etc/bind/db.255' },
+      ]
       if versioncmp( $::operatingsystemmajrelease, '8' ) >= 0 {
         $necessary_packages = [ 'bind9', 'bind9utils' ]
       } else {
@@ -39,6 +45,13 @@ class dns::server::params {
       $necessary_packages = [ 'bind', ]
       $default_file       = '/etc/sysconfig/named'
       $default_template   = 'default.redhat.erb'
+      $rfc1912_zones = [
+        { 'localhost.localdomain'                                                    => 'named.localhost' },
+        { 'localhost'                                                                => 'named.localhost' },
+        { '1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa' => 'named.loopback' },
+        { '1.0.0.127.in-addr.arpa'                                                   => 'named.loopback' },
+        { '0.in-addr.arpa'                                                           => 'named.empty' },
+      ]
       if $::operatingsystemmajrelease =~ /^[1-5]$/ {
         $default_dnssec_enable     = false
         $default_dnssec_validation = 'absent'
