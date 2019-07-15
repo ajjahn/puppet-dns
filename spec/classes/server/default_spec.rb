@@ -35,7 +35,7 @@ describe 'dns::server::default' do
       context "requires bind9 and dnssec-tools package" do
         it do
           should contain_file('/etc/default/bind9').with({
-            'require' => ['Package[bind9]', 'Package[dnssec-tools]'],
+            'require' => ['Package[bind9]', 'Package[bind9utils]', 'Package[dnssec-tools]'],
           })
         end
       end
