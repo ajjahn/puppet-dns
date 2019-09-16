@@ -50,4 +50,11 @@ zone "<%= @zone %>" {
     <%- end -%>
     };
 <%- end -%>
+<%- if @allow_update_forwarding.size != 0 %>
+    allow-update-forwarding {
+    <%- @allow_update_forwarding.each do |ip| -%>
+        <%= ip %>;
+    <%- end -%>
+    };
+<%- end -%>
 };

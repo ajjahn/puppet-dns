@@ -65,6 +65,10 @@
 #  but content will not be replaced. This capability allows dynamic
 #  updates.
 #
+# [*allow_update_forwarding*]
+#   An array of IP addresses(also keys "key '<keyname>'" from which 
+#  dynamic updates should be allowed on slaves.
+#
 # [*also_notify*]
 #   This is an array of IP addresses and optional port numbers to
 #   which this DNS server will send notifies when the master DNS server
@@ -179,6 +183,7 @@ define dns::zone (
   $allow_forwarder = [],
   $allow_query =[],
   $allow_update =[],
+  $allow_update_forwarding =[],
   $forward_policy = 'first',
   $slave_masters = undef,
   $zone_notify = undef,
