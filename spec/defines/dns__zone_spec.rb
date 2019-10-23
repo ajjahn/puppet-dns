@@ -390,4 +390,53 @@ describe 'dns::zone' do
           with_content(/2001:db8::\/32/)
     }
   end
+
+  describe '$allow_forwarder should issue a deprecation notice' do
+    let(:params) {{ :allow_forwarder => ['192.0.2.0'] }}
+    it { should contain_notify('dns::zone parameter `allow_forwarder` deprecated in favor of `forwarders`') }
+  end
+
+  describe 'passing an array to $forwarders' do
+    let(:params) {{ :forwarders => ['192.0.2.0'] }}
+    it 'should have a forwarders entry' do
+        should contain_concat__fragment('named.conf.local.test.com.include').
+                       with_content(/forwarders *{/).
+                       with_content(/192\.0\.2\.0;/)
+    end
+  end
+
+  describe 'passing an empty array to $forwarders' do
+    let(:params) {{ :forwarders => [] }}
+    it 'should have an empty forwarders entry' do
+        should contain_concat__fragment('named.conf.local.test.com.include').
+                       with_content(/forwarders *{[ \n]*}/)
+    end
+  end
+
+  describe 'passing `false` to $forwarders' do
+    let(:params) {{ :forwarders => false }}
+    it 'should have an empty forwarders entry' do
+        should contain_concat__fragment('named.conf.local.test.com.include').
+                       with_content(/forwarders *{[ \n]*}/)
+    end
+  end
+
+  describe 'passing `true` to $forwarders' do
+    let(:params) {{ :forwarders => true }}
+    it 'should not have a forwarders entry' do
+        should contain_concat__fragment('named.conf.local.test.com.include').
+                       without_content(/forwarders *{/)
+    end
+  end
+
+  describe 'passing an array to $forwarders and $allow_forwarder' do
+    let(:params) {{ :forwarders => ['192.0.2.0'], :allow_forwarder => ['192.0.2.1'] }}
+    it 'should have the forwarders entries from $forwarders' do
+        should contain_concat__fragment('named.conf.local.test.com.include').
+                       with_content(/forwarders *{/).
+                       with_content(/192\.0\.2\.0;/).
+                       without_content(/192\.0\.2\.1;/)
+    end
+  end
+
 end
