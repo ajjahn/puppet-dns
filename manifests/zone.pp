@@ -176,7 +176,7 @@ define dns::zone (
   $serial = false,
   $zone_type = 'master',
   $allow_transfer = [],
-  $allow_forwarder = [],
+  $allow_forwarder = undef,
   $allow_query =[],
   $allow_update =[],
   $forward_policy = 'first',
@@ -192,7 +192,9 @@ define dns::zone (
   $cfg_dir = $dns::server::params::cfg_dir
 
   validate_array($allow_transfer)
-  validate_array($allow_forwarder)
+  if $allow_forwarder != undef {
+    validate_array($allow_forwarder)
+  }
   if !member(['first', 'only'], $forward_policy) {
     fail('The forward policy can only be set to either first or only')
   }
