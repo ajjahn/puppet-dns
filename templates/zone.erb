@@ -28,10 +28,10 @@ zone "<%= @zone %>" {
         };
     <%- end -%>
 <% end -%>
-<% if !@allow_forwarder.empty? and ( @zone_type == 'master' or  @zone_type == 'forward') -%>
+<% if !@zone_forwarders.nil? and ( @zone_type == 'master' or  @zone_type == 'forward' or @zone_type == 'slave') -%>
     forward <%= @forward_policy %>;
     forwarders {
-    <%- @allow_forwarder.each do |ip| -%>
+    <%- @zone_forwarders.each do |ip| -%>
         <%= ip %>;
     <%- end -%>
     };
