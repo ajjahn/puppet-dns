@@ -6,11 +6,12 @@ class dns::server (
   $necessary_packages = $dns::server::params::necessary_packages,
   $ensure_packages    = $dns::server::params::ensure_packages,
 
-  $cfg_dir  = $dns::server::params::cfg_dir,
-  $cfg_file = $dns::server::params::cfg_file,
-  $data_dir = $dns::server::params::data_dir,
-  $owner    = $dns::server::params::owner,
-  $group    = $dns::server::params::group,
+  $cfg_dir   = $dns::server::params::cfg_dir,
+  $cfg_file  = $dns::server::params::cfg_file,
+  $data_dir  = $dns::server::params::data_dir,
+  $root_hint = $dns::server::params::root_hint,
+  $owner     = $dns::server::params::owner,
+  $group     = $dns::server::params::group,
 
   $enable_default_zones = true,
 ) inherits dns::server::params {
@@ -21,6 +22,7 @@ class dns::server (
     cfg_dir              => $cfg_dir,
     cfg_file             => $cfg_file,
     data_dir             => $data_dir,
+    root_hint            => $root_hint,
     owner                => $owner,
     group                => $group,
     enable_default_zones => $enable_default_zones,
