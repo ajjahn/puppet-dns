@@ -16,7 +16,18 @@ class dns::server::params {
       $service            = 'bind9'
       $default_file       = '/etc/default/bind9'
       $default_template   = 'default.debian.erb'
-      $default_dnssec_enable     = true
+      case $::facts['os']['name'] {
+        'Ubuntu': {
+          if (versioncmp($::facts['os']['release']['major'], '22.04') >= 0) {
+            $default_dnssec_enable = undef
+          } else {
+            $default_dnssec_enable = true
+          }
+        }
+        default: {
+          $default_dnssec_enable = true
+        }
+      }
       $default_dnssec_validation = 'auto'
       if versioncmp( $::operatingsystemmajrelease, '8' ) >= 0 {
         $necessary_packages = [ 'bind9', 'bind9utils' ]

@@ -62,7 +62,12 @@
 #   Controls whether to enable/disable DNS-SEC support. Boolean.
 #   Default is false on RedHat 5 (for the same reasons as
 #   dnssec_validation above), and true on Debian and on RedHat 6
-#   and above.
+#   and above. For Ubuntu 22.04 and above the default value is undef
+#   (see below).
+#
+#   Setting the value to undef omits this option entirely from the
+#   config. This is because the option had been obsoleted in BIND
+#   9.15.0 and was removed entirely in BIND 9.18.0.
 #
 # [*forward_policy*]
 #   The forwarding policy to use.  Must be `first` or `only`.
