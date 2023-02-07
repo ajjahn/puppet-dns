@@ -108,7 +108,11 @@
 #    forwarders => [ '8.8.8.8', '8.8.4.4' ],
 #   }
 #
-include dns::server::params
+
+# This is causing 'Server Error: This Function Call is unacceptable as a top level construct in this location' errors.
+# It's not clear whether this has to be moved, or whether it can simply be removed.
+#include dns::server::params
+
 define dns::server::options (
   $allow_query = [],
   $allow_recursion = [],
