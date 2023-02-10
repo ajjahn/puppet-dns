@@ -18,14 +18,7 @@ class dns::server::params {
       $default_template   = 'default.debian.erb'
       $default_dnssec_enable     = true
       $default_dnssec_validation = 'auto'
-      case $::operatingsystemmajrelease {
-        '8': {
-          $necessary_packages = ['bind9']
-        }
-        default: {
-          $necessary_packages = [ 'bind9', 'dnssec-tools' ]
-        }
-      }
+      $necessary_packages = ['bind9']
     }
     'RedHat': {
       $cfg_dir            = '/etc/named'
